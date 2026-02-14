@@ -8,14 +8,12 @@ from PyQt6.QtWidgets import(
 	QVBoxLayout,
 	QHBoxLayout,
 	QDialog,
-	QLineEdit
+	QLineEdit,
+	QListWidgetItem,
+	QMenu
 )
-from services.TacVuMonHoc import(
-	layDanhSachMon,
-	themMon,
-	capNhatTruyCapGanNhat,
-	suaTenMon
-) 
+from PyQt6.QtCore import Qt
+import services.TacVuMonHoc as TacVuMonHoc
 from lang.strings import Text
 
 class Sidebar(QWidget):
@@ -41,7 +39,8 @@ class Sidebar(QWidget):
 
 	def updateSubjList(self, subjList):
 		self.subjListWidget.clear()
-		self.subjListWidget.addItems(subjList)
+		for subj in subjList:
+			self.subjListWidget.addItem(subj)
 
 class NewSubjDialog(QDialog):
     def __init__(self):
@@ -53,7 +52,6 @@ class NewSubjDialog(QDialog):
         self.cancelBtn = QPushButton(Text.CANCEL)
         #
         self.setFixedSize(400,200)
-        self.setWindowTitle(Text.DIALOG_TITLE)
         self.setupLayout()
         self.setupConnectBtn()
 
@@ -87,13 +85,25 @@ class MainWindow(QMainWindow):
 		self.resize(950,600)
 		self.setWindowTitle(Text.WINDOW_TITLE)
 		self.setupUI()
+		#
+		# Xử lý Context Menu -------------------------------------
+		self.sidebar.subjListWidget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+		self.sidebar.subjListWidget.customContextMenuRequested.connect(self.showContextMenu)
+		# --------------------------------------------------------
+
+	def updateSubjListForSidebar(self):
+		subjList = []
+		for subj in TacVuMonHoc.layDanhSachMon():
+			item = QListWidgetItem(subj["tenMon"])
+			item.setData(Qt.ItemDataRole.UserRole, subj["maMon"])
+			subjList.append(item)
+		self.sidebar.updateSubjList(subjList)
 
 	def setupUI(self):
 		central = QWidget()
 		self.setCentralWidget(central)
 		#
-		subjList = [x["tenMon"] for x in layDanhSachMon()]
-		self.sidebar.updateSubjList(subjList)
+		self.updateSubjListForSidebar()
 		#
 		layout = QHBoxLayout(central)
 		layout.addWidget(self.sidebar)
@@ -101,9 +111,47 @@ class MainWindow(QMainWindow):
 
 	def handleAddSubj(self):
 		dialog = NewSubjDialog()
+		dialog.setWindowTitle(Text.DIALOG_TITLE_THEMMON)
 		result = dialog.exec()
 
 		if result == QDialog.DialogCode.Accepted:
-			themMon(dialog.textOutput())
-		subjList = [x["tenMon"] for x in layDanhSachMon()]
-		self.sidebar.updateSubjList(subjList)
+			TacVuMonHoc.themMon(dialog.textOutput())
+
+		self.updateSubjListForSidebar()
+
+	def handleMoveSubj(self,maMon):
+		TacVuMonHoc.moveMonToTrash(maMon)
+		
+		self.updateSubjListForSidebar()
+		print("Đã chuyển qua thùng rác")
+
+	def handleSuaSubj(self,maMon):
+		dialog = NewSubjDialog()
+		dialog.setWindowTitle(Text.DIALOG_TITLE_SUAMON)
+		result = dialog.exec()
+
+		if result == QDialog.DialogCode.Accepted:
+			TacVuMonHoc.suaTenMon(maMon,dialog.textOutput())
+		
+		self.updateSubjListForSidebar()
+		print("Đã sửa")
+
+	def showContextMenu(self,pos):
+		item = self.sidebar.subjListWidget.itemAt(pos)
+
+		if item is None:
+			return
+
+		maMon = item.data(Qt.ItemDataRole.UserRole)
+		contextMenu = QMenu()
+
+		action_sua = contextMenu.addAction(Text.A_SUA)
+		action_move = contextMenu.addAction(Text.A_MOVE)
+		action_thich = contextMenu.addAction(Text.A_THICH)
+
+		action_sua.triggered.connect(lambda _, ma=maMon: self.handleSuaSubj(ma))
+		action_move.triggered.connect(lambda: self.handleMoveSubj(maMon))
+
+		contextMenu.exec(self.sidebar.subjListWidget.mapToGlobal(pos))
+		
+

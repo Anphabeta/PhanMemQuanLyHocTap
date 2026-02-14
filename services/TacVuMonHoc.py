@@ -10,9 +10,30 @@ def layDanhSachMon():
 	conn = get_connection()
 	cur = conn.cursor()
 
-	cur.execute("select * from MonHoc order by truyCapGanNhat desc")
+	cur.execute("""
+		select * from MonHoc
+		where trangThaiMon = 'enable'
+		order by truyCapGanNhat desc
+	""")
 	rows = cur.fetchall()
 	
+	ds = [dict(row) for row in rows]
+
+	conn.close()
+
+	return ds
+
+def layDanhSachMonTrash():
+	conn = get_connection()
+	cur = conn.cursor()
+
+	cur.execute("""
+		select * from MonHoc
+		where trangThaiMon = 'disable'
+		order by truyCapGanNhat desc
+	""")
+	rows = cur.fetchall()
+
 	ds = [dict(row) for row in rows]
 
 	conn.close()
@@ -47,10 +68,47 @@ def suaTenMon(maMon, newName):
 	cur = conn.cursor()
 
 	cur.execute("""
-		update MonHoc
-		set tenMon = (?)
+		update MonHoc set 
+		tenMon = (?),
+		truyCapGanNhat = datetime('now','localtime')
 		where maMon = (?)
 	""",(newName,maMon))
+
+	conn.commit()
+	conn.close()
+
+def moveMonToTrash(maMon):
+	conn = get_connection()
+	cur = conn.cursor()
+
+	cur.execute("""
+		update MonHoc set 
+		trangThaiMon = 'disable'
+		where maMon = (?)
+	""",(maMon,))
+
+	conn.commit()
+	conn.close()
+
+def khoiPhucMon(maMon):
+	conn = get_connection()
+	cur = conn.cursor()
+
+	cur.execute("""
+		update MonHoc set 
+		trangThaiMon = 'enable',
+		truyCapGanNhat = datetime('now','localtime')
+		where maMon = (?)
+	""",(maMon,))
+
+	conn.commit()
+	conn.close()
+
+def xoaMon(maMon):
+	conn = get_connection()
+	cur = conn.cursor()
+
+	cur.execute("delete from MonHoc where maMon = (?)",(maMon,))
 
 	conn.commit()
 	conn.close()

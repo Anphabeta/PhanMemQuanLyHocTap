@@ -1,7 +1,7 @@
 from db_connect import get_connection
 
 # Dùng để reset DB
-
+# MonHoc.trangThaiMon là enum ['enable','disable']
 print("Cảnh báo! Thao tác này sẽ xóa toàn bộ dữ liệu trong database của bạn và khôi phục về dữ liệu gốc.")
 choice = input("Bạn chắc là muốn tiếp tục chứ? (y/n): ")
 while choice!='y':
@@ -17,7 +17,8 @@ create table if not exists MonHoc(
 	maMon integer primary key autoincrement,
 	tenMon text not null,
 	tgTaoMon text default (datetime('now','localtime')),
-	truyCapGanNhat text default (datetime('now','localtime'))
+	truyCapGanNhat text default (datetime('now','localtime')),
+	trangThaiMon text default 'enable'
 );
 create table if not exists Chuong(
 	maChuong integer primary key autoincrement,
