@@ -112,3 +112,12 @@ def xoaMon(maMon):
 
 	conn.commit()
 	conn.close()
+
+def xoaTatCaMon():
+	conn = get_connection()
+	cur = conn.cursor()
+
+	cur.execute("delete from MonHoc where trangThaiMon = 'disable'")
+
+	conn.commit()
+	conn.close()
