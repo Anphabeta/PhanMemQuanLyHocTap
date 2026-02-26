@@ -21,9 +21,9 @@ class ViewMainWindow(QMainWindow):
 		self.subjPage = ViewSubjectPage()
 		self.homePage = ViewHomePage()
 		self.stackedWidget = QStackedWidget()
+		self.stackedWidget.addWidget(self.homePage)
 		self.stackedWidget.addWidget(self.trashPage)
 		self.stackedWidget.addWidget(self.subjPage)
-		self.stackedWidget.addWidget(self.homePage)
 		#
 		self.setupUI()
 

@@ -18,36 +18,34 @@ class ControllerSidebar(QObject):
 		super().__init__()
 		
 		self.sidebar = sidebar
-		sb = self.sidebar
 		# ----------------------------------------------------------------------------------------------
-		sb.newSubjBtn.clicked.connect(self.handleAddSubj)
+		self.sidebar.pushBtn.connect(self.handlePushBtn)
 		# ----------------------------------------------------------------------------------------------
-		sb.homeBtn.clicked.connect(lambda: self.pushBtn.emit("HomePage"))
+		self.sidebar.addSubject.connect(self.handleAddSubj)
 		# ----------------------------------------------------------------------------------------------
-		sb.trashBtn.clicked.connect(lambda: self.pushBtn.emit("TrashPage"))
+		self.sidebar.editSubject.connect(self.handleEditSubj)
 		# ----------------------------------------------------------------------------------------------
-		sb.subjListWidget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
-		sb.subjListWidget.customContextMenuRequested.connect(self.showContextMenu)
+		self.sidebar.menuContextRequest.connect(self.chooseAction)
 		# ----------------------------------------------------------------------------------------------
-		sb.subjListWidget.itemClicked.connect(self.handleSwitchSubject)
+		self.sidebar.leftClickOnSubjList.connect(self.handleSwitchSubject)
 		# ----------------------------------------------------------------------------------------------
 		self.updateSubjList()
 
-	def handleSwitchSubject(self, item):
-		subjClickedId = item.data(Qt.ItemDataRole.UserRole)
-		self.subjClicked.emit(subjClickedId)
+	def handlePushBtn(self, action):
+		if action == "HomePage":
+			self.pushBtn.emit("HomePage")
+		elif action == "TrashPage":
+			self.pushBtn.emit("TrashPage")
+
+	def handleSwitchSubject(self, maMon):
+		self.subjClicked.emit(maMon)
 		print("Đã chuyển môn")
 
-	def handleAddSubj(self):
-		dialog = InputDialog()
-		dialog.setWindowTitle(Text.DIALOG_TITLE_THEMMON)
-		result = dialog.exec()
-
-		if result == QDialog.DialogCode.Accepted:
-			TacVuMonHoc.themMon(dialog.textOutput())
-			print("Đã thêm môn học")
+	def handleAddSubj(self, tenMon):
+		TacVuMonHoc.themMon(tenMon)
 
 		self.updateSubjList()
+		print("Đã thêm môn")
 
 	def handleMoveSubjToTrash(self,maMon):
 		# Nếu môn học đang trỏ tới bị xóa, tự động hiển thị home page
@@ -61,39 +59,16 @@ class ControllerSidebar(QObject):
 		self.moveToTrash.emit()
 		print("Đã chuyển qua thùng rác")
 
-	def handleEditSubj(self,maMon):
-		dialog = InputDialog()
-		dialog.setWindowTitle(Text.DIALOG_TITLE_SUAMON)
-		result = dialog.exec()
-
-		if result == QDialog.DialogCode.Accepted:
-			TacVuMonHoc.suaTenMon(maMon,dialog.textOutput())
+	def handleEditSubj(self,maMon,newName):
+		TacVuMonHoc.suaTenMon(maMon,newName)
 		
 		self.updateSubjList()
 		print("Đã sửa")
 
-	def showContextMenu(self,pos):
-		item = self.sidebar.subjListWidget.itemAt(pos)
-
-		if item is None:
-			return
-
-		maMon = item.data(Qt.ItemDataRole.UserRole)
-		contextMenu = QMenu()
-
-		action_sua = contextMenu.addAction(Text.A_SUA)
-		action_move = contextMenu.addAction(Text.A_MOVE)
-		action_thich = contextMenu.addAction(Text.A_THICH)
-
-		action_sua.triggered.connect(lambda _, ma=maMon: self.handleEditSubj(ma))
-		action_move.triggered.connect(lambda: self.handleMoveSubjToTrash(maMon))
-
-		contextMenu.exec(self.sidebar.subjListWidget.mapToGlobal(pos))
+	def chooseAction(self, maMon, action):
+		if action == "move":
+			self.handleMoveSubjToTrash(maMon)
 
 	def updateSubjList(self):
-		subjList = []
-		for subj in TacVuMonHoc.layDanhSachMon():
-			item = QListWidgetItem(subj["tenMon"])
-			item.setData(Qt.ItemDataRole.UserRole, subj["maMon"])
-			subjList.append(item)
+		subjList = TacVuMonHoc.layDanhSachMon()
 		self.sidebar.showSubjList(subjList)

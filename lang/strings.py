@@ -21,3 +21,6 @@ class Text:
 	RECORVER_BTN = "Khôi phục"
 	DELETE_BTN = "Xóa vĩnh viễn"
 	DELETE_ALL_BTN = "Làm rỗng thùng rác"
+
+	# Subject Page
+	ADD_CHAPTER_BTN = "Thêm chương mới"
