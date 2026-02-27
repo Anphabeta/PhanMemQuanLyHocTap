@@ -1,14 +1,9 @@
-from PyQt6.QtWidgets import(
-	QDialog,
-	QMenu,
-	QListWidgetItem
-)
 from PyQt6.QtCore import Qt, QObject, pyqtSignal
 from lang.strings import Text
 from services import TacVuMonHoc
 
 class ControllerTrashPage(QObject):
-	recoverSubj = pyqtSignal()
+	subjList_update_request = pyqtSignal()
 
 	def __init__(self, view):
 		super().__init__()
@@ -16,34 +11,25 @@ class ControllerTrashPage(QObject):
 		self.trashPage = view
 
 		# ----------------------------------------------------------------------------------------------
-		self.trashPage.recoverBtn.clicked.connect(self.handleRecover)
+		self.trashPage.subj_recover_request.connect(self.handleRecover)
 		# ----------------------------------------------------------------------------------------------
-		self.trashPage.deleteBtn.clicked.connect(self.handleDelete)
+		self.trashPage.subj_hardDelete_request.connect(self.handleDelete)
 		# ----------------------------------------------------------------------------------------------
-		self.trashPage.deleteAllBtn.clicked.connect(self.handleDeleteAll)
-		# ----------------------------------------------------------------------------------------------
-		self.trashPage.trashSubjList.itemSelectionChanged.connect(self.isSelectedStateBtn)
+		self.trashPage.subjAll_hardDelete_request.connect(self.handleDeleteAll)
 		# ----------------------------------------------------------------------------------------------
 
 		self.updateTrashSubjList()
 
-	def isSelectedStateBtn(self):
-		state = self.trashPage.trashSubjList.currentItem() is not None
-		self.trashPage.recoverBtn.setEnabled(state)
-		self.trashPage.deleteBtn.setEnabled(state)
-
-		self.trashPage.deleteAllBtn.setEnabled(self.trashPage.trashSubjList.count()>0)
-
 	def handleRecover(self):
-		maMon = self.trashPage.getId_item_selected()
+		maMon = self.trashPage.getCurrentMaMon()
 		if maMon:
 			TacVuMonHoc.khoiPhucMon(maMon)
 			print("Đã khôi phục môn")
 			self.updateTrashSubjList()
-			self.recoverSubj.emit()
+			self.subjList_update_request.emit()
 
 	def handleDelete(self):
-		maMon = self.trashPage.getId_item_selected()
+		maMon = self.trashPage.getCurrentMaMon()
 		if maMon:
 			TacVuMonHoc.xoaMon(maMon)
 			print("Đã xóa môn vĩnh viễn")
@@ -55,9 +41,5 @@ class ControllerTrashPage(QObject):
 		self.updateTrashSubjList()
 
 	def updateTrashSubjList(self):
-		trashSubjList = []
-		for subj in TacVuMonHoc.layDanhSachMonTrash():
-			item = QListWidgetItem(subj['tenMon'])
-			item.setData(Qt.ItemDataRole.UserRole, subj["maMon"])
-			trashSubjList.append(item)
+		trashSubjList = TacVuMonHoc.layDanhSachMonTrash()
 		self.trashPage.showTrashSubjList(trashSubjList)

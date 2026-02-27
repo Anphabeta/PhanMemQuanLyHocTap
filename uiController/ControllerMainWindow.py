@@ -4,36 +4,28 @@ from uiController.ControllerTrashPage import ControllerTrashPage
 
 
 
-class ControllerMainWindow:
-
+class ControllerMainWindow(QObject):
 
 	def __init__(self, view):
+		super().__init__()
 
 		self.mainWindow = view
 
-		# Khởi tạo controller sidebar và kết nối các signal Sidebar -> Main Window
+		# Khởi tạo và kết nối các controller với view tương ứng
 		self.controllerSidebar = ControllerSidebar(view.sidebar)
-		self.controllerSidebar.pushBtn.connect(self.switchPage)
-		self.controllerSidebar.subjClicked.connect(self.switchSubj)
-		self.controllerSidebar.changePageAfterDelete.connect(self.setPageAfterDelete)
-
-		# Khởi tạo controller sidebar và kết nối các signal Trash Page -> Main Window
 		self.controllerTrashPage = ControllerTrashPage(view.trashPage)
 
-		# Kết nối signal của các Widget khác không liên quan Main Window
-		self.controllerSidebar.moveToTrash.connect(self.controllerTrashPage.updateTrashSubjList)
-		self.controllerTrashPage.recoverSubj.connect(self.controllerSidebar.updateSubjList)
+		# Kết nối tín hiệu giữa các thành phần
+		self.connectSignalFromControllerSidebar()
+		self.connectSignalFromControllerTrashPage()
 
-	def switchPage(self, page):
-		if page == "HomePage":
-			self.mainWindow.stackedWidget.setCurrentWidget(self.mainWindow.homePage)
-		elif page == "TrashPage":
-			self.controllerTrashPage.trashPage.setDefaultStateBtn()
-			self.mainWindow.stackedWidget.setCurrentWidget(self.mainWindow.trashPage)
+	def connectSignalFromControllerSidebar(self):
+		self.controllerSidebar.homePage_request.connect(self.mainWindow.showHomePage)
+		self.controllerSidebar.trashPage_request.connect(self.mainWindow.showTrashPage)
 
-	def switchSubj(self, maMon):
-		self.mainWindow.stackedWidget.setCurrentWidget(self.mainWindow.subjPage)
+		self.controllerSidebar.trashSubjList_update_request.connect(self.controllerTrashPage.updateTrashSubjList)
 
-	def setPageAfterDelete(self):
-		if self.mainWindow.stackedWidget.currentWidget() == self.mainWindow.subjPage:
-			self.switchPage("HomePage")
+		self.controllerSidebar.subjItem_navigate_request.connect(self.mainWindow.showSubjPage)
+
+	def connectSignalFromControllerTrashPage(self):
+		self.controllerTrashPage.subjList_update_request.connect(self.controllerSidebar.updateSubjList)

@@ -1,44 +1,37 @@
-from PyQt6.QtWidgets import(
-	QDialog,
-	QMenu,
-	QListWidgetItem
-)
 from PyQt6.QtCore import Qt, QObject, pyqtSignal
 from lang.strings import Text
 from services import TacVuMonHoc
 from uiView.ViewDialog import InputDialog
 
 class ControllerSidebar(QObject):
-	pushBtn = pyqtSignal(str)
-	moveToTrash = pyqtSignal()
-	subjClicked = pyqtSignal(int)
-	changePageAfterDelete = pyqtSignal()
+	homePage_request = pyqtSignal()
+	trashPage_request = pyqtSignal()
+
+	trashSubjList_update_request = pyqtSignal()
+
+	subjItem_navigate_request = pyqtSignal(int)
 
 	def __init__(self, sidebar):
 		super().__init__()
 		
 		self.sidebar = sidebar
 		# ----------------------------------------------------------------------------------------------
-		self.sidebar.pushBtn.connect(self.handlePushBtn)
+		self.sidebar.homePage_request.connect(lambda: self.homePage_request.emit())
 		# ----------------------------------------------------------------------------------------------
-		self.sidebar.addSubject.connect(self.handleAddSubj)
+		self.sidebar.trashPage_request.connect(lambda: self.trashPage_request.emit())
 		# ----------------------------------------------------------------------------------------------
-		self.sidebar.editSubject.connect(self.handleEditSubj)
+		self.sidebar.subj_add_request.connect(self.handleAddSubj)
 		# ----------------------------------------------------------------------------------------------
-		self.sidebar.menuContextRequest.connect(self.chooseAction)
+		self.sidebar.subj_edit_request.connect(self.handleEditSubj)
 		# ----------------------------------------------------------------------------------------------
-		self.sidebar.leftClickOnSubjList.connect(self.handleSwitchSubject)
+		self.sidebar.subj_softDelete_request.connect(self.handleMoveSubjToTrash)
+		# ----------------------------------------------------------------------------------------------
+		self.sidebar.subjItem_selected.connect(self.handleSwitchSubject)
 		# ----------------------------------------------------------------------------------------------
 		self.updateSubjList()
 
-	def handlePushBtn(self, action):
-		if action == "HomePage":
-			self.pushBtn.emit("HomePage")
-		elif action == "TrashPage":
-			self.pushBtn.emit("TrashPage")
-
 	def handleSwitchSubject(self, maMon):
-		self.subjClicked.emit(maMon)
+		self.subjItem_navigate_request.emit(maMon)
 		print("Đã chuyển môn")
 
 	def handleAddSubj(self, tenMon):
@@ -48,15 +41,18 @@ class ControllerSidebar(QObject):
 		print("Đã thêm môn")
 
 	def handleMoveSubjToTrash(self,maMon):
-		# Nếu môn học đang trỏ tới bị xóa, tự động hiển thị home page
-		item = self.sidebar.subjListWidget.currentItem()
-		if item is not None and item.data(Qt.ItemDataRole.UserRole) == maMon:
-			self.changePageAfterDelete.emit()
+		# Nếu môn học đang trỏ tới bị xóa, tự động chuyển về home page
+		# Phát tín hiệu đến MainWindow (homePage request)
+		currentMaMon = self.sidebar.getCurrentMaMon()
+		if currentMaMon and currentMaMon == maMon:
+			self.homePage_request.emit()
 
+		# Di chuyển môn trong db
 		TacVuMonHoc.moveMonToTrash(maMon)
-
 		self.updateSubjList()
-		self.moveToTrash.emit()
+
+		# Phát tín hiệu cho trashPage cập nhật lại danh sách (trashSubjlist update request)
+		self.trashSubjList_update_request.emit()
 		print("Đã chuyển qua thùng rác")
 
 	def handleEditSubj(self,maMon,newName):
@@ -64,10 +60,6 @@ class ControllerSidebar(QObject):
 		
 		self.updateSubjList()
 		print("Đã sửa")
-
-	def chooseAction(self, maMon, action):
-		if action == "move":
-			self.handleMoveSubjToTrash(maMon)
 
 	def updateSubjList(self):
 		subjList = TacVuMonHoc.layDanhSachMon()

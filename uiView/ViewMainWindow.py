@@ -37,4 +37,13 @@ class ViewMainWindow(QMainWindow):
 		layout.addWidget(self.sidebar)
 		layout.addWidget(self.stackedWidget)
 
+	def showHomePage(self):
+		self.stackedWidget.setCurrentWidget(self.homePage)
+
+	def showSubjPage(self, maMon):
+		self.stackedWidget.setCurrentWidget(self.subjPage)
+
+	def showTrashPage(self):
+		self.stackedWidget.setCurrentWidget(self.trashPage)
+
 	

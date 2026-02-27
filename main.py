@@ -16,3 +16,7 @@ controllWindow = ControllerMainWindow(window)
 window.show()
 app.exec()
 
+# Lệnh push github
+# git add .
+# git commit -m "Comment"
+# git push

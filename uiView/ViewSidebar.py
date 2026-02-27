@@ -12,12 +12,15 @@ from lang.strings import Text
 from uiView.ViewDialog import InputDialog
 
 class ViewSidebar(QWidget):
-	pushBtn = pyqtSignal(str)
-	# rightClickOnSubjList = pyqtSignal()
-	leftClickOnSubjList = pyqtSignal(int)
-	menuContextRequest = pyqtSignal(int,str)
-	addSubject = pyqtSignal(str)
-	editSubject = pyqtSignal(int,str)
+	homePage_request = pyqtSignal()
+	subj_add_request = pyqtSignal(str)
+	trashPage_request = pyqtSignal()
+
+	subjItem_selected = pyqtSignal(int)
+
+	subj_edit_request = pyqtSignal(int,str)
+	subj_softDelete_request = pyqtSignal(int)
+	subj_addFavorite_request = pyqtSignal(int)
 
 	def __init__(self):
 		# Trong hàm này cần: Khởi tạo, xử lý layout, connect các widget con
@@ -48,9 +51,9 @@ class ViewSidebar(QWidget):
 			self.subjListWidget.addItem(item)
 
 	def emitSignal(self):
-		self.homeBtn.clicked.connect(lambda: self.pushBtn.emit("HomePage"))
+		self.homeBtn.clicked.connect(lambda: self.homePage_request.emit())
 		self.newSubjBtn.clicked.connect(self.createInputDialogAddSubject)
-		self.trashBtn.clicked.connect(lambda: self.pushBtn.emit("TrashPage"))
+		self.trashBtn.clicked.connect(lambda: self.trashPage_request.emit())
 
 		self.subjListWidget.customContextMenuRequested.connect(self.createContextMenu)
 		self.subjListWidget.itemClicked.connect(self.sendCurrentMaMon)
@@ -69,9 +72,9 @@ class ViewSidebar(QWidget):
 		if action == contextMenu.action_edit:
 			self.createInputDialogEditSubject(maMon)
 		elif action == contextMenu.action_move:
-			self.menuContextRequest.emit(maMon,"move")
+			self.subj_softDelete_request.emit(maMon)
 		elif action == contextMenu.action_favorite:
-			self.menuContextRequest.emit(maMon,"favorite")
+			self.subj_addFavorite_request.emit(maMon)
 
 	def createInputDialogAddSubject(self):
 		dialog = InputDialog()
@@ -79,7 +82,7 @@ class ViewSidebar(QWidget):
 		result = dialog.exec()
 
 		if result == QDialog.DialogCode.Accepted:
-			self.addSubject.emit(dialog.textOutput())
+			self.subj_add_request.emit(dialog.textOutput())
 
 	def createInputDialogEditSubject(self, maMon):
 		dialog = InputDialog()
@@ -87,11 +90,18 @@ class ViewSidebar(QWidget):
 		result = dialog.exec()
 
 		if result == QDialog.DialogCode.Accepted:
-			self.editSubject.emit(maMon, dialog.textOutput())
+			self.subj_edit_request.emit(maMon, dialog.textOutput())
+
+	def getCurrentMaMon(self):
+		item = self.subjListWidget.currentItem()
+		if item:
+			return item.data(Qt.ItemDataRole.UserRole)
+		else:
+			return None
 
 	def sendCurrentMaMon(self, item):
 		subjClickedId = item.data(Qt.ItemDataRole.UserRole)
-		self.leftClickOnSubjList.emit(subjClickedId)
+		self.subjItem_selected.emit(subjClickedId)
 
 
 class ViewContextMenu(QMenu):

@@ -3,13 +3,18 @@ from PyQt6.QtWidgets import (
 	QPushButton,
 	QListWidget,
 	QLabel,
-	QVBoxLayout, QHBoxLayout
+	QVBoxLayout, QHBoxLayout,
+	QListWidgetItem
 )
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, pyqtSignal
 from lang.strings import Text
 
 
 class ViewTrashPage(QWidget):
+	subj_recover_request = pyqtSignal()
+	subj_hardDelete_request = pyqtSignal()
+	subjAll_hardDelete_request = pyqtSignal()
+
 	def __init__(self):
 		super().__init__()
 
@@ -21,6 +26,7 @@ class ViewTrashPage(QWidget):
 		self.deleteAllBtn = QPushButton(Text.DELETE_ALL_BTN)
 
 		self.setupLayout()
+		self.emitSignal()
 
 	def setupLayout(self):
 		mainLayout = QVBoxLayout(self)
@@ -33,20 +39,35 @@ class ViewTrashPage(QWidget):
 		threeBtnsLayout.addWidget(self.deleteBtn)
 		threeBtnsLayout.addWidget(self.deleteAllBtn)
 
+	def emitSignal(self):
+		self.recoverBtn.clicked.connect(lambda: self.subj_recover_request.emit())
+		self.deleteBtn.clicked.connect(lambda: self.subj_hardDelete_request.emit())
+		self.deleteAllBtn.clicked.connect(lambda: self.subjAll_hardDelete_request.emit())
+
+		self.trashSubjList.itemSelectionChanged.connect(self.setWhenSelectedStateBtn)
+
 	def setDefaultStateBtn(self):
-		self.deleteAllBtn.setEnabled(self.trashSubjList.count()>0)
 		self.recoverBtn.setEnabled(False)
 		self.deleteBtn.setEnabled(False)
+		self.deleteAllBtn.setEnabled(self.trashSubjList.count()>0)
+
+	def setWhenSelectedStateBtn(self):
+		state = self.trashSubjList.currentItem() is not None
+		self.recoverBtn.setEnabled(state)
+		self.deleteBtn.setEnabled(state)
+		self.deleteAllBtn.setEnabled(self.trashSubjList.count()>0)
 
 	def showTrashSubjList(self, subjList):
 		self.trashSubjList.clear()
 		for subj in subjList:
-			self.trashSubjList.addItem(subj)
+			item = QListWidgetItem(subj['tenMon'])
+			item.setData(Qt.ItemDataRole.UserRole, subj["maMon"])
+			self.trashSubjList.addItem(item)
 		self.setDefaultStateBtn()
 		
-	def getId_item_selected(self):
+	def getCurrentMaMon(self):
 		item = self.trashSubjList.currentItem()
-
-		if not item is None:
+		if item:
 			return item.data(Qt.ItemDataRole.UserRole)
-		return None
+		else:
+			return None

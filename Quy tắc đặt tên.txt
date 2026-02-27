@@ -1,0 +1,18 @@
+Khi đặt tên cho signal
+Đặt theo quy tắc
+<chủ thể>_<hành động>_<trạng thái>
+Ví dụ:
+Muốn phát tín hiệu là Thêm môn học có tên như này người dùng vừa nhập
+subj_add_request = pyqtSignal(str)
+Muốn phát tín hiệu là Chuyển môn học vào thùng rác khi ấn nút
+subj_moveToTrash_request = pyqtSignal(int)
+Muốn phát tín hiệu là Chuyển sang trang chủ khi ấn nút
+switchToHomePage_request = pyqtSignal()
+
+Khi viết hàm hiển thị UI động (trong file view)
+Bắt đầu bằng show
+Ví dụ:
+Hiển thị danh sách môn học trên sidebar
+showSubjList()
+Hiển thị các block chương
+showChapterBlockList()
