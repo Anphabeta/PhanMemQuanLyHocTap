@@ -23,6 +23,22 @@ def layDanhSachMon():
 
 	return ds
 
+def layMon(maMon):
+	conn = get_connection()
+	cur = conn.cursor()
+
+	cur.execute("""
+		select * from MonHoc
+		where maMon = (?)
+	""",(maMon,))
+	rows = cur.fetchall()
+	
+	thongTinMon = dict(rows[0])
+
+	conn.close()
+
+	return thongTinMon
+
 def layDanhSachMonTrash():
 	conn = get_connection()
 	cur = conn.cursor()

@@ -32,7 +32,7 @@ class ControllerSidebar(QObject):
 
 	def handleSwitchSubject(self, maMon):
 		self.subjItem_navigate_request.emit(maMon)
-		print("Đã chuyển môn")
+		print(f"Đã chuyển môn có id: {maMon}")
 
 	def handleAddSubj(self, tenMon):
 		TacVuMonHoc.themMon(tenMon)

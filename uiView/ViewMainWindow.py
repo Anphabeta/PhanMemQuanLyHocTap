@@ -40,7 +40,7 @@ class ViewMainWindow(QMainWindow):
 	def showHomePage(self):
 		self.stackedWidget.setCurrentWidget(self.homePage)
 
-	def showSubjPage(self, maMon):
+	def showSubjPage(self):
 		self.stackedWidget.setCurrentWidget(self.subjPage)
 
 	def showTrashPage(self):

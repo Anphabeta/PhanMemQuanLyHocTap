@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import(
 	QPushButton,
 	QScrollArea
 )
+from uiView.ViewChapterBlock import ViewChapterBlock
 from lang.strings import Text
 
 
@@ -17,10 +18,14 @@ class ViewSubjectPage(QWidget):
 		self.scrollArea = QScrollArea()
 		self.containerWidget = QWidget()
 		self.scrollArea.setWidget(self.containerWidget)
+		self.scrollArea.setWidgetResizable(True)
 
+		self.chapterLayout = QVBoxLayout(self.containerWidget)
 		self.setupLayout()
 		# self.setTitle(maMon)
 
+	def setTitle(self,tenMon):
+		self.titleSubj.setText(tenMon)
 
 	def setupLayout(self):
 		layout = QVBoxLayout(self)
@@ -28,5 +33,25 @@ class ViewSubjectPage(QWidget):
 		layout.addWidget(self.addChapterBtn)
 		layout.addWidget(self.scrollArea)
 
-	# def setupContent(self,listChapterAndNote):
+	def setSubjId(self,maMon):
+		self.subjId = maMon
+
+	def clearChapterLayout(self):
+		while self.chapterLayout.count()>0:
+			item = self.chapterLayout.takeAt(0)
+
+			widget = item.widget()
+			if widget is not None:
+				widget.deleteLater()
+
+	def showChapterBlockList(self,listChapter):
+		self.clearChapterLayout()
+		self.scrollArea.verticalScrollBar().setValue(0)
+
+		for chapter in listChapter:
+			blockChapter = ViewChapterBlock(chapter["tenChuong"])
+			self.chapterLayout.addWidget(blockChapter)
+		self.chapterLayout.addStretch()
 		
+
+

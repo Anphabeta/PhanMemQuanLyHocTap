@@ -24,3 +24,5 @@ class Text:
 
 	# Subject Page
 	ADD_CHAPTER_BTN = "Thêm chương mới"
+
+

@@ -1,6 +1,7 @@
 from PyQt6.QtCore import QObject, pyqtSignal
 from uiController.ControllerSidebar import ControllerSidebar
 from uiController.ControllerTrashPage import ControllerTrashPage
+from uiController.ControllerSubjectPage import ControllerSubjectPage
 
 
 
@@ -14,6 +15,7 @@ class ControllerMainWindow(QObject):
 		# Khởi tạo và kết nối các controller với view tương ứng
 		self.controllerSidebar = ControllerSidebar(view.sidebar)
 		self.controllerTrashPage = ControllerTrashPage(view.trashPage)
+		self.controllerSubjectPage = ControllerSubjectPage(view.subjPage)
 
 		# Kết nối tín hiệu giữa các thành phần
 		self.connectSignalFromControllerSidebar()
@@ -25,7 +27,12 @@ class ControllerMainWindow(QObject):
 
 		self.controllerSidebar.trashSubjList_update_request.connect(self.controllerTrashPage.updateTrashSubjList)
 
-		self.controllerSidebar.subjItem_navigate_request.connect(self.mainWindow.showSubjPage)
+		self.controllerSidebar.subjItem_navigate_request.connect(self.handleNavigateSubjPage)
 
 	def connectSignalFromControllerTrashPage(self):
 		self.controllerTrashPage.subjList_update_request.connect(self.controllerSidebar.updateSubjList)
+
+	def handleNavigateSubjPage(self, maMon):
+		self.mainWindow.showSubjPage()
+		self.controllerSubjectPage.getNavigateRequest(maMon)
+
