@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QApplication
-from uiView import ViewMainWindow
-from uiController import ControllerMainWindow
+from View import ViewMainWindow
+from Controller import ControllerMainWindow
 import sys
 
 

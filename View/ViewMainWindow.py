@@ -5,11 +5,11 @@ from PyQt6.QtWidgets import(
 	QHBoxLayout,
 	QStackedWidget
 )
-from uiView.ViewSidebar import ViewSidebar
-from uiView.ViewTrashPage import ViewTrashPage
-from uiView.ViewHomePage import ViewHomePage
-from uiView.ViewSubjectPage import ViewSubjectPage
-from uiController.ControllerSidebar import ControllerSidebar
+from View.ViewSidebar import ViewSidebar
+from View.ViewTrashPage import ViewTrashPage
+from View.ViewHomePage import ViewHomePage
+from View.ViewSubjectPage import ViewSubjectPage
+from Controller.ControllerSidebar import ControllerSidebar
 from lang.strings import Text
 
 class ViewMainWindow(QMainWindow):

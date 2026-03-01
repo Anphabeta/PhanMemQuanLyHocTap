@@ -9,7 +9,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt, pyqtSignal
 from lang.strings import Text
-from uiView.ViewDialog import InputDialog
+from View.ViewDialog import InputDialog
 
 class ViewSidebar(QWidget):
 	homePage_request = pyqtSignal()

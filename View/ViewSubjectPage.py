@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import(
 	QPushButton,
 	QScrollArea
 )
-from uiView.ViewChapterBlock import ViewChapterBlock
+from View.ViewChapterBlock import ViewChapterBlock
 from lang.strings import Text
 
 
@@ -22,7 +22,6 @@ class ViewSubjectPage(QWidget):
 
 		self.chapterLayout = QVBoxLayout(self.containerWidget)
 		self.setupLayout()
-		# self.setTitle(maMon)
 
 	def setTitle(self,tenMon):
 		self.titleSubj.setText(tenMon)

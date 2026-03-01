@@ -3,9 +3,9 @@ from services.TacVuMonHoc import(
 )
 import services.TacVuChuong as TacVuChuong
 # from ui.main_window import Sidebar, MainWindow
-from uiView import ViewMainWindow
-from uiController import ControllerMainWindow
+from View import ViewMainWindow
+from Controller import ControllerMainWindow
 import sys
 from PyQt6.QtWidgets import QApplication
 
-from uiView.ViewDialog import InputDialog
+from View.ViewDialog import InputDialog

@@ -1,7 +1,7 @@
 from PyQt6.QtCore import Qt, QObject, pyqtSignal
 from lang.strings import Text
 from services import TacVuMonHoc
-from uiView.ViewDialog import InputDialog
+from View.ViewDialog import InputDialog
 
 class ControllerSidebar(QObject):
 	homePage_request = pyqtSignal()

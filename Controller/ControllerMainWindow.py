@@ -1,7 +1,7 @@
 from PyQt6.QtCore import QObject, pyqtSignal
-from uiController.ControllerSidebar import ControllerSidebar
-from uiController.ControllerTrashPage import ControllerTrashPage
-from uiController.ControllerSubjectPage import ControllerSubjectPage
+from Controller.ControllerSidebar import ControllerSidebar
+from Controller.ControllerTrashPage import ControllerTrashPage
+from Controller.ControllerSubjectPage import ControllerSubjectPage
 
 
 
