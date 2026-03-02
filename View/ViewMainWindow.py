@@ -28,7 +28,7 @@ class ViewMainWindow(QMainWindow):
 		self.setupUI()
 
 	def setupUI(self):
-		self.resize(950,600)
+		self.resize(950,900)
 		self.setWindowTitle(Text.WINDOW_TITLE)
 		central = QWidget()
 		self.setCentralWidget(central)

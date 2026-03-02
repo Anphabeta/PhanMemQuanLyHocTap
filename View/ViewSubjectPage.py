@@ -3,13 +3,18 @@ from PyQt6.QtWidgets import(
 	QVBoxLayout,
 	QLabel,
 	QPushButton,
-	QScrollArea
+	QScrollArea,
+	QDialog
 )
+from PyQt6.QtCore import pyqtSignal
 from View.ViewChapterBlock import ViewChapterBlock
+from View.ViewDialog import InputDialog
 from lang.strings import Text
 
 
 class ViewSubjectPage(QWidget):
+	chapter_add_request = pyqtSignal(int,str)
+
 	def __init__(self):
 		super().__init__()
 
@@ -19,9 +24,11 @@ class ViewSubjectPage(QWidget):
 		self.containerWidget = QWidget()
 		self.scrollArea.setWidget(self.containerWidget)
 		self.scrollArea.setWidgetResizable(True)
+		self.chapterBlockList = []
 
 		self.chapterLayout = QVBoxLayout(self.containerWidget)
 		self.setupLayout()
+		self.emitSignal()
 
 	def setTitle(self,tenMon):
 		self.titleSubj.setText(tenMon)
@@ -32,25 +39,43 @@ class ViewSubjectPage(QWidget):
 		layout.addWidget(self.addChapterBtn)
 		layout.addWidget(self.scrollArea)
 
+		self.chapterLayout.addStretch()
+
+	def emitSignal(self):
+		self.addChapterBtn.clicked.connect(self.createInputDialogAddChapter)
+
 	def setSubjId(self,maMon):
 		self.subjId = maMon
 
 	def clearChapterLayout(self):
-		while self.chapterLayout.count()>0:
-			item = self.chapterLayout.takeAt(0)
+		for i in reversed(range(self.chapterLayout.count())):
+			item = self.chapterLayout.itemAt(i)
 
 			widget = item.widget()
 			if widget is not None:
 				widget.deleteLater()
 
-	def showChapterBlockList(self,listChapter):
-		self.clearChapterLayout()
 		self.scrollArea.verticalScrollBar().setValue(0)
 
-		for chapter in listChapter:
-			blockChapter = ViewChapterBlock(chapter["tenChuong"])
-			self.chapterLayout.addWidget(blockChapter)
-		self.chapterLayout.addStretch()
+	def createChapterBlock(self, chuong):
+		chapterBlock = ViewChapterBlock(chuong["tenChuong"])
+		chapterBlock.setChapterId(chuong["maChuong"])
+
+		idx = self.chapterLayout.count() - 1
+		self.chapterLayout.insertWidget(idx, chapterBlock)
+
+		return chapterBlock
+
+	def createInputDialogAddChapter(self):
+		dialog = InputDialog()
+		dialog.setWindowTitle(Text.DIALOG_TITLE_THEMCHUONG)
+		result = dialog.exec()
+
+		if result == QDialog.DialogCode.Accepted:
+			self.chapter_add_request.emit(self.subjId, dialog.textOutput())
+
+
+
 		
 
 

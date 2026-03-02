@@ -9,3 +9,6 @@ import sys
 from PyQt6.QtWidgets import QApplication
 
 from View.ViewDialog import InputDialog
+
+for x in TacVuChuong.layDanhSachChuong(3):
+	print(x)

@@ -8,6 +8,7 @@ class Text:
 	# Dialog
 	DIALOG_TITLE_THEMMON = "Thêm môn học mới"
 	DIALOG_TITLE_SUAMON = "Sửa môn học"
+	DIALOG_TITLE_THEMCHUONG = "Thêm chương mới"
 	OK = "OK"
 	CANCEL = "Hủy bỏ"
 
@@ -24,5 +25,6 @@ class Text:
 
 	# Subject Page
 	ADD_CHAPTER_BTN = "Thêm chương mới"
+
 
 
