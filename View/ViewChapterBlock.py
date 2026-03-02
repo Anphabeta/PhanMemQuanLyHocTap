@@ -18,7 +18,7 @@ class ViewChapterBlock(QWidget):
 
 		self.titleArea = QWidget()
 		self.titleChapter = QLabel(tenChuong)
-		self.titleChapterEdit = QLineEdit(tenChuong)
+		self.titleChapterEdit = QLineEdit()
 		self.titleChapterEdit.hide()
 		self.addNoteBtn = QPushButton(Icon.ADD_NOTE_BTN)
 		self.editChapterBtn = QPushButton(Icon.EDIT_CHAPTER_BTN)
@@ -57,6 +57,7 @@ class ViewChapterBlock(QWidget):
 
 	def openEditInline(self):
 		self.titleChapter.hide()
+		self.titleChapterEdit.setText(self.titleChapter.text())
 		self.titleChapterEdit.show()
 		self.titleChapterEdit.setFocus()
 		self.titleChapterEdit.selectAll()
