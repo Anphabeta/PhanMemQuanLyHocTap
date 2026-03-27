@@ -16,6 +16,8 @@ class ControllerChapterBlock(QObject):
 
 		self.chapterBlock.chapter_delete_request.connect(self.handleDeleteChapter)
 
+		self.chapterBlock.note_add_request.connect(self.handleAddNote)
+
 		self.viewNoteBlockList = []
 		self.controllerNoteBlockList = []
 
@@ -30,6 +32,14 @@ class ControllerChapterBlock(QObject):
 		TacVuChuong.xoaChuong(maChuong)
 		print("Đã xóa chương")
 		self.chapterBlock_update_request.emit()
+
+	def handleAddNote(self, maChuong, newText):
+		maxOrder = TacVuNote.layThuTuLonNhat(maChuong)
+
+		TacVuNote.themNote(maChuong,newText,maxOrder+100)
+
+		self.updateNoteBlockList()
+		print("Đã thêm note")
 	# ----------------------------------------------------------------------
 
 

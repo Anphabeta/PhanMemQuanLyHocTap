@@ -6,7 +6,8 @@ def layDanhSachNote(maChuong):
 
 	cur.execute("""
 		select * from GhiChu
-		where maChuong = (?);
+		where maChuong = (?)
+		order by thuTuNote;
 	""", (maChuong,))
 	rows = cur.fetchall()
 
@@ -49,7 +50,7 @@ def layThuTuLonNhat(maChuong):
 	cur = conn.cursor()
 
 	cur.execute("""
-		select max(thuTu) from GhiChu
+		select max(thuTuNote) from GhiChu
 		where maChuong = (?)
 	""", (maChuong,))
 

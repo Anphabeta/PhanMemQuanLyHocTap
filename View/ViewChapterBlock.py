@@ -10,10 +10,12 @@ from lang.strings import Text
 from lang.icons import Icon
 
 from View.ViewNoteBlock import ViewNoteBlock
+from View.ViewNoteBlock import NoteEdit
 
 class ViewChapterBlock(QWidget):
 	chapter_edit_request = pyqtSignal(int,str)
 	chapter_delete_request = pyqtSignal(int)
+	note_add_request = pyqtSignal(int, str)
 
 	def __init__(self,tenChuong):
 		super().__init__()
@@ -25,6 +27,9 @@ class ViewChapterBlock(QWidget):
 		self.addNoteBtn = QPushButton(Icon.ADD_NOTE_BTN)
 		self.editChapterBtn = QPushButton(Icon.EDIT_CHAPTER_BTN)
 		self.deleteChapterBtn = QPushButton(Icon.DELETE_CHAPTER_BTN)
+
+		self.tempInput = NoteEdit("")
+		self.tempInput.hide()
 
 		self.noteArea = QWidget()
 		self.noteBlockList = []
@@ -48,6 +53,7 @@ class ViewChapterBlock(QWidget):
 		titleLayout.addWidget(self.editChapterBtn)
 		titleLayout.addWidget(self.deleteChapterBtn)
 
+		self.noteLayout.addWidget(self.tempInput)
 
 		print("Đã setup layout chapter Block")
 
@@ -66,6 +72,9 @@ class ViewChapterBlock(QWidget):
 		self.editChapterBtn.clicked.connect(self.openEditInline)
 		self.titleChapterEdit.editingFinished.connect(self.handleSendChapterName)
 		self.deleteChapterBtn.clicked.connect(self.handleDeleteChapter)
+		self.addNoteBtn.clicked.connect(self.handleAddNote)
+
+		self.tempInput.editingFinished.connect(self.checkCondition)
 
 	def openEditInline(self):
 		self.titleChapterShow.hide()
@@ -85,6 +94,21 @@ class ViewChapterBlock(QWidget):
 		
 	def handleDeleteChapter(self):
 		self.chapter_delete_request.emit(self.chapterId)
+
+	def handleAddNote(self):
+		self.tempInput.show()
+		self.tempInput.setFocus()
+
+	def checkCondition(self):
+		newText = self.tempInput.toPlainText().strip()
+
+		if newText != "":
+			self.note_add_request.emit(self.chapterId, newText)
+		self.closeTemp()
+			
+	def closeTemp(self):
+		self.tempInput.setPlainText("")
+		self.tempInput.hide()
 	# ----------------------------------------------------------------------------
 
 
@@ -105,7 +129,7 @@ class ViewChapterBlock(QWidget):
 		noteBlock = ViewNoteBlock(note["noiDung"])
 		noteBlock.setNoteId(note["maNote"])
 
-		idx = self.noteLayout.count() - 1
+		idx = self.noteLayout.count()
 		self.noteLayout.insertWidget(idx, noteBlock)
 
 		print("Đã tạo note block")
@@ -114,10 +138,11 @@ class ViewChapterBlock(QWidget):
 	def clearNoteLayout(self):
 		for i in reversed(range(self.noteLayout.count())):
 			item = self.noteLayout.itemAt(i)
-
 			widget = item.widget()
-			if widget is not None:
-				widget.deleteLater()
+
+		if widget is not None and widget != self.tempInput:
+			self.noteLayout.removeWidget(widget)
+			widget.deleteLater()
 	# ----------------------------------------------------------------------------
 
 

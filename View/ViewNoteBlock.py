@@ -38,8 +38,6 @@ class ViewNoteBlock(QWidget):
 		self.moreOptionBtn = QPushButton("⛏️")
 
 		self.addNoteBtn.hide()
-		self.moveUpBtn.hide()
-		self.moveDownBtn.hide()
 		self.moreOptionBtn.hide()
 
 		self.setupLayout()
