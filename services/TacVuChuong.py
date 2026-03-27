@@ -32,14 +32,32 @@ def layChuong(maChuong):
 
 	return thongTinChuong
 
-def themChuong(tenChuong, maMon):
+def layThuTuLonNhat(maMon):
 	conn = get_connection()
 	cur = conn.cursor()
 
 	cur.execute("""
-		insert into Chuong(tenChuong, maMon) values
-		(?,?);
-	""",(tenChuong,maMon))
+		select max(thuTuChuong) from Chuong
+		where maMon = (?)
+	""",(maMon,))
+
+	row = cur.fetchone()
+
+	conn.close()
+
+	if row[0] is None:
+		return 0
+	else:
+		return row[0]
+
+def themChuong(tenChuong, maMon, thuTuChuong):
+	conn = get_connection()
+	cur = conn.cursor()
+
+	cur.execute("""
+		insert into Chuong(tenChuong, maMon, thuTuChuong) values
+		(?,?,?);
+	""",(tenChuong,maMon,thuTuChuong))
 
 	conn.commit()
 	conn.close()

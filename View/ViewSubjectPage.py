@@ -24,12 +24,13 @@ class ViewSubjectPage(QWidget):
 		self.containerWidget = QWidget()
 		self.scrollArea.setWidget(self.containerWidget)
 		self.scrollArea.setWidgetResizable(True)
-		self.chapterBlockList = []
+		# self.chapterBlockList = []
 
 		self.chapterLayout = QVBoxLayout(self.containerWidget)
 		self.setupLayout()
 		self.emitSignal()
 
+	# Phụ trách khởi tạo ----------------------------------------------------
 	def setTitle(self,tenMon):
 		self.titleSubj.setText(tenMon)
 
@@ -41,12 +42,28 @@ class ViewSubjectPage(QWidget):
 
 		self.chapterLayout.addStretch()
 
-	def emitSignal(self):
-		self.addChapterBtn.clicked.connect(self.createInputDialogAddChapter)
+		print("Đã setup layout subject page")
 
 	def setSubjId(self,maMon):
 		self.subjId = maMon
+	# ------------------------------------------------------------------------
 
+
+	# Phụ trách xử lý signal -------------------------------------------------
+	def emitSignal(self):
+		self.addChapterBtn.clicked.connect(self.createInputDialogAddChapter)
+
+	def createInputDialogAddChapter(self):
+		dialog = InputDialog()
+		dialog.setWindowTitle(Text.DIALOG_TITLE_THEMCHUONG)
+		result = dialog.exec()
+
+		if result == QDialog.DialogCode.Accepted:
+			self.chapter_add_request.emit(self.subjId, dialog.textOutput())
+	# ------------------------------------------------------------------------
+
+
+	# Phụ trách hiển thị chapter block --------------------------------------- 
 	def clearChapterLayout(self):
 		for i in reversed(range(self.chapterLayout.count())):
 			item = self.chapterLayout.itemAt(i)
@@ -64,15 +81,11 @@ class ViewSubjectPage(QWidget):
 		idx = self.chapterLayout.count() - 1
 		self.chapterLayout.insertWidget(idx, chapterBlock)
 
+		print(f'Đã tạo chapter block có mã {chuong["maChuong"]}')
 		return chapterBlock
+	# ------------------------------------------------------------------------
 
-	def createInputDialogAddChapter(self):
-		dialog = InputDialog()
-		dialog.setWindowTitle(Text.DIALOG_TITLE_THEMCHUONG)
-		result = dialog.exec()
 
-		if result == QDialog.DialogCode.Accepted:
-			self.chapter_add_request.emit(self.subjId, dialog.textOutput())
 
 
 

@@ -36,27 +36,33 @@ class ViewSidebar(QWidget):
 		self.setupLayout()
 		self.emitSignal()
 
+
+	# Phụ trách khởi tạo --------------------------------------------------
 	def setupLayout(self):
 		layout = QVBoxLayout(self)
 		layout.addWidget(self.homeBtn)
 		layout.addWidget(self.newSubjBtn)
 		layout.addWidget(self.trashBtn)
 		layout.addWidget(self.subjListWidget)
+	# ---------------------------------------------------------------------
 
-	def showSubjList(self, subjList):
-		self.subjListWidget.clear()
-		for subj in subjList:
-			item = QListWidgetItem(subj["tenMon"])
-			item.setData(Qt.ItemDataRole.UserRole, subj["maMon"])
-			self.subjListWidget.addItem(item)
 
+	# Phụ trách phát tín hiệu ---------------------------------------------
 	def emitSignal(self):
-		self.homeBtn.clicked.connect(lambda: self.homePage_request.emit())
+		self.homeBtn.clicked.connect(self.handleSwitchHomePage)
 		self.newSubjBtn.clicked.connect(self.createInputDialogAddSubject)
-		self.trashBtn.clicked.connect(lambda: self.trashPage_request.emit())
+		self.trashBtn.clicked.connect(self.handleSwitchTrashPage)
 
 		self.subjListWidget.customContextMenuRequested.connect(self.createContextMenu)
 		self.subjListWidget.itemClicked.connect(self.sendCurrentMaMon)
+
+	def handleSwitchHomePage(self):
+		self.subjListWidget.clearSelection()
+		self.homePage_request.emit()
+
+	def handleSwitchTrashPage(self):
+		self.subjListWidget.clearSelection()
+		self.trashPage_request.emit()
 
 	def createContextMenu(self,pos):
 		item = self.subjListWidget.itemAt(pos)
@@ -92,6 +98,13 @@ class ViewSidebar(QWidget):
 		if result == QDialog.DialogCode.Accepted:
 			self.subj_edit_request.emit(maMon, dialog.textOutput())
 
+	def sendCurrentMaMon(self, item):
+		subjClickedId = item.data(Qt.ItemDataRole.UserRole)
+		self.subjItem_selected.emit(subjClickedId)
+	# ---------------------------------------------------------------------
+
+
+	# Hàm để gọi bên ngoài ------------------------------------------------
 	def getCurrentMaMon(self):
 		item = self.subjListWidget.currentItem()
 		if item:
@@ -99,9 +112,14 @@ class ViewSidebar(QWidget):
 		else:
 			return None
 
-	def sendCurrentMaMon(self, item):
-		subjClickedId = item.data(Qt.ItemDataRole.UserRole)
-		self.subjItem_selected.emit(subjClickedId)
+	def showSubjList(self, subjList):
+		self.subjListWidget.clear()
+		for subj in subjList:
+			item = QListWidgetItem(subj["tenMon"])
+			item.setData(Qt.ItemDataRole.UserRole, subj["maMon"])
+			self.subjListWidget.addItem(item)
+	# ---------------------------------------------------------------------
+	
 
 
 class ViewContextMenu(QMenu):

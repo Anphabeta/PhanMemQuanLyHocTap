@@ -38,6 +38,8 @@ class ControllerSidebar(QObject):
 		TacVuMonHoc.themMon(tenMon)
 
 		self.updateSubjList()
+
+		# self.newSubj_switch_request.emit()
 		print("Đã thêm môn")
 
 	def handleMoveSubjToTrash(self,maMon):
