@@ -1,6 +1,6 @@
 from PyQt6.QtCore import Qt, QObject, pyqtSignal
 from lang.strings import Text
-from services import TacVuMonHoc
+import models.TacVuMonHoc as TacVuMonHoc
 
 class ControllerTrashPage(QObject):
 	subjList_update_request = pyqtSignal()

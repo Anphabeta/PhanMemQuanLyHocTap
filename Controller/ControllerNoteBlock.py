@@ -1,10 +1,14 @@
 from PyQt6.QtCore import QObject, pyqtSignal
 
-import services.TacVuNote as TacVuNote
+import models.TacVuNote as TacVuNote
+
+from debug.log_writer import log_controller, plainLog
 
 
 class ControllerNoteBlock(QObject):
 	noteBlock_update_request = pyqtSignal()
+	noteBlock_moveUp_request = pyqtSignal(int)
+	noteBlock_moveDown_request = pyqtSignal(int)
 
 	def __init__(self, view):
 		super().__init__()
@@ -15,15 +19,26 @@ class ControllerNoteBlock(QObject):
 
 		self.noteBlock.note_delete_request.connect(self.handleDeleteNote)
 
+		self.noteBlock.note_moveUp_request.connect(self.handleMoveUpNote)
+
+		self.noteBlock.note_moveDown_request.connect(self.handleMoveDownNote)
+
 	# Phụ trách xử lý signal ---------------------------------------------
 	def handleEditNote(self, maNote, newNoiDung):
+		log_controller("Kết nối model để sửa")
 		TacVuNote.suaNote(maNote,newNoiDung)
 		note = TacVuNote.layNote(maNote)
-		print("Đã sửa note")
 		self.noteBlock.handleReceiveNote(note["noiDung"])
 
 	def handleDeleteNote(self, maNote):
+		log_controller("Kết nối model để xóa note")
 		TacVuNote.xoaNote(maNote)
-		print("Đã xóa note")
 		self.noteBlock_update_request.emit()
+
+	def handleMoveUpNote(self, maNote):
+		log_controller("")
+		self.noteBlock_moveUp_request.emit(maNote)
+
+	def handleMoveDownNote(self, maNote):
+		self.noteBlock_moveDown_request.emit(maNote)
 	# --------------------------------------------------------------------

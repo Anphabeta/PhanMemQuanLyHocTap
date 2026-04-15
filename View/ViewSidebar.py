@@ -11,6 +11,8 @@ from PyQt6.QtCore import Qt, pyqtSignal
 from lang.strings import Text
 from View.ViewDialog import InputDialog
 
+from debug.log_writer import log_view, plainLog
+
 class ViewSidebar(QWidget):
 	homePage_request = pyqtSignal()
 	subj_add_request = pyqtSignal(str)
@@ -57,14 +59,20 @@ class ViewSidebar(QWidget):
 		self.subjListWidget.itemClicked.connect(self.sendCurrentMaMon)
 
 	def handleSwitchHomePage(self):
+		plainLog("switch home page event")
+		log_view("Phát tín hiệu")
 		self.subjListWidget.clearSelection()
 		self.homePage_request.emit()
 
 	def handleSwitchTrashPage(self):
+		plainLog("switch trash page event")
+		log_view("Phát tín hiệu")
 		self.subjListWidget.clearSelection()
 		self.trashPage_request.emit()
 
 	def createContextMenu(self,pos):
+		plainLog("right click context menu event")
+		log_view("Tạo context menu")
 		item = self.subjListWidget.itemAt(pos)
 
 		if item is None:
@@ -83,6 +91,8 @@ class ViewSidebar(QWidget):
 			self.subj_addFavorite_request.emit(maMon)
 
 	def createInputDialogAddSubject(self):
+		plainLog("add subject event")
+		log_view("Tạo dialog")
 		dialog = InputDialog()
 		dialog.setWindowTitle(Text.DIALOG_TITLE_THEMMON)
 		result = dialog.exec()
@@ -91,6 +101,8 @@ class ViewSidebar(QWidget):
 			self.subj_add_request.emit(dialog.textOutput())
 
 	def createInputDialogEditSubject(self, maMon):
+		plainLog("edit subject event")
+		log_view("Tạo dialog")
 		dialog = InputDialog()
 		dialog.setWindowTitle(Text.DIALOG_TITLE_SUAMON)
 		result = dialog.exec()
@@ -99,6 +111,8 @@ class ViewSidebar(QWidget):
 			self.subj_edit_request.emit(maMon, dialog.textOutput())
 
 	def sendCurrentMaMon(self, item):
+		plainLog("switch subject event")
+		log_view("Phát tín hiệu")
 		subjClickedId = item.data(Qt.ItemDataRole.UserRole)
 		self.subjItem_selected.emit(subjClickedId)
 	# ---------------------------------------------------------------------

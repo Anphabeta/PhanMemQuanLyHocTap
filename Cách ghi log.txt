@@ -1,0 +1,5 @@
+Cấu trúc log sẽ gồm
+[Thời gian thực hiện] [Tầng] <in Tên hàm thực hiện> -Hành động- ...........
+
+[Tẩng]: [VIEW], [CONTROLLER], [MODEL]
+-Hành động-: Phát tín hiệu, Chuyển tiếp tín hiệu, Kết nối model

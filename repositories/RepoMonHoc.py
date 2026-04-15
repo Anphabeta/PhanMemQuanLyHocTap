@@ -79,7 +79,7 @@ def capNhatTruyCapGanNhat(maMon):
 	conn.commit()
 	conn.close()
 
-def suaTenMon(maMon, newName):
+def capNhatTenMon(maMon, newName):
 	conn = get_connection()
 	cur = conn.cursor()
 
@@ -93,7 +93,7 @@ def suaTenMon(maMon, newName):
 	conn.commit()
 	conn.close()
 
-def moveMonToTrash(maMon):
+def capNhatTrangThaiMonDisable(maMon):
 	conn = get_connection()
 	cur = conn.cursor()
 
@@ -106,7 +106,7 @@ def moveMonToTrash(maMon):
 	conn.commit()
 	conn.close()
 
-def khoiPhucMon(maMon):
+def capNhatTrangThaiMonEnable(maMon):
 	conn = get_connection()
 	cur = conn.cursor()
 
@@ -129,7 +129,7 @@ def xoaMon(maMon):
 	conn.commit()
 	conn.close()
 
-def xoaTatCaMon():
+def xoaMonKhiTrangThaiMonDisable():
 	conn = get_connection()
 	cur = conn.cursor()
 

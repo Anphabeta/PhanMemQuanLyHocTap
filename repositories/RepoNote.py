@@ -33,6 +33,24 @@ def layNote(maNote):
 
 	return thongTinNote
 
+def layDanhSachNoteWithThuTu(maChuong):
+	conn = get_connection()
+	cur = conn.cursor()
+
+	cur.execute("""
+		select maNote, thuTuNote from GhiChu
+		where maChuong = (?)
+		order by thuTuNote;
+	""", (maChuong,))
+
+	rows = cur.fetchall()
+
+	ds = [dict(row) for row in rows]
+
+	conn.close()
+
+	return ds
+
 def themNote(maChuong, noiDung, thuTuNote):
 	conn = get_connection()
 	cur = conn.cursor()
@@ -45,7 +63,7 @@ def themNote(maChuong, noiDung, thuTuNote):
 	conn.commit()
 	conn.close()
 
-def layThuTuLonNhat(maChuong):
+def layNoteThuTuLonNhat(maChuong):
 	conn = get_connection()
 	cur = conn.cursor()
 
@@ -63,8 +81,20 @@ def layThuTuLonNhat(maChuong):
 	else:
 		return row[0]
 
+def capNhatThuTu(maNote, thuTuMoi):
+	conn = get_connection()
+	cur = conn.cursor()
 
-def suaNote(maNote, noiDung):
+	cur.execute("""
+		update GhiChu
+		set thuTuNote = (?)
+		where maNote = (?);
+	""",(thuTuMoi,maNote))
+
+	conn.commit()
+	conn.close()
+
+def capNhatNote(maNote, noiDung):
 	conn = get_connection()
 	cur = conn.cursor()
 

@@ -1,7 +1,9 @@
 from PyQt6.QtCore import Qt, QObject, pyqtSignal
 from lang.strings import Text
-from services import TacVuMonHoc
+import models.TacVuMonHoc as TacVuMonHoc
 from View.ViewDialog import InputDialog
+
+from debug.log_writer import log_controller
 
 class ControllerSidebar(QObject):
 	homePage_request = pyqtSignal()
@@ -31,38 +33,40 @@ class ControllerSidebar(QObject):
 		self.updateSubjList()
 
 	def handleSwitchSubject(self, maMon):
+		log_controller("Chuyển tiếp tín hiệu cho MainWindow", f"id = {maMon}")
 		self.subjItem_navigate_request.emit(maMon)
-		print(f"Đã chuyển môn có id: {maMon}")
 
 	def handleAddSubj(self, tenMon):
+		log_controller("Thêm môn vào db")
 		TacVuMonHoc.themMon(tenMon)
 
 		self.updateSubjList()
 
 		# self.newSubj_switch_request.emit()
-		print("Đã thêm môn")
 
 	def handleMoveSubjToTrash(self,maMon):
 		# Nếu môn học đang trỏ tới bị xóa, tự động chuyển về home page
 		# Phát tín hiệu đến MainWindow (homePage request)
 		currentMaMon = self.sidebar.getCurrentMaMon()
 		if currentMaMon and currentMaMon == maMon:
+			log_controller("Vì đang đc trỏ, phát tín hiệu chuyển về homepage")
 			self.homePage_request.emit()
 
 		# Di chuyển môn trong db
+		log_controller("Xóa mềm môn trong db")
 		TacVuMonHoc.moveMonToTrash(maMon)
 		self.updateSubjList()
 
 		# Phát tín hiệu cho trashPage cập nhật lại danh sách (trashSubjlist update request)
 		self.trashSubjList_update_request.emit()
-		print("Đã chuyển qua thùng rác")
 
 	def handleEditSubj(self,maMon,newName):
+		log_controller("Sửa tên môn học trong db")
 		TacVuMonHoc.suaTenMon(maMon,newName)
 		
 		self.updateSubjList()
-		print("Đã sửa")
 
 	def updateSubjList(self):
+		log_controller("Lấy ds môn từ db và hiển thị")
 		subjList = TacVuMonHoc.layDanhSachMon()
 		self.sidebar.showSubjList(subjList)

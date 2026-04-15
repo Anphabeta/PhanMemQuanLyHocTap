@@ -1,7 +1,7 @@
 from PyQt6.QtCore import Qt, QObject, pyqtSignal
 from Controller.ControllerChapterBlock import ControllerChapterBlock
-from services import TacVuChuong
-from services import TacVuMonHoc
+import models.TacVuChuong as TacVuChuong
+import models.TacVuMonHoc as TacVuMonHoc
 
 class ControllerSubjectPage(QObject):
 	# chapterBlock_update_request = pyqtSignal()
@@ -39,12 +39,14 @@ class ControllerSubjectPage(QObject):
 
 
 	# Phụ trách hiển thị chapter block ---------------------------------------------------------
-	def connectViewAndControllerChapterBlock(self, chapterBlock): # Đây giống như hàm init thứ hai cho widget con
+	def connectViewAndControllerChapterBlock(self, chapterBlock): # Hàm này làm 2 nhiệm vụ: Tạo controller và connect Signal
 		controllerChapterBlock = ControllerChapterBlock(chapterBlock)
 		self.controllerChapterBlockList.append(controllerChapterBlock)
 		
+		# Viết signal vào đây
 		controllerChapterBlock.chapterBlock_update_request.connect(self.updateChapterBlockList)
 
+		# Khởi tạo nội dung bên trong chapter block
 		controllerChapterBlock.initContent()
 
 	def createViewAndControllerChapterBlock(self):

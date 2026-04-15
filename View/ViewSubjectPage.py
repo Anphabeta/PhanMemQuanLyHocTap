@@ -42,8 +42,6 @@ class ViewSubjectPage(QWidget):
 
 		self.chapterLayout.addStretch()
 
-		print("Đã setup layout subject page")
-
 	def setSubjId(self,maMon):
 		self.subjId = maMon
 	# ------------------------------------------------------------------------
@@ -75,8 +73,7 @@ class ViewSubjectPage(QWidget):
 		self.scrollArea.verticalScrollBar().setValue(0)
 
 	def createChapterBlock(self, chuong):
-		chapterBlock = ViewChapterBlock(chuong["tenChuong"])
-		chapterBlock.setChapterId(chuong["maChuong"])
+		chapterBlock = ViewChapterBlock(chuong["tenChuong"], chuong["maChuong"])
 
 		idx = self.chapterLayout.count() - 1
 		self.chapterLayout.insertWidget(idx, chapterBlock)
