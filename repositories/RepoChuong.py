@@ -80,11 +80,6 @@ def xoaChuong(maChuong):
 	cur = conn.cursor()
 
 	cur.execute("""
-		DELETE FROM GhiChu
-		WHERE maChuong = (?);
-	""", (maChuong,))
-
-	cur.execute("""
 		DELETE FROM Chuong
 		WHERE maChuong = (?);
 	""",(maChuong,))

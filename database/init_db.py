@@ -27,6 +27,7 @@ create table if not exists Chuong(
 	maMon integer not null,
 	thuTuChuong real,
 	foreign key(maMon) references MonHoc(maMon)
+		ON DELETE CASCADE
 );
 create table if not exists GhiChu(
 	maNote integer primary key autoincrement,
@@ -35,6 +36,7 @@ create table if not exists GhiChu(
 	maChuong integer not null,
 	thuTuNote real,
 	foreign key(maChuong) references Chuong(maChuong)
+		ON DELETE CASCADE
 );
 """)
 conn.execute("PRAGMA foreign_keys = ON;")

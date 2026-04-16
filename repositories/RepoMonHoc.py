@@ -137,27 +137,6 @@ def xoaMonKhiTrangThaiMonDisable():
 	cur = conn.cursor()
 
 	cur.execute("""
-		DELETE FROM GhiChu
-		WHERE maNote IN (
-			SELECT maNote
-			FROM GhiChu AS g
-			JOIN Chuong AS c ON g.maChuong = c.maChuong
-			JOIN MonHoc AS m ON c.maMon = m.maMon
-			WHERE m.trangThaiMon = "disable";
-		);
-	""")
-
-	cur.execute("""
-		DELETE FROM Chuong
-		WHERE maChuong IN (
-			SELECT 
-			FROM Chuong AS c
-			JOIN MonHoc AS m ON c.maMon = m.maMon
-			WHERE m.trangThaiMon = "disable";
-		)
-	""")
-
-	cur.execute("""
 		DELETE FROM MonHoc 
 		WHERE trangThaiMon = 'disable';
 	""")
