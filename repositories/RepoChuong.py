@@ -32,7 +32,7 @@ def layChuong(maChuong):
 
 	return thongTinChuong
 
-def layThuTuLonNhat(maMon):
+def layChuongThuTuLonNhat(maMon):
 	conn = get_connection()
 	cur = conn.cursor()
 
