@@ -11,9 +11,9 @@ def layDanhSachMon():
 	cur = conn.cursor()
 
 	cur.execute("""
-		select * from MonHoc
-		where trangThaiMon = 'enable'
-		order by truyCapGanNhat desc
+		SELECT * FROM MonHoc
+		WHERE trangThaiMon = 'enable'
+		ORDER BY truyCapGanNhat DESC
 	""")
 	rows = cur.fetchall()
 	
@@ -28,8 +28,8 @@ def layMon(maMon):
 	cur = conn.cursor()
 
 	cur.execute("""
-		select * from MonHoc
-		where maMon = (?)
+		SELECT * FROM MonHoc
+		WHERE maMon = (?)
 	""",(maMon,))
 	rows = cur.fetchall()
 	
@@ -44,9 +44,9 @@ def layDanhSachMonTrash():
 	cur = conn.cursor()
 
 	cur.execute("""
-		select * from MonHoc
-		where trangThaiMon = 'disable'
-		order by truyCapGanNhat desc
+		SELECT * FROM MonHoc
+		WHERE trangThaiMon = 'disable'
+		ORDER BY truyCapGanNhat DESC
 	""")
 	rows = cur.fetchall()
 
@@ -71,9 +71,9 @@ def capNhatTruyCapGanNhat(maMon):
 	cur = conn.cursor()
 
 	cur.execute("""
-		update MonHoc
-		set truyCapGanNhat = datetime('now','localtime')
-		where maMon = (?)
+		UPDATE MonHoc
+		SET truyCapGanNhat = datetime('now','localtime')
+		WHERE maMon = (?)
 	""",(maMon,))
 
 	conn.commit()
@@ -84,10 +84,10 @@ def capNhatTenMon(maMon, newName):
 	cur = conn.cursor()
 
 	cur.execute("""
-		update MonHoc set 
+		UPDATE MonHoc SET 
 		tenMon = (?),
 		truyCapGanNhat = datetime('now','localtime')
-		where maMon = (?)
+		WHERE maMon = (?)
 	""",(newName,maMon))
 
 	conn.commit()
@@ -98,9 +98,9 @@ def capNhatTrangThaiMonDisable(maMon):
 	cur = conn.cursor()
 
 	cur.execute("""
-		update MonHoc set 
+		UPDATE MonHoc SET 
 		trangThaiMon = 'disable'
-		where maMon = (?)
+		WHERE maMon = (?)
 	""",(maMon,))
 
 	conn.commit()
@@ -111,10 +111,10 @@ def capNhatTrangThaiMonEnable(maMon):
 	cur = conn.cursor()
 
 	cur.execute("""
-		update MonHoc set 
+		UPDATE MonHoc SET 
 		trangThaiMon = 'enable',
 		truyCapGanNhat = datetime('now','localtime')
-		where maMon = (?)
+		WHERE maMon = (?)
 	""",(maMon,))
 
 	conn.commit()
@@ -124,7 +124,10 @@ def xoaMon(maMon):
 	conn = get_connection()
 	cur = conn.cursor()
 
-	cur.execute("delete from MonHoc where maMon = (?)",(maMon,))
+	cur.execute("""
+		DELETE FROM MonHoc 
+		WHERE maMon = (?);
+	""",(maMon,))
 
 	conn.commit()
 	conn.close()
@@ -133,7 +136,31 @@ def xoaMonKhiTrangThaiMonDisable():
 	conn = get_connection()
 	cur = conn.cursor()
 
-	cur.execute("delete from MonHoc where trangThaiMon = 'disable'")
+	cur.execute("""
+		DELETE FROM GhiChu
+		WHERE maNote IN (
+			SELECT maNote
+			FROM GhiChu AS g
+			JOIN Chuong AS c ON g.maChuong = c.maChuong
+			JOIN MonHoc AS m ON c.maMon = m.maMon
+			WHERE m.trangThaiMon = "disable";
+		);
+	""")
+
+	cur.execute("""
+		DELETE FROM Chuong
+		WHERE maChuong IN (
+			SELECT 
+			FROM Chuong AS c
+			JOIN MonHoc AS m ON c.maMon = m.maMon
+			WHERE m.trangThaiMon = "disable";
+		)
+	""")
+
+	cur.execute("""
+		DELETE FROM MonHoc 
+		WHERE trangThaiMon = 'disable';
+	""")
 
 	conn.commit()
 	conn.close()

@@ -5,8 +5,8 @@ def layDanhSachChuong(maMon):
 	cur = conn.cursor()
 
 	cur.execute("""
-		select * from Chuong
-		where maMon = (?);
+		SELECT * FROM Chuong
+		WHERE maMon = (?);
 	""", (maMon,))
 	rows = cur.fetchall()
 
@@ -21,8 +21,8 @@ def layChuong(maChuong):
 	cur = conn.cursor()
 
 	cur.execute("""
-		select * from Chuong
-		where maChuong = (?);
+		SELECT * FROM Chuong
+		WHERE maChuong = (?);
 	""", (maChuong,))
 	rows = cur.fetchall()
 
@@ -37,8 +37,8 @@ def layChuongThuTuLonNhat(maMon):
 	cur = conn.cursor()
 
 	cur.execute("""
-		select max(thuTuChuong) from Chuong
-		where maMon = (?)
+		SELECT max(thuTuChuong) FROM Chuong
+		WHERE maMon = (?)
 	""",(maMon,))
 
 	row = cur.fetchone()
@@ -55,21 +55,21 @@ def themChuong(tenChuong, maMon, thuTuChuong):
 	cur = conn.cursor()
 
 	cur.execute("""
-		insert into Chuong(tenChuong, maMon, thuTuChuong) values
+		INSERT INTO Chuong(tenChuong, maMon, thuTuChuong) values
 		(?,?,?);
 	""",(tenChuong,maMon,thuTuChuong))
 
 	conn.commit()
 	conn.close()
 
-def suaTenChuong(maChuong, newName):
+def capNhatTenChuong(maChuong, newName):
 	conn = get_connection()
 	cur = conn.cursor()
 
 	cur.execute("""
-		update Chuong
-		set tenChuong = (?)
-		where maChuong = (?);
+		UPDATE Chuong
+		SET tenChuong = (?)
+		WHERE maChuong = (?);
 	""",(newName,maChuong))
 
 	conn.commit()
@@ -80,8 +80,13 @@ def xoaChuong(maChuong):
 	cur = conn.cursor()
 
 	cur.execute("""
-		delete from Chuong
-		where maChuong = (?);
+		DELETE FROM GhiChu
+		WHERE maChuong = (?);
+	""", (maChuong,))
+
+	cur.execute("""
+		DELETE FROM Chuong
+		WHERE maChuong = (?);
 	""",(maChuong,))
 
 	conn.commit()
