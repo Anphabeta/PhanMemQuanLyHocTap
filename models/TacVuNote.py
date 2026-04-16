@@ -7,8 +7,8 @@ def layDanhSachNote(maChuong):
 def layNote(maNote):
 	return RepoNote.layNote(maNote)
 
-def themNote(maChuong, noiDung, thuTuNote):
-	RepoNote.themNote(maChuong, noiDung, thuTuNote)
+def themNote(maChuong, noiDung, thuTuNote, trangThaiThongBao):
+	RepoNote.themNote(maChuong, noiDung, thuTuNote, trangThaiThongBao)
 
 def layThuTuLonNhat(maChuong):
 	return RepoNote.layNoteThuTuLonNhat(maChuong)
@@ -55,3 +55,9 @@ def diChuyenNoteXuong(maNote, maChuong):
 	else:
 		tb = (ds[curIdx+2]["thuTuNote"] + ds[curIdx+1]["thuTuNote"])/2
 	RepoNote.capNhatThuTu(maNote, tb)
+
+def tatThongBao(maNote):
+	RepoNote.capNhatTrangThaiThongBao(maNote, "disable")
+
+def batThongBao(maNote):
+	RepoNote.capNhatTrangThaiThongBao(maNote, "enable")

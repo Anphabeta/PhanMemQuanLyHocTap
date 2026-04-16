@@ -5,9 +5,9 @@ def layDanhSachNote(maChuong):
 	cur = conn.cursor()
 
 	cur.execute("""
-		select * from GhiChu
-		where maChuong = (?)
-		order by thuTuNote;
+		SELECT * FROM GhiChu
+		WHERE maChuong = (?)
+		ORDER BY thuTuNote;
 	""", (maChuong,))
 	rows = cur.fetchall()
 
@@ -22,8 +22,8 @@ def layNote(maNote):
 	cur = conn.cursor()
 
 	cur.execute("""
-		select * from GhiChu
-		where maNote = (?);
+		SELECT * FROM GhiChu
+		WHERE maNote = (?);
 	""",(maNote,))
 
 	rows = cur.fetchall()
@@ -38,9 +38,9 @@ def layDanhSachNoteWithThuTu(maChuong):
 	cur = conn.cursor()
 
 	cur.execute("""
-		select maNote, thuTuNote from GhiChu
-		where maChuong = (?)
-		order by thuTuNote;
+		SELECT maNote, thuTuNote FROM GhiChu
+		WHERE maChuong = (?)
+		ORDER BY thuTuNote;
 	""", (maChuong,))
 
 	rows = cur.fetchall()
@@ -51,14 +51,14 @@ def layDanhSachNoteWithThuTu(maChuong):
 
 	return ds
 
-def themNote(maChuong, noiDung, thuTuNote):
+def themNote(maChuong, noiDung, thuTuNote, trangThaiThongBao):
 	conn = get_connection()
 	cur = conn.cursor()
 
 	cur.execute("""
-		insert into GhiChu(noiDung, maChuong, thuTuNote)
-		values (?,?,?);
-	""",(noiDung, maChuong, thuTuNote))
+		INSERT INTO GhiChu(noiDung, maChuong, thuTuNote, trangThaiThongBao)
+		VALUES (?,?,?,?);
+	""",(noiDung, maChuong, thuTuNote, trangThaiThongBao))
 
 	conn.commit()
 	conn.close()
@@ -68,8 +68,8 @@ def layNoteThuTuLonNhat(maChuong):
 	cur = conn.cursor()
 
 	cur.execute("""
-		select max(thuTuNote) from GhiChu
-		where maChuong = (?)
+		SELECT max(thuTuNote) FROM GhiChu
+		WHERE maChuong = (?)
 	""", (maChuong,))
 
 	row = cur.fetchone()
@@ -86,9 +86,9 @@ def capNhatThuTu(maNote, thuTuMoi):
 	cur = conn.cursor()
 
 	cur.execute("""
-		update GhiChu
-		set thuTuNote = (?)
-		where maNote = (?);
+		UPDATE GhiChu
+		SET thuTuNote = (?)
+		WHERE maNote = (?);
 	""",(thuTuMoi,maNote))
 
 	conn.commit()
@@ -99,9 +99,9 @@ def capNhatNote(maNote, noiDung):
 	cur = conn.cursor()
 
 	cur.execute("""
-		update GhiChu
-		set noiDung = (?)
-		where maNote = (?);
+		UPDATE GhiChu
+		SET noiDung = (?)
+		WHERE maNote = (?);
 	""",(noiDung,maNote))
 
 	conn.commit()
@@ -112,11 +112,22 @@ def xoaNote(maNote):
 	cur = conn.cursor()
 
 	cur.execute("""
-		delete from GhiChu
-		where maNote = (?)
+		DELETE FROM GhiChu
+		WHERE maNote = (?)
 	""",(maNote,))
 
 	conn.commit()
 	conn.close()
 
+def capNhatTrangThaiThongBao(maNote, trangThaiMoi):
+	conn = get_connection()
+	cur = conn.cursor()
 
+	cur.execute("""
+		UPDATE GhiChu
+		SET trangThaiThongBao = (?)
+		WHERE maNote = (?);
+	""", (trangThaiMoi, maNote))
+
+	conn.commit()
+	conn.close()

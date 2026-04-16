@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import(
 )
 from PyQt6.QtCore import pyqtSignal
 from View.ViewChapterBlock import ViewChapterBlock
-from View.ViewDialog import InputDialog
+from View.QDefine import InputDialog
 from lang.strings import Text
 
 
@@ -24,7 +24,6 @@ class ViewSubjectPage(QWidget):
 		self.containerWidget = QWidget()
 		self.scrollArea.setWidget(self.containerWidget)
 		self.scrollArea.setWidgetResizable(True)
-		# self.chapterBlockList = []
 
 		self.chapterLayout = QVBoxLayout(self.containerWidget)
 		self.setupLayout()

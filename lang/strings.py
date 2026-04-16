@@ -26,5 +26,8 @@ class Text:
 	# Subject Page
 	ADD_CHAPTER_BTN = "Thêm chương mới"
 
+	# Note
+	CHECK_BOX_RECALL = "Nhắc lại"
 
-
+	# Home Page
+	CREATE_NOTE_BTN = "Tạo note mới"

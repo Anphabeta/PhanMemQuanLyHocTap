@@ -10,14 +10,14 @@ from lang.strings import Text
 from lang.icons import Icon
 
 from View.ViewNoteBlock import ViewNoteBlock
-from View.ViewNoteBlock import NoteEdit
+from View.QDefine import NoteEdit
 
 from debug.log_writer import log_view, plainLog
 
 class ViewChapterBlock(QWidget):
 	chapter_edit_request = pyqtSignal(int,str)
 	chapter_delete_request = pyqtSignal(int)
-	note_add_request = pyqtSignal(int, str)
+	note_add_request = pyqtSignal(int, str, bool)
 
 	def __init__(self,tenChuong,maChuong):
 		super().__init__()
@@ -108,7 +108,7 @@ class ViewChapterBlock(QWidget):
 		newText = self.tempInput.toPlainText().strip()
 
 		if newText != "":
-			self.note_add_request.emit(self.chapterId, newText)
+			self.note_add_request.emit(self.chapterId, newText, self.tempInput.getCheckBoxState())
 		self.closeTemp()
 			
 	def closeTemp(self):

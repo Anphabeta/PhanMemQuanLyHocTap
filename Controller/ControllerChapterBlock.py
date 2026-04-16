@@ -37,12 +37,17 @@ class ControllerChapterBlock(QObject):
 		TacVuChuong.xoaChuong(maChuong)
 		self.chapterBlock_update_request.emit()
 
-	def handleAddNote(self, maChuong, newText):
+	def handleAddNote(self, maChuong, newText, isChecked):
 		log_controller("Lấy thứ tự lớn nhất")
 		maxOrder = TacVuNote.layThuTuLonNhat(maChuong)
 
+		mapping = {
+			True : "enable",
+			False : "disable"
+		}
+
 		log_controller("Tạo note trong db")
-		TacVuNote.themNote(maChuong,newText,maxOrder+100)
+		TacVuNote.themNote(maChuong,newText,maxOrder+100,mapping[isChecked])
 
 		self.updateNoteBlockList()
 

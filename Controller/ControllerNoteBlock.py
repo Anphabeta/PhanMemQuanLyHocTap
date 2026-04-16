@@ -23,6 +23,8 @@ class ControllerNoteBlock(QObject):
 
 		self.noteBlock.note_moveDown_request.connect(self.handleMoveDownNote)
 
+		self.noteBlock.note_change_recallState.connect(self.handleChangeRecallState)
+
 	# Phụ trách xử lý signal ---------------------------------------------
 	def handleEditNote(self, maNote, newNoiDung):
 		log_controller("Kết nối model để sửa")
@@ -41,4 +43,10 @@ class ControllerNoteBlock(QObject):
 
 	def handleMoveDownNote(self, maNote):
 		self.noteBlock_moveDown_request.emit(maNote)
+
+	def handleChangeRecallState(self, maNote, state):
+		if state == 0:
+			TacVuNote.tatThongBao(maNote)
+		else:
+			TacVuNote.batThongBao(maNote)
 	# --------------------------------------------------------------------

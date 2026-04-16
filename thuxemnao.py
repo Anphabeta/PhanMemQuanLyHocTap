@@ -15,7 +15,8 @@ from PyQt6.QtWidgets import (
     QScrollArea,
     QLineEdit,
     QTextEdit,
-    QPlainTextEdit
+    QPlainTextEdit,
+    QCheckBox
 )
 from PyQt6.QtCore import Qt, QPoint, QObject, pyqtSignal
 from PyQt6.QtGui import QCursor
@@ -44,6 +45,9 @@ def toggle(textEdit, textShow):
     textEdit.show()
     textShow.hide()
 
+def checkStatus(status):
+    print(status)
+
 app = QApplication(sys.argv)
 window = QWidget()
 window.resize(950,600)
@@ -62,10 +66,15 @@ submitBtn.clicked.connect(lambda: handleClicked(textEdit.getText()))
 editBtn = QPushButton("Edit")
 editBtn.clicked.connect(lambda: toggle(textEdit,textShow))
 
+checkBox = QCheckBox("Đã làm")
+checkBox.stateChanged.connect(checkStatus)
+
+
 layout.addWidget(textEdit)
 layout.addWidget(textShow)
 layout.addWidget(submitBtn)
 layout.addWidget(editBtn)
+layout.addWidget(checkBox)
 layout.addStretch()
 
 window.show()

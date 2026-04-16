@@ -1,7 +1,7 @@
 from PyQt6.QtCore import Qt, QObject, pyqtSignal
 from lang.strings import Text
 import models.TacVuMonHoc as TacVuMonHoc
-from View.ViewDialog import InputDialog
+from View.QDefine import InputDialog
 
 from debug.log_writer import log_controller
 

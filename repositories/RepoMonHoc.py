@@ -60,7 +60,10 @@ def themMon(tenMon):
 	conn = get_connection()
 	cur = conn.cursor()
 
-	cur.execute("insert into MonHoc(tenMon,truyCapGanNhat) values (?,datetime('now','localtime'))",(tenMon,))
+	cur.execute("""
+		INSERT INTO MonHoc(tenMon,truyCapGanNhat) 
+		VALUES (?,datetime('now','localtime'))
+	""",(tenMon,))
 
 	conn.commit()
 	conn.close()

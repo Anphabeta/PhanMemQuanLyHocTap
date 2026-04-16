@@ -13,29 +13,30 @@ cursor = conn.cursor()
 
 # Tao bảng ----------------------------------------------
 conn.executescript("""
-create table if not exists MonHoc(
-	maMon integer primary key autoincrement,
-	tenMon text not null,
-	tgTaoMon text default (datetime('now','localtime')),
-	truyCapGanNhat text default (datetime('now','localtime')),
-	trangThaiMon text default 'enable'
+CREATE TABLE IF NOT EXISTS MonHoc(
+	maMon INTEGER PRIMARY KEY AUTOINCREMENT,
+	tenMon TEXT NOT NULL,
+	tgTaoMon TEXT DEFAULT (DATETIME('now','localtime')),
+	truyCapGanNhat TEXT DEFAULT (DATETIME('now','localtime')),
+	trangThaiMon TEXT DEFAULT 'enable'
 );
-create table if not exists Chuong(
-	maChuong integer primary key autoincrement,
-	tenChuong text not null,
-	tgTaoChuong text default (datetime('now','localtime')),
-	maMon integer not null,
-	thuTuChuong real,
-	foreign key(maMon) references MonHoc(maMon)
+CREATE TABLE IF NOT EXISTS Chuong(
+	maChuong INTEGER PRIMARY KEY AUTOINCREMENT,
+	tenChuong TEXT NOT NULL,
+	tgTaoChuong TEXT DEFAULT (DATETIME('now','localtime')),
+	maMon INTEGER NOT NULL,
+	thuTuChuong REAL,
+	FOREIGN KEY(maMon) REFERENCES MonHoc(maMon)
 		ON DELETE CASCADE
 );
-create table if not exists GhiChu(
-	maNote integer primary key autoincrement,
-	noiDung text not null,
-	tgTaoNote text default (datetime('now','localtime')),
-	maChuong integer not null,
-	thuTuNote real,
-	foreign key(maChuong) references Chuong(maChuong)
+CREATE TABLE IF NOT EXISTS GhiChu(
+	maNote INTEGER PRIMARY KEY AUTOINCREMENT,
+	noiDung TEXT NOT NULL,
+	tgTaoNote TEXT DEFAULT (DATETIME('now','localtime')),
+	maChuong INTEGER NOT NULL,
+	thuTuNote REAL,
+	trangThaiThongBao TEXT DEFAULT 'enable',
+	FOREIGN KEY(maChuong) REFERENCES Chuong(maChuong)
 		ON DELETE CASCADE
 );
 """)
@@ -45,73 +46,73 @@ conn.commit()
 
 # Tạo dữ liệu mẫu ----------------------------------------
 conn.executescript("""
-delete from GhiChu;
-delete from Chuong;
-delete from MonHoc;
+DELETE FROM GhiChu;
+DELETE FROM Chuong;
+DELETE FROM MonHoc;
 
-delete from sqlite_sequence where name='MonHoc';
-delete from sqlite_sequence where name='Chuong';
-delete from sqlite_sequence where name='GhiChu';
+DELETE FROM sqlite_sequence WHERE name='MonHoc';
+DELETE FROM sqlite_sequence WHERE name='Chuong';
+DELETE FROM sqlite_sequence WHERE name='GhiChu';
 """)
 conn.commit()
 
 conn.executescript("""
-insert into MonHoc(tenMon) values
-(
-	"Detroit Become Human"
-),
-(
-	"Giải tích"
-);
+INSERT INTO MonHoc(tenMon) VALUES
+	(
+		"Detroit Become Human"
+	),
+	(
+		"Giải tích"
+	);
 
-insert into Chuong(tenChuong,maMon,thuTuChuong) values
-(
-	"Khái quát về game",
-	1,
-	100
-),
-(
-	"Chương 1",
-	2,
-	100
-),
-(
-	"Ý nghĩa",
-	1,
-	200
-),
-(
-	"Chương 2",
-	2,
-	200
-);
+INSERT INTO Chuong(tenChuong,maMon,thuTuChuong) VALUES
+	(
+		"Khái quát về game",
+		1,
+		100
+	),
+	(
+		"Chương 1",
+		2,
+		100
+	),
+	(
+		"Ý nghĩa",
+		1,
+		200
+	),
+	(
+		"Chương 2",
+		2,
+		200
+	);
 
-insert into GhiChu(noiDung, maChuong,thuTuNote) values
-(
-	"Đây là con game lựa chọn, một lựa chọn sẽ rẽ ra một nhánh. Sẽ có nhiều nhánh và dẫn đến nhiều ending khác nhau",
-	1,
-	100
-),
-(
-	"Đạo hàm là một phép tính để chỉ tốc độ biến thiên của hàm theo biến số",
-	2,
-	100
-),
-(
-	"Ngược lại của đạo hàm là nguyên hàm",
-	2,
-	200
-),
-(
-	"Sau khi chơi game này, tôi thấy thật thú vị, đây là minh chứng cho việc game là một loại hình nghệ thuật không thua kém gì âm nhạc và phim",
-	3,
-	100
-),
-(
-	"Vi phân được gọi là một phép tính của đạo hàm",
-	4,
-	100
-);
+INSERT INTO GhiChu(noiDung, maChuong,thuTuNote) VALUES
+	(
+		"Đây là con game lựa chọn, một lựa chọn sẽ rẽ ra một nhánh. Sẽ có nhiều nhánh và dẫn đến nhiều ending khác nhau",
+		1,
+		100
+	),
+	(
+		"Đạo hàm là một phép tính để chỉ tốc độ biến thiên của hàm theo biến số",
+		2,
+		100
+	),
+	(
+		"Ngược lại của đạo hàm là nguyên hàm",
+		2,
+		200
+	),
+	(
+		"Sau khi chơi game này, tôi thấy thật thú vị, đây là minh chứng cho việc game là một loại hình nghệ thuật không thua kém gì âm nhạc và phim",
+		3,
+		100
+	),
+	(
+		"Vi phân được gọi là một phép tính của đạo hàm",
+		4,
+		100
+	);
 """)
 # --------------------------------------------------------
 

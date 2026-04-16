@@ -3,3 +3,10 @@ git add .
 git commit -m "Mô tả thay đổi"
 
 git push
+
+
+Để hiển thị danh sách tag, dùng lệnh:
+git ls-remote --tags origin
+
+Để xóa tag remote, dùng lệnh:
+git push origin --delete <tag_name>

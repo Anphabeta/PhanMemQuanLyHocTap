@@ -9,7 +9,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt, pyqtSignal
 from lang.strings import Text
-from View.ViewDialog import InputDialog
+from View.QDefine import InputDialog
 
 from debug.log_writer import log_view, plainLog
 

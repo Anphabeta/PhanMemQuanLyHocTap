@@ -1,6 +1,5 @@
 from PyQt6.QtWidgets import (
 	QWidget, 
-	QPlainTextEdit,
 	QPushButton,
 	QLabel,
 	QHBoxLayout, QVBoxLayout
@@ -8,13 +7,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import pyqtSignal, Qt
 
 from debug.log_writer import log_view, plainLog
-
-class NoteEdit(QPlainTextEdit):
-	editingFinished = pyqtSignal()
-
-	def focusOutEvent(self, event):
-		super().focusOutEvent(event)
-		self.editingFinished.emit()
+from View.QDefine import NoteEdit
 		
 class ViewNoteBlock(QWidget):
 	note_edit_request = pyqtSignal(int,str)
@@ -22,6 +15,7 @@ class ViewNoteBlock(QWidget):
 	note_moveUp_request = pyqtSignal(int)
 	note_moveDown_request = pyqtSignal(int)
 	note_create_request = pyqtSignal()
+	note_change_recallState = pyqtSignal(int, int)
 
 	def __init__(self, noiDungNote, maNote):
 		super().__init__()
@@ -88,6 +82,7 @@ class ViewNoteBlock(QWidget):
 		self.deleteNoteBtn.clicked.connect(self.handleDeleteNote)
 		self.editNoteBtn.clicked.connect(self.openEditInline)
 		self.noteEdit.editingFinished.connect(self.handleSendNote)
+		self.noteEdit.stateChanged.connect(self.handleChangeRecallState)
 		self.moveUpBtn.clicked.connect(self.handleMoveUp)
 		self.moveDownBtn.clicked.connect(self.handleMoveDown)
 		self.moreOptionBtn.clicked.connect(self.handleMoreOption)
@@ -137,6 +132,12 @@ class ViewNoteBlock(QWidget):
 			self.note_edit_request.emit(self.noteId, newText)
 		else:
 			self.closeEditInline()
+
+	def handleChangeRecallState(self, state):
+		plainLog("change recall state event")
+
+		log_view("Phát tín hiệu")
+		self.note_change_recallState.emit(self.noteId, state)
 	# ---------------------------------------------------------------
 
 
