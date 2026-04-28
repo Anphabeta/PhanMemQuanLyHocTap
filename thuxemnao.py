@@ -16,7 +16,8 @@ from PyQt6.QtWidgets import (
     QLineEdit,
     QTextEdit,
     QPlainTextEdit,
-    QCheckBox
+    QCheckBox,
+    QComboBox,
 )
 from PyQt6.QtCore import Qt, QPoint, QObject, pyqtSignal
 from PyQt6.QtGui import QCursor
@@ -69,12 +70,15 @@ editBtn.clicked.connect(lambda: toggle(textEdit,textShow))
 checkBox = QCheckBox("Đã làm")
 checkBox.stateChanged.connect(checkStatus)
 
+comboBox = QComboBox()
+comboBox.addItems(["--Chọn môn học--", "Toán", "Lý", "Hóa", "--Thêm môn học mới--"])
 
 layout.addWidget(textEdit)
 layout.addWidget(textShow)
 layout.addWidget(submitBtn)
 layout.addWidget(editBtn)
 layout.addWidget(checkBox)
+layout.addWidget(comboBox)
 layout.addStretch()
 
 window.show()

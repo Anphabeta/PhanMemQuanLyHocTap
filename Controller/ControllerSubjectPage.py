@@ -5,6 +5,7 @@ import models.TacVuMonHoc as TacVuMonHoc
 
 class ControllerSubjectPage(QObject):
 	# chapterBlock_update_request = pyqtSignal()
+	recentAccess_update_request = pyqtSignal(int)
 
 	def __init__(self, view):
 		super().__init__()
@@ -45,6 +46,7 @@ class ControllerSubjectPage(QObject):
 		
 		# Viết signal vào đây
 		controllerChapterBlock.chapterBlock_update_request.connect(self.updateChapterBlockList)
+		controllerChapterBlock.recentAccess_update_request.connect(self.updateRecentAccess)
 
 		# Khởi tạo nội dung bên trong chapter block
 		controllerChapterBlock.initContent()
@@ -71,7 +73,11 @@ class ControllerSubjectPage(QObject):
 	
 	# Phụ trách xử lý signal -------------------------------------------------------------------
 	def handleAddChapter(self,maMon,tenChuong):
-		maxOrder = TacVuChuong.layThuTuLonNhat(maMon)
-		TacVuChuong.themChuong(tenChuong, maMon, maxOrder+100)
+		TacVuChuong.themChuong(tenChuong, maMon)
 		self.updateChapterBlockList()
+
+		self.updateRecentAccess(maMon)
+
+	def updateRecentAccess(self):
+		self.recentAccess_update_request.emit(self.maMon)
 	# ------------------------------------------------------------------------------------------

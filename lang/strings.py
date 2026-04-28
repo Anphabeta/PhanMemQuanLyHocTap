@@ -9,6 +9,7 @@ class Text:
 	DIALOG_TITLE_THEMMON = "Thêm môn học mới"
 	DIALOG_TITLE_SUAMON = "Sửa môn học"
 	DIALOG_TITLE_THEMCHUONG = "Thêm chương mới"
+	DIALOG_TITLE_THEMNOTE = "Thêm ghi chú mới"
 	OK = "OK"
 	CANCEL = "Hủy bỏ"
 
@@ -31,3 +32,11 @@ class Text:
 
 	# Home Page
 	CREATE_NOTE_BTN = "Tạo note mới"
+
+	# Create note dialog
+	CHOOSE_SUBJECT_TEXT = "--- Chọn môn học ---"
+	CREATE_SUBJECT_TEXT = "--- Tạo môn học mới ---"
+
+	CHOOSE_SUBJECT_FIRST = "--- Hãy chọn môn học trước ---"
+	CHOOSE_CHAPTER_TEXT = "--- Chọn chương ---"
+	CREATE_CHAPTER_TEXT = "--- Tạo chương mới ---"

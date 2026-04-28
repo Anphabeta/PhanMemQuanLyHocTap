@@ -56,6 +56,24 @@ def layDanhSachMonTrash():
 
 	return ds
 
+def layMaMonMoiNhat():
+	conn = get_connection()
+	cur = conn.cursor()
+
+	cur.execute("""
+		SELECT maMon FROM MonHoc
+		ORDER BY maMon DESC
+		LIMIT 1;
+	""")
+
+	rows = cur.fetchall()
+
+	ds = [dict(row) for row in rows]
+
+	conn.close()
+
+	return ds[0]
+
 def themMon(tenMon):
 	conn = get_connection()
 	cur = conn.cursor()
@@ -146,3 +164,4 @@ def xoaMonKhiTrangThaiMonDisable():
 
 	conn.commit()
 	conn.close()
+

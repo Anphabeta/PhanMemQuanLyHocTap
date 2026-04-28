@@ -9,8 +9,12 @@ def layChuong(maChuong):
 def layThuTuLonNhat(maMon):
 	return RepoChuong.layChuongThuTuLonNhat(maMon)
 
-def themChuong(tenChuong, maMon, thuTuChuong):
-	RepoChuong.themChuong(tenChuong, maMon, thuTuChuong)
+def layMaChuongMoiNhat():
+	return RepoChuong.layMaChuongMoiNhat()
+
+def themChuong(tenChuong, maMon):
+	maxOrder = layThuTuLonNhat(maMon)
+	RepoChuong.themChuong(tenChuong, maMon, maxOrder+100)
 
 def suaTenChuong(maChuong, newName):
 	RepoChuong.capNhatTenChuong(maChuong, newName)

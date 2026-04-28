@@ -7,48 +7,11 @@ from PyQt6.QtWidgets import(
 	QHBoxLayout,
 	QPlainTextEdit,
 	QCheckBox,
+	QComboBox,
 )
 from PyQt6.QtCore import pyqtSignal
 
 from lang.strings import Text
-
-class InputDialog(QDialog):
-    def __init__(self):
-        super().__init__()
-        #
-        self.inputText = QLineEdit()
-        self.btnWidgets = QWidget()
-        self.okBtn = QPushButton(Text.OK)
-        self.cancelBtn = QPushButton(Text.CANCEL)
-        #
-        self.setFixedSize(400,200)
-        self.setupLayout()
-        self.setupConnectBtn()
-
-    def setupLayout(self):
-        mainLayout = QVBoxLayout(self)
-        mainLayout.addWidget(self.inputText)
-        mainLayout.addWidget(self.btnWidgets)
-        mainLayout.addStretch()
-        #
-        btnLayout = QHBoxLayout(self.btnWidgets)
-        btnLayout.addWidget(self.okBtn)
-        btnLayout.addWidget(self.cancelBtn)
-
-    def setupConnectBtn(self):
-        self.okBtn.clicked.connect(self.accept)
-        self.cancelBtn.clicked.connect(self.reject)
-
-    def textOutput(self):
-        return self.inputText.text()
-
-
-
-class CreateNoteDialog(QDialog):
-	def __init__(self):
-		super().__init__()
-
-
 
 
 class TextEdit(QPlainTextEdit):
@@ -57,6 +20,10 @@ class TextEdit(QPlainTextEdit):
 	def focusOutEvent(self, event):
 		super().focusOutEvent(event)
 		self.editingFinished.emit()	
+
+	def hasText(self):
+		text = self.toPlainText().strip()
+		return text != ""
 
 class NoteEdit(QWidget):
 	editingFinished = pyqtSignal()
@@ -99,3 +66,46 @@ class NoteEdit(QWidget):
 
 	def getCheckBoxState(self):
 		return self.checkBoxRecall.isChecked()
+
+
+
+class InputDialog(QDialog):
+	def __init__(self):
+		super().__init__()
+		#
+		self.inputText = QLineEdit()
+		self.btnWidgets = QWidget()
+		self.okBtn = QPushButton(Text.OK)
+		self.okBtn.setEnabled(False)
+		self.cancelBtn = QPushButton(Text.CANCEL)
+		#
+		self.setFixedSize(400,200)
+		self.setupLayout()
+		self.setupConnectBtn()
+
+	def setupLayout(self):
+		mainLayout = QVBoxLayout(self)
+		mainLayout.addWidget(self.inputText)
+		mainLayout.addWidget(self.btnWidgets)
+		mainLayout.addStretch()
+		#
+		btnLayout = QHBoxLayout(self.btnWidgets)
+		btnLayout.addWidget(self.okBtn)
+		btnLayout.addWidget(self.cancelBtn)
+
+	def setupConnectBtn(self):
+		self.inputText.textChanged.connect(self.checkOKBtn)
+		self.okBtn.clicked.connect(self.accept)
+		self.cancelBtn.clicked.connect(self.reject)
+
+	def textOutput(self):
+		return self.inputText.text()
+
+	def checkOKBtn(self):
+		self.okBtn.setEnabled(self.inputText.text().strip() != "")
+
+
+
+
+
+

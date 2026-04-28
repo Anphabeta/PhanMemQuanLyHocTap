@@ -70,3 +70,9 @@ class ControllerSidebar(QObject):
 		log_controller("Lấy ds môn từ db và hiển thị")
 		subjList = TacVuMonHoc.layDanhSachMon()
 		self.sidebar.showSubjList(subjList)
+
+	def updateRecentAccess(self, maMon):
+		log_controller("Cập nhật truy cập gần nhất cho môn")
+		TacVuMonHoc.capNhatTruyCapGanNhat(maMon)
+
+		self.updateSubjList()

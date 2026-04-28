@@ -8,6 +8,7 @@ from debug.log_writer import log_controller, plainLog
 
 class ControllerChapterBlock(QObject):
 	chapterBlock_update_request = pyqtSignal()
+	recentAccess_update_request = pyqtSignal()
 
 	def __init__(self, view):
 		super().__init__()
@@ -32,14 +33,17 @@ class ControllerChapterBlock(QObject):
 		chuong = TacVuChuong.layChuong(maChuong)
 		self.chapterBlock.handleReceiveChapterName(chuong["tenChuong"])
 
+		self.recentAccess_update_request.emit()
+
 	def handleDeleteChapter(self, maChuong):
 		log_controller("Xóa chương trong db")
 		TacVuChuong.xoaChuong(maChuong)
 		self.chapterBlock_update_request.emit()
 
+		self.recentAccess_update_request.emit()
+
 	def handleAddNote(self, maChuong, newText, isChecked):
 		log_controller("Lấy thứ tự lớn nhất")
-		maxOrder = TacVuNote.layThuTuLonNhat(maChuong)
 
 		mapping = {
 			True : "enable",
@@ -47,9 +51,11 @@ class ControllerChapterBlock(QObject):
 		}
 
 		log_controller("Tạo note trong db")
-		TacVuNote.themNote(maChuong,newText,maxOrder+100,mapping[isChecked])
+		TacVuNote.themNote(maChuong,newText,mapping[isChecked])
 
 		self.updateNoteBlockList()
+
+		self.recentAccess_update_request.emit()
 
 	def handleMoveUpNote(self, maNote):
 		TacVuNote.diChuyenNoteLen(maNote, self.chapterId)
@@ -98,4 +104,7 @@ class ControllerChapterBlock(QObject):
 		log_controller("Cập nhật lại ds note")
 		self.deleteViewAndControllerNoteBlock()
 		self.createViewAndControllerNoteBlock()
+
+		# Mỗi lần cập nhật lại danh sách thì đồng thời cập nhật lại lần truy cập gần nhất cho môn học luôn
+		self.recentAccess_update_request.emit()
 	# ----------------------------------------------------------------------

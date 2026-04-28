@@ -32,6 +32,24 @@ def layChuong(maChuong):
 
 	return thongTinChuong
 
+def layMaChuongMoiNhat():
+	conn = get_connection()
+	cur = conn.cursor()
+
+	cur.execute("""
+		SELECT maChuong FROM Chuong
+		ORDER BY maChuong DESC
+		LIMIT 1;
+	""")
+
+	rows = cur.fetchall()
+
+	ds = [dict(row) for row in rows]
+
+	conn.close()
+
+	return ds[0]	
+
 def layChuongThuTuLonNhat(maMon):
 	conn = get_connection()
 	cur = conn.cursor()

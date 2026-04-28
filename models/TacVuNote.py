@@ -7,11 +7,12 @@ def layDanhSachNote(maChuong):
 def layNote(maNote):
 	return RepoNote.layNote(maNote)
 
-def themNote(maChuong, noiDung, thuTuNote, trangThaiThongBao):
-	RepoNote.themNote(maChuong, noiDung, thuTuNote, trangThaiThongBao)
-
 def layThuTuLonNhat(maChuong):
 	return RepoNote.layNoteThuTuLonNhat(maChuong)
+
+def themNote(maChuong, noiDung, trangThaiThongBao):
+	maxOrder = layThuTuLonNhat(maChuong)
+	RepoNote.themNote(maChuong, noiDung, maxOrder+100, trangThaiThongBao)
 
 def suaNote(maNote, noiDung):
 	RepoNote.capNhatNote(maNote, noiDung)

@@ -29,3 +29,6 @@ def xoaMon(maMon):
 
 def xoaTatCaMon():
 	RepoMonHoc.xoaMonKhiTrangThaiMonDisable()
+
+def layMaMonMoiNhat():
+	return RepoMonHoc.layMaMonMoiNhat()

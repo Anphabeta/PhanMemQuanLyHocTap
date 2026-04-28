@@ -9,7 +9,8 @@ from View.ViewNoteBlock import ViewNoteBlock
 from View.ViewTrashPage import ViewTrashPage
 from View.ViewSubjectPage import ViewSubjectPage
 from View.ViewSidebar import ViewSidebar
-# from View.ViewHomePage import ViewHomePage
+from View.ViewCreateNoteDialog import ViewCreateNoteDialog
+from View.ViewHomePage import ViewHomePage
 
 from Controller.ControllerMainWindow import ControllerMainWindow
 from Controller.ControllerNoteBlock import ControllerNoteBlock
@@ -17,7 +18,8 @@ from Controller.ControllerChapterBlock import ControllerChapterBlock
 from Controller.ControllerTrashPage import ControllerTrashPage
 from Controller.ControllerSubjectPage import ControllerSubjectPage
 from Controller.ControllerSidebar import ControllerSidebar
-# from Controller.ControllerHomePage import ControllerHomePage
+from Controller.ControllerCreateNoteDialog import ControllerCreateNoteDialog
+from Controller.ControllerHomePage import ControllerHomePage
 
 import sys
 from PyQt6.QtWidgets import QApplication
@@ -41,6 +43,12 @@ controllerSubjectPage = ControllerSubjectPage(viewSubjectPage)
 
 viewSidebar = ViewSidebar()
 controllerSidebar = ControllerSidebar(viewSidebar)
+
+viewCreateNoteDialog = ViewCreateNoteDialog()
+controllerCreateNoteDialog = ControllerCreateNoteDialog(viewCreateNoteDialog)
+
+viewHomePage = ViewHomePage()
+controllerHomePage = ControllerHomePage(viewHomePage)
 
 
 print("Test thành công")
