@@ -46,7 +46,7 @@ def layDanhSachMonTrash():
 	cur.execute("""
 		SELECT * FROM MonHoc
 		WHERE trangThaiMon = 'disable'
-		ORDER BY truyCapGanNhat DESC
+		ORDER BY truyCapGanNhat DESC;
 	""")
 	rows = cur.fetchall()
 
@@ -55,6 +55,24 @@ def layDanhSachMonTrash():
 	conn.close()
 
 	return ds
+
+def layDanhSachMonFav():
+	conn = get_connection()
+	cur = conn.cursor()
+
+	cur.execute("""
+		SELECT * FROM MonHoc
+		WHERE trangThaiMon = 'enable' AND isUaThich = 'enable'
+		ORDER BY truyCapGanNhat DESC;
+	""")
+	rows = cur.fetchall()
+
+	ds = [dict(row) for row in rows]
+
+	conn.close()
+
+	return ds
+
 
 def layMaMonMoiNhat():
 	conn = get_connection()
@@ -141,6 +159,19 @@ def capNhatTrangThaiMonEnable(maMon):
 	conn.commit()
 	conn.close()
 
+def capNhatIsUaThich(maMon, trangThaiMoi):
+	conn = get_connection()
+	cur = conn.cursor()
+
+	cur.execute("""
+		UPDATE MonHoc SET 
+		isUaThich = (?)
+		WHERE maMon = (?);
+	""",(trangThaiMoi, maMon))
+
+	conn.commit()
+	conn.close()
+
 def xoaMon(maMon):
 	conn = get_connection()
 	cur = conn.cursor()
@@ -164,4 +195,5 @@ def xoaMonKhiTrangThaiMonDisable():
 
 	conn.commit()
 	conn.close()
+
 

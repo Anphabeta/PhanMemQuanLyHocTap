@@ -9,6 +9,9 @@ def layMon(maMon):
 def layDanhSachMonTrash():
 	return RepoMonHoc.layDanhSachMonTrash()
 
+def layDanhSachMonUaThich():
+	return RepoMonHoc.layDanhSachMonFav()
+
 def themMon(tenMon):
 	RepoMonHoc.themMon(tenMon)
 
@@ -32,3 +35,9 @@ def xoaTatCaMon():
 
 def layMaMonMoiNhat():
 	return RepoMonHoc.layMaMonMoiNhat()
+
+def themUaThich(maMon):
+	RepoMonHoc.capNhatIsUaThich(maMon, 'enable')
+
+def boUaThich(maMon):
+	RepoMonHoc.capNhatIsUaThich(maMon, 'disable')

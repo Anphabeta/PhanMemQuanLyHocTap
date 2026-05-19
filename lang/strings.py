@@ -1,9 +1,14 @@
 class Text:
 	# Main window
 	WINDOW_TITLE = "Quản lý kiến thức"
+
+
+	# Sidebar
 	HOME = "Trang chủ"
 	NEWSUBJ = "Thêm môn học"
 	TRASH = "Thùng rác"
+	SUBJECT_LIST_TITLE = "Danh sách môn học"
+	FAVORITE_LIST_TITLE = "Môn học ưa thích"
 
 	# Dialog
 	DIALOG_TITLE_THEMMON = "Thêm môn học mới"
@@ -17,6 +22,7 @@ class Text:
 	A_SUA = "Sửa môn học"
 	A_MOVE = "Chuyển môn học vào thùng rác"
 	A_THICH = "Thêm vào danh sách ưa thích"
+	A_BOTHICH = "Bỏ thích môn học"
 
 	# Trash Page
 	TRASH_TITLE = "Thùng rác"

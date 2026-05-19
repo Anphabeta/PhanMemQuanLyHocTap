@@ -30,6 +30,10 @@ class ControllerSidebar(QObject):
 		# ----------------------------------------------------------------------------------------------
 		self.sidebar.subjItem_selected.connect(self.handleSwitchSubject)
 		# ----------------------------------------------------------------------------------------------
+		self.sidebar.subj_addFavorite_request.connect(self.handleAddFavoriteSubject)
+		# ----------------------------------------------------------------------------------------------
+		self.sidebar.subj_removeFavorite_request.connect(self.handleRemoveFavoriteSubject)
+		# ----------------------------------------------------------------------------------------------
 		self.updateSubjList()
 
 	def handleSwitchSubject(self, maMon):
@@ -66,10 +70,25 @@ class ControllerSidebar(QObject):
 		
 		self.updateSubjList()
 
+	def handleAddFavoriteSubject(self, maMon):
+		log_controller("Thêm môn học vào mục ưa thích")
+		TacVuMonHoc.themUaThich(maMon)
+
+		self.updateSubjList()
+
+	def handleRemoveFavoriteSubject(self, maMon):
+		log_controller("Thêm môn học vào mục ưa thích")
+		TacVuMonHoc.boUaThich(maMon)
+
+		self.updateSubjList()
+
 	def updateSubjList(self):
 		log_controller("Lấy ds môn từ db và hiển thị")
 		subjList = TacVuMonHoc.layDanhSachMon()
 		self.sidebar.showSubjList(subjList)
+
+		subjListFav = TacVuMonHoc.layDanhSachMonUaThich()
+		self.sidebar.showSubjListFav(subjListFav)
 
 	def updateRecentAccess(self, maMon):
 		log_controller("Cập nhật truy cập gần nhất cho môn")

@@ -18,7 +18,8 @@ CREATE TABLE IF NOT EXISTS MonHoc(
 	tenMon TEXT NOT NULL,
 	tgTaoMon TEXT DEFAULT (DATETIME('now','localtime')),
 	truyCapGanNhat TEXT DEFAULT (DATETIME('now','localtime')),
-	trangThaiMon TEXT DEFAULT 'enable'
+	trangThaiMon TEXT DEFAULT 'enable',
+	isUaThich TEXT DEFAULT 'disable'
 );
 CREATE TABLE IF NOT EXISTS Chuong(
 	maChuong INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -36,6 +37,10 @@ CREATE TABLE IF NOT EXISTS GhiChu(
 	maChuong INTEGER NOT NULL,
 	thuTuNote REAL,
 	trangThaiThongBao TEXT DEFAULT 'enable',
+	soLanOn REAL DEFAULT 0,
+	heSoDeNho REAL DEFAULT 0,
+	khoangCach REAL DEFAULT 0,
+	ngayOnTiep REAL DEFAULT (DATETIME('now','localtime')),
 	FOREIGN KEY(maChuong) REFERENCES Chuong(maChuong)
 		ON DELETE CASCADE
 );

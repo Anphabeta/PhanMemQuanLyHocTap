@@ -5,7 +5,8 @@ from PyQt6.QtWidgets import (
 	QVBoxLayout,
 	QMenu,
 	QDialog,
-	QListWidgetItem
+	QListWidgetItem,
+	QLabel
 )
 from PyQt6.QtCore import Qt, pyqtSignal
 from lang.strings import Text
@@ -23,6 +24,7 @@ class ViewSidebar(QWidget):
 	subj_edit_request = pyqtSignal(int,str)
 	subj_softDelete_request = pyqtSignal(int)
 	subj_addFavorite_request = pyqtSignal(int)
+	subj_removeFavorite_request = pyqtSignal(int)
 
 	def __init__(self):
 		# Trong hàm này cần: Khởi tạo, xử lý layout, connect các widget con
@@ -31,8 +33,14 @@ class ViewSidebar(QWidget):
 		self.homeBtn = QPushButton(Text.HOME)
 		self.newSubjBtn = QPushButton(Text.NEWSUBJ)
 		self.trashBtn = QPushButton(Text.TRASH)
+
+		self.subjListTitle = QLabel(Text.SUBJECT_LIST_TITLE)
 		self.subjListWidget = QListWidget()
 		self.subjListWidget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+
+		self.favListTitle = QLabel(Text.FAVORITE_LIST_TITLE)
+		self.favListWidget = QListWidget()
+		self.favListWidget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
 		#
 		self.setFixedWidth(250)
 		self.setupLayout()
@@ -45,7 +53,10 @@ class ViewSidebar(QWidget):
 		layout.addWidget(self.homeBtn)
 		layout.addWidget(self.newSubjBtn)
 		layout.addWidget(self.trashBtn)
+		layout.addWidget(self.subjListTitle)
 		layout.addWidget(self.subjListWidget)
+		layout.addWidget(self.favListTitle)
+		layout.addWidget(self.favListWidget)
 	# ---------------------------------------------------------------------
 
 
@@ -57,6 +68,9 @@ class ViewSidebar(QWidget):
 
 		self.subjListWidget.customContextMenuRequested.connect(self.createContextMenu)
 		self.subjListWidget.itemClicked.connect(self.sendCurrentMaMon)
+
+		self.favListWidget.customContextMenuRequested.connect(self.createContextMenuFav)
+		self.favListWidget.itemClicked.connect(self.sendCurrentMaMon)
 
 	def handleSwitchHomePage(self):
 		plainLog("switch home page event")
@@ -79,7 +93,7 @@ class ViewSidebar(QWidget):
 			return
 
 		maMon = item.data(Qt.ItemDataRole.UserRole)
-		contextMenu = ViewContextMenu()
+		contextMenu = ViewContextMenuSubj()
 
 		action = contextMenu.exec(self.subjListWidget.mapToGlobal(pos))
 
@@ -89,6 +103,22 @@ class ViewSidebar(QWidget):
 			self.subj_softDelete_request.emit(maMon)
 		elif action == contextMenu.action_favorite:
 			self.subj_addFavorite_request.emit(maMon)
+
+	def createContextMenuFav(self, pos):
+		plainLog("right click context menu event")
+		log_view("Tạo context menu của mục ưa thích")
+		item = self.favListWidget.itemAt(pos)
+
+		if item is None:
+			return
+
+		maMon = item.data(Qt.ItemDataRole.UserRole)
+		contextMenu = ViewContextMenuFavSubj()
+
+		action = contextMenu.exec(self.favListWidget.mapToGlobal(pos))
+
+		if action == contextMenu.action_removeFavorite:
+			self.subj_removeFavorite_request.emit(maMon)
 
 	def createInputDialogAddSubject(self):
 		plainLog("add subject event")
@@ -132,15 +162,28 @@ class ViewSidebar(QWidget):
 			item = QListWidgetItem(subj["tenMon"])
 			item.setData(Qt.ItemDataRole.UserRole, subj["maMon"])
 			self.subjListWidget.addItem(item)
+
+	def showSubjListFav(self, subjListFav):
+		self.favListWidget.clear()
+		for subj in subjListFav:
+			item = QListWidgetItem(subj["tenMon"])
+			item.setData(Qt.ItemDataRole.UserRole, subj["maMon"])
+			self.favListWidget.addItem(item)
 	# ---------------------------------------------------------------------
 	
 
 
-class ViewContextMenu(QMenu):
+class ViewContextMenuSubj(QMenu):
 	def __init__(self):
 		super().__init__()
 
 		self.action_edit = self.addAction(Text.A_SUA)
 		self.action_move = self.addAction(Text.A_MOVE)
 		self.action_favorite = self.addAction(Text.A_THICH)
+
+class ViewContextMenuFavSubj(QMenu):
+	def __init__(self):
+		super().__init__()
+
+		self.action_removeFavorite = self.addAction(Text.A_BOTHICH)
 
