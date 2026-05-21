@@ -33,12 +33,13 @@ CREATE TABLE IF NOT EXISTS Chuong(
 CREATE TABLE IF NOT EXISTS GhiChu(
 	maNote INTEGER PRIMARY KEY AUTOINCREMENT,
 	noiDung TEXT NOT NULL,
+	cauHoi TEXT DEFAULT '',
 	tgTaoNote TEXT DEFAULT (DATETIME('now','localtime')),
 	maChuong INTEGER NOT NULL,
 	thuTuNote REAL,
 	trangThaiThongBao TEXT DEFAULT 'enable',
 	soLanOn REAL DEFAULT 0,
-	heSoDeNho REAL DEFAULT 0,
+	heSoDeNho REAL DEFAULT 1.7,
 	khoangCach REAL DEFAULT 0,
 	ngayOnTiep REAL DEFAULT (DATETIME('now','localtime')),
 	FOREIGN KEY(maChuong) REFERENCES Chuong(maChuong)

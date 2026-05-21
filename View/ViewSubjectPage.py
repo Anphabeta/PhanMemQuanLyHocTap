@@ -77,7 +77,7 @@ class ViewSubjectPage(QWidget):
 		idx = self.chapterLayout.count() - 1
 		self.chapterLayout.insertWidget(idx, chapterBlock)
 
-		print(f'Đã tạo chapter block có mã {chuong["maChuong"]}')
+		# print(f'Đã tạo chapter block có mã {chuong["maChuong"]}')
 		return chapterBlock
 	# ------------------------------------------------------------------------
 

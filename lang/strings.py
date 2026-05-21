@@ -46,3 +46,17 @@ class Text:
 	CHOOSE_SUBJECT_FIRST = "--- Hãy chọn môn học trước ---"
 	CHOOSE_CHAPTER_TEXT = "--- Chọn chương ---"
 	CREATE_CHAPTER_TEXT = "--- Tạo chương mới ---"
+
+	# Review dialog
+	DIALOG_TITLE_ONTAP = "Thẻ ôn tập"
+	FLIP = "Lật thẻ"
+	JUDGE_YOUR_SELF = "Hãy đánh giá mức độ nhớ của bạn"
+	SCORE_BTN = [
+		"0 - Quên hoàn toàn",
+		"1 - Sai, thấy đáp án vẫn lạ",
+		"2 - Sai, nhưng nhận ra ngay",
+		"3 - Nhớ được, nhưng rất khó khăn",
+		"4 - Nhớ tốt, hơi ngập ngừng",
+		"5 - Nhớ hoàn hảo"
+	]
+

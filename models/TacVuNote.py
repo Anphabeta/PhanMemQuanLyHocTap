@@ -1,4 +1,5 @@
 import repositories.RepoNote as RepoNote
+from datetime import datetime, timedelta
 from debug.log_writer import plainLog, log_model
 
 def layDanhSachNote(maChuong):
@@ -11,7 +12,10 @@ def layThuTuLonNhat(maChuong):
 	return RepoNote.layNoteThuTuLonNhat(maChuong)
 
 def themNote(maChuong, noiDung, trangThaiThongBao):
-	maxOrder = layThuTuLonNhat(maChuong)
+	maxOrder = RepoNote.layNoteThuTuLonNhat(maChuong)
+	if maxOrder is None:
+		maxOrder = 0
+
 	RepoNote.themNote(maChuong, noiDung, maxOrder+100, trangThaiThongBao)
 
 def suaNote(maNote, noiDung):
@@ -62,3 +66,35 @@ def tatThongBao(maNote):
 
 def batThongBao(maNote):
 	RepoNote.capNhatTrangThaiThongBao(maNote, "enable")
+
+def lapLaiNgatQuang(diem, thongSo):
+	(soLanLap, doDe, khoangCachOn) = thongSo
+	if diem >= 3:
+		if soLanLap == 0:
+			khoangCachOn = 1
+		elif soLanLap == 1:
+			khoangCachOn = 6
+		else:
+			khoangCachOn =  round(khoangCachOn * doDe)
+		soLanLap += 1
+	else:
+		soLanLap = 0
+		khoangCachOn = 1
+
+	doDe += (0.1 - (5-diem)*(0.08 + (5-diem)*0.02))
+	doDe = max(doDe, 1.3)
+	doDe = min(doDe, 2.3)
+
+	return (soLanLap, doDe, khoangCachOn)
+
+
+def capNhatThongSo(maNote, diem):
+	data = RepoNote.layThongSo(maNote)
+	thongSo = (data["soLanOn"], data["heSoDeNho"], data["khoangCach"])
+	thongSo = lapLaiNgatQuang(diem, thongSo)
+
+	ngayOnTiep = datetime.now() + timedelta(days=thongSo[2])
+	RepoNote.capNhatThongSo(maNote, thongSo[0], thongSo[1], thongSo[2], ngayOnTiep.strftime("%Y-%m-%d %H:%M:%S"))
+
+def layDanhSachReviewTag():
+	return RepoNote.layDanhSachReviewTag()

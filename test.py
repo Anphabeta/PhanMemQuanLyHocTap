@@ -11,6 +11,8 @@ from View.ViewSubjectPage import ViewSubjectPage
 from View.ViewSidebar import ViewSidebar
 from View.ViewCreateNoteDialog import ViewCreateNoteDialog
 from View.ViewHomePage import ViewHomePage
+from View.ViewReviewDialog import ViewReviewDialog
+from View.ViewReviewDialog import ViewReviewTag
 
 from Controller.ControllerMainWindow import ControllerMainWindow
 from Controller.ControllerNoteBlock import ControllerNoteBlock
@@ -20,6 +22,7 @@ from Controller.ControllerSubjectPage import ControllerSubjectPage
 from Controller.ControllerSidebar import ControllerSidebar
 from Controller.ControllerCreateNoteDialog import ControllerCreateNoteDialog
 from Controller.ControllerHomePage import ControllerHomePage
+from Controller.ControllerReviewDialog import ControllerReviewDialog
 
 import sys
 from PyQt6.QtWidgets import QApplication
@@ -50,8 +53,13 @@ controllerCreateNoteDialog = ControllerCreateNoteDialog(viewCreateNoteDialog)
 viewHomePage = ViewHomePage()
 controllerHomePage = ControllerHomePage(viewHomePage)
 
+viewReviewDialog = ViewReviewDialog("Đây là CSDL nhưng nó phân tán :)", "CSDLPT là gì?", 20)
+controllerReviewDialog = ControllerReviewDialog(viewReviewDialog)
+
+viewReviewTag = ViewReviewTag("detroit", "ý nghĩa", 1, "đây là đâu?", "đây là detroit")
 
 print("Test thành công")
+# viewReviewTag.show()
 app.exec()
 
 print("Kết thúc")
