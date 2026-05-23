@@ -131,7 +131,7 @@ class ViewChapterBlock(QWidget):
 
 	# Phụ trách hiển thị note block ----------------------------------------------
 	def createNoteBlock(self, note):
-		noteBlock = ViewNoteBlock(note["noiDung"], note["maNote"])
+		noteBlock = ViewNoteBlock(note["noiDung"], note["cauHoi"], note["maNote"])
 
 		idx = self.noteLayout.count()
 		self.noteLayout.insertWidget(idx, noteBlock)

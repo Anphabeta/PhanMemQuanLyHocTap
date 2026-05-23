@@ -32,6 +32,7 @@ class ControllerMainWindow(QObject):
 
 	def connectSignalFromControllerSubjectPage(self):
 		self.controllerSubjectPage.recentAccess_update_request.connect(self.controllerSidebar.updateRecentAccess)
+		self.controllerSubjectPage.reviewTag_update_request.connect(self.controllerHomePage.updateReviewTagList)
 
 	def connectSignalFromControllerHomePage(self):
 		self.controllerHomePage.subjList_update_request.connect(self.controllerSidebar.updateSubjList)

@@ -35,6 +35,7 @@ class Text:
 
 	# Note
 	CHECK_BOX_RECALL = "Nhắc lại"
+	NOT_ADD_QUESTION = "Bạn chưa thêm câu hỏi"
 
 	# Home Page
 	CREATE_NOTE_BTN = "Tạo note mới"
@@ -46,6 +47,9 @@ class Text:
 	CHOOSE_SUBJECT_FIRST = "--- Hãy chọn môn học trước ---"
 	CHOOSE_CHAPTER_TEXT = "--- Chọn chương ---"
 	CREATE_CHAPTER_TEXT = "--- Tạo chương mới ---"
+
+	TITLE_CONTENT = "Nội dung note"
+	TITLE_QUESTION = "Câu hỏi"
 
 	# Review dialog
 	DIALOG_TITLE_ONTAP = "Thẻ ôn tập"

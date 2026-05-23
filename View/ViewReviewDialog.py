@@ -24,7 +24,9 @@ class ViewReviewDialog(QDialog):
 		self.setWindowTitle(Text.DIALOG_TITLE_ONTAP)
 		#
 		self.note = QLabel(noiDungNote)
+		self.note.setWordWrap(True)
 		self.question = QLabel(cauHoi)
+		self.question.setWordWrap(True)
 		self.flipBtn = QPushButton(Text.FLIP)
 		self.flipState = False
 		#

@@ -2,12 +2,15 @@ from PyQt6.QtWidgets import (
 	QWidget, 
 	QPushButton,
 	QLabel,
-	QHBoxLayout, QVBoxLayout
+	QHBoxLayout, QVBoxLayout,
+	QMenu,
 )
+from PyQt6.QtGui import QAction
 from PyQt6.QtCore import pyqtSignal, Qt
 
 from debug.log_writer import log_view, plainLog
-from View.QDefine import NoteEdit
+from View.QDefine import NoteEdit, TextEdit, QuestionEdit
+from lang.strings import Text
 		
 class ViewNoteBlock(QWidget):
 	note_edit_request = pyqtSignal(int,str)
@@ -16,8 +19,9 @@ class ViewNoteBlock(QWidget):
 	note_moveDown_request = pyqtSignal(int)
 	note_create_request = pyqtSignal()
 	note_change_recallState = pyqtSignal(int, int)
+	question_edit_request = pyqtSignal(int, str)
 
-	def __init__(self, noiDungNote, maNote):
+	def __init__(self, noiDungNote, cauHoi, maNote):
 		super().__init__()
 		self.noteId = maNote
 
@@ -26,15 +30,24 @@ class ViewNoteBlock(QWidget):
 		self.noteEdit = NoteEdit(noiDungNote)
 		self.noteEdit.hide()
 
-		self.hoverBtns = QWidget()
-		self.addNoteBtn = QPushButton("➕")
-		self.deleteNoteBtn = QPushButton("🗑️")
-		self.editNoteBtn = QPushButton("🖊️")
-		self.moveUpBtn = QPushButton("⬆️")
-		self.moveDownBtn = QPushButton("⬇️")
-		self.moreOptionBtn = QPushButton("⛏️")
+		self.questionArea = QuestionEdit(cauHoi, maNote)
+		self.questionArea.hide()
 
-		self.addNoteBtn.hide()
+		self.hoverBtns = QWidget()
+		self.questionBtn = QPushButton("❔")
+		self.moreOptionBtn = QPushButton("...")
+
+		self.optionMenu = QMenu(self.hoverBtns)
+		self.editNoteAction = QAction("🖊️ Sửa note", self.hoverBtns)
+		self.deleteNoteAction = QAction("🗑️ Xóa note", self.hoverBtns)
+		self.moveUpAction = QAction("⬆️ Di chuyển lên", self.hoverBtns)
+		self.moveDownAction = QAction("⬇️ Di chuyển xuống", self.hoverBtns)
+		self.addAction()
+		self.moreOptionBtn.setMenu(self.optionMenu)
+
+		# self.addNoteBtn = QPushButton("➕")
+
+		self.questionBtn.hide()
 		self.moreOptionBtn.hide()
 
 		self.setupLayout()
@@ -46,52 +59,64 @@ class ViewNoteBlock(QWidget):
 	# Phụ trách khởi tạo --------------------------------------------
 	def setupLayout(self):
 		mainLayout = QHBoxLayout(self)
-		mainLayout.addWidget(self.hoverBtns)
 		mainLayout.addWidget(self.textArea,1)
+		mainLayout.addWidget(self.hoverBtns)
 
-		hoverBtnsLayout = QVBoxLayout(self.hoverBtns)
-		hoverBtnsLayout.addWidget(self.addNoteBtn)
-		hoverBtnsLayout.addWidget(self.deleteNoteBtn)
-		hoverBtnsLayout.addWidget(self.editNoteBtn)
-		hoverBtnsLayout.addWidget(self.moveUpBtn)
-		hoverBtnsLayout.addWidget(self.moveDownBtn)
+		hoverBtnsLayout = QHBoxLayout(self.hoverBtns)
+		hoverBtnsLayout.addWidget(self.questionBtn)
 		hoverBtnsLayout.addWidget(self.moreOptionBtn)
 
 		textAreaLayout = QVBoxLayout(self.textArea)
 		textAreaLayout.addWidget(self.noteShow)
 		textAreaLayout.addWidget(self.noteEdit)
+		textAreaLayout.addWidget(self.questionArea)
+
+	def addAction(self):
+		self.optionMenu.addAction(self.editNoteAction)
+		self.optionMenu.addAction(self.deleteNoteAction)
+		self.optionMenu.addAction(self.moveUpAction)
+		self.optionMenu.addAction(self.moveDownAction)
 
 	def setSize(self, width):
-		self.addNoteBtn.setFixedWidth(width)
-		self.deleteNoteBtn.setFixedWidth(width)
-		self.editNoteBtn.setFixedWidth(width)
-		self.moveUpBtn.setFixedWidth(width)
-		self.moveDownBtn.setFixedWidth(width)
 		self.moreOptionBtn.setFixedWidth(width)
+		self.questionBtn.setFixedWidth(width)
 
 		self.noteShow.setWordWrap(True)
 
 	def setAlign(self):
 		self.noteShow.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)	
+
+	def enterEvent(self, event):
+		self.questionBtn.show()
+		self.moreOptionBtn.show()
+		super().enterEvent(event)
+
+	def leaveEvent(self, event):
+		self.questionBtn.hide()
+		self.moreOptionBtn.hide()
+		super().leaveEvent(event)
 	# ---------------------------------------------------------------
 
 
 	# Phụ trách phát tín hiệu ---------------------------------------
 	def emitSignal(self):
-		self.addNoteBtn.clicked.connect(self.handleAddNote)
-		self.deleteNoteBtn.clicked.connect(self.handleDeleteNote)
-		self.editNoteBtn.clicked.connect(self.openEditInline)
+		# self.addNoteBtn.clicked.connect(self.handleAddNote)
+		self.deleteNoteAction.triggered.connect(self.handleDeleteNote)
+		self.editNoteAction.triggered.connect(self.openEditInline)
 		self.noteEdit.editingFinished.connect(self.handleSendNote)
 		self.noteEdit.stateChanged.connect(self.handleChangeRecallState)
-		self.moveUpBtn.clicked.connect(self.handleMoveUp)
-		self.moveDownBtn.clicked.connect(self.handleMoveDown)
-		self.moreOptionBtn.clicked.connect(self.handleMoreOption)
+		self.noteEdit.cancelEdit.connect(self.closeEditInline)
+		self.moveUpAction.triggered.connect(self.handleMoveUp)
+		self.moveDownAction.triggered.connect(self.handleMoveDown)
+		self.questionBtn.clicked.connect(self.questionArea.showQuestion)
+		self.questionArea.question_send_request.connect(self.question_edit_request.emit)
 
-	def handleAddNote(self):
-		plainLog("add note event")
 
-		log_view("Phát tín hiệu")
-		self.note_create_request.emit()
+	# def handleAddNote(self):
+	# 	plainLog("add note event")
+
+	# 	log_view("Phát tín hiệu")
+	# 	self.note_create_request.emit()
 
 	def handleDeleteNote(self):
 		plainLog("deleta note event")
@@ -110,9 +135,6 @@ class ViewNoteBlock(QWidget):
 
 		log_view("Phát tín hiệu")
 		self.note_moveDown_request.emit(self.noteId)
-
-	def handleMoreOption(self):
-		pass
 
 	def openEditInline(self):
 		self.noteShow.hide()
@@ -137,7 +159,7 @@ class ViewNoteBlock(QWidget):
 		plainLog("change recall state event")
 
 		log_view("Phát tín hiệu")
-		self.note_change_recallState.emit(self.noteId, state)
+		self.note_change_recallState.emit(self.noteId, state)	
 	# ---------------------------------------------------------------
 
 
@@ -145,6 +167,10 @@ class ViewNoteBlock(QWidget):
 	def handleReceiveNote(self, note):
 		self.noteShow.setText(note)
 		self.closeEditInline()
+
+	def handleReceiveQuestion(self, cauHoi):
+		self.questionArea.setText(cauHoi)
+		self.questionArea.closeEditQuestion()
 	# ---------------------------------------------------------------
 
 

@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import(
 	QPlainTextEdit,
 	QCheckBox,
 	QComboBox,
+	QLabel,
 )
 from PyQt6.QtCore import pyqtSignal
 
@@ -28,6 +29,7 @@ class TextEdit(QPlainTextEdit):
 class NoteEdit(QWidget):
 	editingFinished = pyqtSignal()
 	stateChanged = pyqtSignal(int)
+	cancelEdit = pyqtSignal()
 
 	def __init__(self, noiDungNote):
 		super().__init__()
@@ -38,6 +40,7 @@ class NoteEdit(QWidget):
 		self.checkBoxRecall = QCheckBox(Text.CHECK_BOX_RECALL)
 		self.checkBoxRecall.setChecked(True)
 		self.okBtn = QPushButton("✔️")
+		self.cancelBtn = QPushButton("❌")
 
 		self.setupLayout()
 		self.emitSignal()
@@ -50,9 +53,11 @@ class NoteEdit(QWidget):
 		checkBoxAndOKLayout = QHBoxLayout(self.checkBoxAndOKWidget)
 		checkBoxAndOKLayout.addWidget(self.checkBoxRecall)
 		checkBoxAndOKLayout.addWidget(self.okBtn)
+		checkBoxAndOKLayout.addWidget(self.cancelBtn)
 
 	def emitSignal(self):
 		self.okBtn.clicked.connect(self.editingFinished.emit)
+		self.cancelBtn.clicked.connect(self.cancelEdit.emit)
 		self.checkBoxRecall.stateChanged.connect(self.stateChanged.emit)
 
 	def setPlainText(self, newText):
@@ -67,6 +72,87 @@ class NoteEdit(QWidget):
 	def getCheckBoxState(self):
 		return self.checkBoxRecall.isChecked()
 
+class QuestionEdit(QWidget):
+	question_send_request = pyqtSignal(int, str)
+
+	def __init__(self, cauHoi, noteId):
+		super().__init__()
+
+		self.questionShowArea = QWidget()
+		cauHoi = cauHoi if cauHoi != "" else Text.NOT_ADD_QUESTION
+		self.questionShow = QLabel(cauHoi, self.questionShowArea)
+		self.hideQuestionBtn = QPushButton("🔼", self.questionShowArea)
+		self.editQuestionBtn = QPushButton("🖊️", self.questionShowArea)
+
+		self.questionEditArea = QWidget()
+		self.questionEdit = TextEdit(cauHoi, self.questionEditArea)
+		self.okQuestionBtn = QPushButton("✔️", self.questionEditArea)
+		self.cancelQuestionBtn = QPushButton("❌", self.questionEditArea)
+		self.questionEditArea.hide()
+
+		self.noteId = noteId
+
+		self.setupLayout()
+		self.emitSignal()
+
+	def setupLayout(self):
+		mainLayout = QVBoxLayout(self)
+		mainLayout.addWidget(self.questionShowArea)
+		mainLayout.addWidget(self.questionEditArea)
+
+		questionShowLayout = QVBoxLayout(self.questionShowArea)
+		questionShowLayout.addWidget(self.questionShow)
+		btnsShow = QWidget()
+		btnsShowLayout = QHBoxLayout(btnsShow)
+		btnsShowLayout.addStretch()
+		btnsShowLayout.addWidget(self.hideQuestionBtn)
+		btnsShowLayout.addWidget(self.editQuestionBtn)
+		questionShowLayout.addWidget(btnsShow)
+
+		questionEditLayout = QVBoxLayout(self.questionEditArea)
+		questionEditLayout.addWidget(self.questionEdit)
+		btnsEdit = QWidget()
+		btnsEditLayout = QHBoxLayout(btnsEdit)
+		btnsEditLayout.addStretch()
+		btnsEditLayout.addWidget(self.okQuestionBtn)
+		btnsEditLayout.addWidget(self.cancelQuestionBtn)
+		questionEditLayout.addWidget(btnsEdit)
+
+	def emitSignal(self):
+		self.hideQuestionBtn.clicked.connect(self.hideQuestion)
+		self.editQuestionBtn.clicked.connect(self.openEditQuestion)
+		self.okQuestionBtn.clicked.connect(self.handleSendQuestion)
+		self.cancelQuestionBtn.clicked.connect(self.closeEditQuestion)		
+
+	def openEditQuestion(self):
+		self.questionShowArea.hide()
+		self.questionEditArea.show()
+		self.questionEdit.setPlainText(self.questionShow.text())
+		self.questionEdit.show()
+		self.questionEdit.setFocus()
+		self.questionEdit.selectAll()
+
+	def closeEditQuestion(self):
+		self.questionShowArea.show()
+		self.questionEditArea.hide()
+
+	def hideQuestion(self):
+		self.hide()
+
+	def showQuestion(self):
+		self.show()
+
+	def handleSendQuestion(self):
+		oldQuestion = self.questionShow.text()
+		newQuestion = self.questionEdit.toPlainText()
+
+		if newQuestion != oldQuestion:
+			self.question_send_request.emit(self.noteId, newQuestion)
+		else:
+			self.closeEditQuestion()
+
+	def setText(self, cauHoi):
+		self.questionShow.setText(cauHoi)
 
 
 class InputDialog(QDialog):

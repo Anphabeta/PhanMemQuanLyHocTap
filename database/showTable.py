@@ -4,30 +4,44 @@
 # Nhập tên bảng để hiển thị nội dung của bảng
 from tabulate import tabulate
 from db_connect import get_connection
+import textwrap
 
 conn = get_connection()
 cur = conn.cursor()
 
+MAX_WIDTH = 20
+
+def wrap_cell(cell, width=MAX_WIDTH):
+    if cell is None:
+        return ""
+    return "\n".join(textwrap.wrap(str(cell), width=width))
+
 command = input()
 
-if(command.lower()=='tables'):
-	cur.execute("""
-		SELECT name
-		FROM sqlite_master
-		WHERE type = 'table'
-		ORDER BY name
-	""")
-	rows = cur.fetchall()
-
-	headers = [d[0] for d in cur.description]
-
-	print(tabulate(rows, headers=headers, tablefmt="grid"))
+if command.lower() == 'tables':
+    cur.execute("""
+        SELECT name
+        FROM sqlite_master
+        WHERE type = 'table'
+        ORDER BY name
+    """)
 else:
-	cur.execute(f"select * from {command}")
-	rows = cur.fetchall()
+    cur.execute(f"SELECT * FROM {command}")
 
-	headers = [d[0] for d in cur.description]
+rows = cur.fetchall()
 
-	print(tabulate(rows, headers=headers, tablefmt="grid"))
+headers = [d[0] for d in cur.description]
+
+# Wrap toàn bộ dữ liệu
+wrapped_rows = [
+    [wrap_cell(cell) for cell in row]
+    for row in rows
+]
+
+print(tabulate(
+    wrapped_rows,
+    headers=headers,
+    tablefmt="grid"
+))
 
 conn.close()

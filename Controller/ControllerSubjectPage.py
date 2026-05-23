@@ -6,6 +6,7 @@ import models.TacVuMonHoc as TacVuMonHoc
 class ControllerSubjectPage(QObject):
 	# chapterBlock_update_request = pyqtSignal()
 	recentAccess_update_request = pyqtSignal(int)
+	reviewTag_update_request = pyqtSignal()
 
 	def __init__(self, view):
 		super().__init__()
@@ -47,6 +48,7 @@ class ControllerSubjectPage(QObject):
 		# Viết signal vào đây
 		controllerChapterBlock.chapterBlock_update_request.connect(self.updateChapterBlockList)
 		controllerChapterBlock.recentAccess_update_request.connect(self.updateRecentAccess)
+		controllerChapterBlock.reviewTag_update_request.connect(self.reviewTag_update_request.emit)
 
 		# Khởi tạo nội dung bên trong chapter block
 		controllerChapterBlock.initContent()

@@ -51,14 +51,14 @@ def layDanhSachNoteWithThuTu(maChuong):
 
 	return ds
 
-def themNote(maChuong, noiDung, thuTuNote, trangThaiThongBao):
+def themNote(maChuong, noiDung, cauHoi, thuTuNote, trangThaiThongBao):
 	conn = get_connection()
 	cur = conn.cursor()
 
 	cur.execute("""
-		INSERT INTO GhiChu(noiDung, maChuong, thuTuNote, trangThaiThongBao)
-		VALUES (?,?,?,?);
-	""",(noiDung, maChuong, thuTuNote, trangThaiThongBao))
+		INSERT INTO GhiChu(noiDung, cauHoi, maChuong, thuTuNote, trangThaiThongBao)
+		VALUES (?,?,?,?,?);
+	""",(noiDung, cauHoi, maChuong, thuTuNote, trangThaiThongBao))
 
 	conn.commit()
 	conn.close()
@@ -202,5 +202,16 @@ def layDanhSachReviewTag():
 
 	return ds	
 
+def suaCauHoi(maNote, cauHoiMoi):
+	conn = get_connection()
+	cur = conn.cursor()
 
+	cur.execute("""
+		UPDATE GhiChu
+		SET cauHoi = (?)
+		WHERE maNote = (?);
+	""",(cauHoiMoi, maNote))
+
+	conn.commit()
+	conn.close()
 

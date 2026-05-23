@@ -27,7 +27,7 @@ class ControllerHomePage(QObject):
 		# Cài đặt 60p refresh danh sách 1 lần --------------------
 		self.refreshTimer = QTimer(self)
 		self.refreshTimer.timeout.connect(self.updateReviewTagList)
-		self.refreshTimer.start(3600000)
+		self.refreshTimer.start(900000)
 		# ------------------------------------------------------
 
 	# Phụ trách khởi tạo review tag ----------------------------------
@@ -54,7 +54,7 @@ class ControllerHomePage(QObject):
 			TacVuChuong.themChuong(data["chapter"]["text"], subjectId)
 			chapterId = TacVuChuong.layMaChuongMoiNhat()["maChuong"]
 			print(chapterId)
-		TacVuNote.themNote(chapterId, data["note"]["content"], data["note"]["isRecall"])
+		TacVuNote.themNote(chapterId, data["note"]["content"], data["note"]["question"], data["note"]["isRecall"])
 		log_controller("Đã thêm thành công")
 		self.subjList_update_request.emit()
 

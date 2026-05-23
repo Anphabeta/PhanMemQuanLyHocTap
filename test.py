@@ -13,6 +13,7 @@ from View.ViewCreateNoteDialog import ViewCreateNoteDialog
 from View.ViewHomePage import ViewHomePage
 from View.ViewReviewDialog import ViewReviewDialog
 from View.ViewReviewDialog import ViewReviewTag
+from View.QDefine import QuestionEdit
 
 from Controller.ControllerMainWindow import ControllerMainWindow
 from Controller.ControllerNoteBlock import ControllerNoteBlock
@@ -32,7 +33,7 @@ from View.QDefine import InputDialog
 app = QApplication(sys.argv)
 window = ViewMainWindow()
 
-viewNoteBlock = ViewNoteBlock("abc",1)
+viewNoteBlock = ViewNoteBlock("Đây là CSDL nhưng nó phân tán :)", "CSDLPT là gì?", 20)
 controllerNoteBlock = ControllerNoteBlock(viewNoteBlock)
 
 viewChapterBlock = ViewChapterBlock("abc",2)
@@ -57,9 +58,10 @@ viewReviewDialog = ViewReviewDialog("Đây là CSDL nhưng nó phân tán :)", "
 controllerReviewDialog = ControllerReviewDialog(viewReviewDialog)
 
 viewReviewTag = ViewReviewTag("detroit", "ý nghĩa", 1, "đây là đâu?", "đây là detroit")
+questionEdit = QuestionEdit("Đây là đâu", 1)
 
 print("Test thành công")
-# viewReviewTag.show()
+questionEdit.show()
 app.exec()
 
 print("Kết thúc")

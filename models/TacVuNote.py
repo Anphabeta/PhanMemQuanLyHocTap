@@ -11,12 +11,12 @@ def layNote(maNote):
 def layThuTuLonNhat(maChuong):
 	return RepoNote.layNoteThuTuLonNhat(maChuong)
 
-def themNote(maChuong, noiDung, trangThaiThongBao):
+def themNote(maChuong, noiDung, cauHoi, trangThaiThongBao):
 	maxOrder = RepoNote.layNoteThuTuLonNhat(maChuong)
 	if maxOrder is None:
 		maxOrder = 0
 
-	RepoNote.themNote(maChuong, noiDung, maxOrder+100, trangThaiThongBao)
+	RepoNote.themNote(maChuong, noiDung, cauHoi, maxOrder+100, trangThaiThongBao)
 
 def suaNote(maNote, noiDung):
 	RepoNote.capNhatNote(maNote, noiDung)
@@ -71,9 +71,9 @@ def lapLaiNgatQuang(diem, thongSo):
 	(soLanLap, doDe, khoangCachOn) = thongSo
 	if diem >= 3:
 		if soLanLap == 0:
-			khoangCachOn = 1
+			khoangCachOn = 0.5
 		elif soLanLap == 1:
-			khoangCachOn = 6
+			khoangCachOn = 2
 		else:
 			khoangCachOn =  round(khoangCachOn * doDe)
 		soLanLap += 1
@@ -96,5 +96,11 @@ def capNhatThongSo(maNote, diem):
 	ngayOnTiep = datetime.now() + timedelta(days=thongSo[2])
 	RepoNote.capNhatThongSo(maNote, thongSo[0], thongSo[1], thongSo[2], ngayOnTiep.strftime("%Y-%m-%d %H:%M:%S"))
 
+def resetThongSo(maNote):
+	RepoNote.capNhatThongSo(maNote, 0, 1.7, 0, datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
 def layDanhSachReviewTag():
 	return RepoNote.layDanhSachReviewTag()
+
+def suaCauHoi(maNote, cauHoiMoi):
+	RepoNote.suaCauHoi(maNote, cauHoiMoi)

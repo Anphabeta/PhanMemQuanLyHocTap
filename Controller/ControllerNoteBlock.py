@@ -10,6 +10,7 @@ class ControllerNoteBlock(QObject):
 	noteBlock_moveUp_request = pyqtSignal(int)
 	noteBlock_moveDown_request = pyqtSignal(int)
 	recentAccess_update_request = pyqtSignal()
+	reviewTag_update_request = pyqtSignal()
 
 	def __init__(self, view):
 		super().__init__()
@@ -17,6 +18,8 @@ class ControllerNoteBlock(QObject):
 		self.noteBlock = view
 
 		self.noteBlock.note_edit_request.connect(self.handleEditNote)
+
+		self.noteBlock.question_edit_request.connect(self.handleEditQuestion)
 
 		self.noteBlock.note_delete_request.connect(self.handleDeleteNote)
 
@@ -32,6 +35,9 @@ class ControllerNoteBlock(QObject):
 		TacVuNote.suaNote(maNote,newNoiDung)
 		note = TacVuNote.layNote(maNote)
 		self.noteBlock.handleReceiveNote(note["noiDung"])
+
+		TacVuNote.resetThongSo(maNote)
+		self.reviewTag_update_request.emit()
 
 	def handleDeleteNote(self, maNote):
 		log_controller("Kết nối model để xóa note")
@@ -51,4 +57,13 @@ class ControllerNoteBlock(QObject):
 			TacVuNote.tatThongBao(maNote)
 		else:
 			TacVuNote.batThongBao(maNote)
+
+	def handleEditQuestion(self, maNote, cauHoiMoi):
+		log_controller("Kết nối model để sửa")
+		TacVuNote.suaCauHoi(maNote, cauHoiMoi)
+		note = TacVuNote.layNote(maNote)
+		self.noteBlock.handleReceiveQuestion(note["cauHoi"])
+
+		TacVuNote.resetThongSo(maNote)
+		self.reviewTag_update_request.emit()		
 	# --------------------------------------------------------------------

@@ -9,6 +9,7 @@ from debug.log_writer import log_controller, plainLog
 class ControllerChapterBlock(QObject):
 	chapterBlock_update_request = pyqtSignal()
 	recentAccess_update_request = pyqtSignal()
+	reviewTag_update_request = pyqtSignal()
 
 	def __init__(self, view):
 		super().__init__()
@@ -84,6 +85,7 @@ class ControllerChapterBlock(QObject):
 		controllerNoteBlock.noteBlock_update_request.connect(self.updateNoteBlockList)
 		controllerNoteBlock.noteBlock_moveUp_request.connect(self.handleMoveUpNote)
 		controllerNoteBlock.noteBlock_moveDown_request.connect(self.handleMoveDownNote)
+		controllerNoteBlock.reviewTag_update_request.connect(self.reviewTag_update_request.emit)
 
 	def createViewAndControllerNoteBlock(self):
 		dsNote = TacVuNote.layDanhSachNote(self.chapterBlock.chapterId)

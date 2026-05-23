@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import(
 	QPlainTextEdit,
 	QCheckBox,
 	QComboBox,
+	QLabel
 )
 from PyQt6.QtCore import pyqtSignal
 
@@ -26,6 +27,7 @@ class ViewCreateNoteDialog(QDialog):
 		super().__init__()
 		#
 		self.inputText = TextEdit("")
+		self.inputQuestion = TextEdit("")
 
 		self.checkBoxRecall = QCheckBox(Text.CHECK_BOX_RECALL)
 		self.checkBoxRecall.setChecked(True)
@@ -52,7 +54,10 @@ class ViewCreateNoteDialog(QDialog):
 
 	def setupLayout(self):
 		mainLayout = QVBoxLayout(self)
+		mainLayout.addWidget(QLabel(Text.TITLE_CONTENT))
 		mainLayout.addWidget(self.inputText)
+		mainLayout.addWidget(QLabel(Text.TITLE_QUESTION))
+		mainLayout.addWidget(self.inputQuestion)
 		mainLayout.addWidget(self.checkBoxRecall)
 		mainLayout.addWidget(self.comboBoxSubj)
 		mainLayout.addWidget(self.comboBoxChapter)
@@ -85,6 +90,7 @@ class ViewCreateNoteDialog(QDialog):
 			},
 			"note":{
 				"content": self.inputText.toPlainText().strip(),
+				"question": self.inputQuestion.toPlainText().strip(),
 				"isRecall": self.checkBoxRecall.isChecked(),
 			},
 		}
