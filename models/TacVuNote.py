@@ -71,15 +71,15 @@ def lapLaiNgatQuang(diem, thongSo):
 	(soLanLap, doDe, khoangCachOn) = thongSo
 	if diem >= 3:
 		if soLanLap == 0:
-			khoangCachOn = 0.5
+			khoangCachOn = 1
 		elif soLanLap == 1:
-			khoangCachOn = 2
+			khoangCachOn = 3
 		else:
 			khoangCachOn =  round(khoangCachOn * doDe)
 		soLanLap += 1
 	else:
 		soLanLap = 0
-		khoangCachOn = 1
+		khoangCachOn = 0.5
 
 	doDe += (0.1 - (5-diem)*(0.08 + (5-diem)*0.02))
 	doDe = max(doDe, 1.3)
