@@ -43,6 +43,7 @@ class NoteEdit(QWidget):
 		self.cancelBtn = QPushButton("❌")
 
 		self.setupLayout()
+		self.setIdQSS()
 		self.updateUIText()
 		self.emitSignal()
 
@@ -55,6 +56,10 @@ class NoteEdit(QWidget):
 		checkBoxAndOKLayout.addWidget(self.checkBoxRecall)
 		checkBoxAndOKLayout.addWidget(self.okBtn)
 		checkBoxAndOKLayout.addWidget(self.cancelBtn)
+
+	def setIdQSS(self):
+		self.okBtn.setProperty("type", "iconButton")
+		self.cancelBtn.setProperty("type", "iconButton")
 
 	def updateUIText(self):
 		self.checkBoxRecall.setText(Text.CHECK_BOX_RECALL)
@@ -97,6 +102,7 @@ class QuestionEdit(QWidget):
 		self.noteId = noteId
 
 		self.setupLayout()
+		self.setIdQSS()
 		self.emitSignal()
 
 	def setupLayout(self):
@@ -121,6 +127,12 @@ class QuestionEdit(QWidget):
 		btnsEditLayout.addWidget(self.okQuestionBtn)
 		btnsEditLayout.addWidget(self.cancelQuestionBtn)
 		questionEditLayout.addWidget(btnsEdit)
+
+	def setIdQSS(self):
+		self.hideQuestionBtn.setProperty("type", "iconButton")
+		self.editQuestionBtn.setProperty("type", "iconButton")
+		self.okQuestionBtn.setProperty("type", "iconButton")
+		self.cancelQuestionBtn.setProperty("type", "iconButton")
 
 	def emitSignal(self):
 		self.hideQuestionBtn.clicked.connect(self.hideQuestion)

@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import(
 	QScrollArea,
 	QDialog
 )
-from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtCore import pyqtSignal, Qt
 from View.ViewChapterBlock import ViewChapterBlock
 from View.QDefine import InputDialog
 from lang.strings import Text
@@ -28,6 +28,7 @@ class ViewSubjectPage(QWidget):
 
 		self.chapterLayout = QVBoxLayout(self.containerWidget)
 		self.setupLayout()
+		self.setStyles()
 		self.updateUIText()
 		self.emitSignal()
 
@@ -42,6 +43,10 @@ class ViewSubjectPage(QWidget):
 		layout.addWidget(self.scrollArea)
 
 		self.chapterLayout.addStretch()
+
+	def setStyles(self):
+		self.titleSubj.setAlignment(Qt.AlignmentFlag.AlignCenter)
+		self.titleSubj.setProperty("type", "title")
 
 	def updateUIText(self):
 		self.addChapterBtn.setText(Text.ADD_CHAPTER_BTN)

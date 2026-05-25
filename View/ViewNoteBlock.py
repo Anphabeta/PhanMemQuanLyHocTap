@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import (
 	QLabel,
 	QHBoxLayout, QVBoxLayout,
 	QMenu,
+	QSizePolicy,
 )
 from PyQt6.QtGui import QAction
 from PyQt6.QtCore import pyqtSignal, Qt
@@ -47,10 +48,19 @@ class ViewNoteBlock(QWidget):
 
 		# self.addNoteBtn = QPushButton("➕")
 
+		sp1 = self.questionBtn.sizePolicy()
+		sp1.setRetainSizeWhenHidden(True)
+		self.questionBtn.setSizePolicy(sp1)
+
+		sp2 = self.moreOptionBtn.sizePolicy()
+		sp2.setRetainSizeWhenHidden(True)
+		self.moreOptionBtn.setSizePolicy(sp2)
+
 		self.questionBtn.hide()
 		self.moreOptionBtn.hide()
 
 		self.setupLayout()
+		self.setStyles()
 		self.setSize(30)
 		self.setAlign()
 		self.emitSignal()
@@ -62,14 +72,19 @@ class ViewNoteBlock(QWidget):
 		mainLayout.addWidget(self.textArea,1)
 		mainLayout.addWidget(self.hoverBtns)
 
-		hoverBtnsLayout = QHBoxLayout(self.hoverBtns)
+		hoverBtnsLayout = QVBoxLayout(self.hoverBtns)
 		hoverBtnsLayout.addWidget(self.questionBtn)
 		hoverBtnsLayout.addWidget(self.moreOptionBtn)
+		hoverBtnsLayout.addStretch()
 
 		textAreaLayout = QVBoxLayout(self.textArea)
 		textAreaLayout.addWidget(self.noteShow)
 		textAreaLayout.addWidget(self.noteEdit)
 		textAreaLayout.addWidget(self.questionArea)
+
+	def setStyles(self):
+		self.questionBtn.setProperty("type", "iconButton")
+		self.moreOptionBtn.setProperty("type", "iconButton")
 
 	def addAction(self):
 		self.optionMenu.addAction(self.editNoteAction)

@@ -42,7 +42,8 @@ class ViewSidebar(QWidget):
 		self.favListWidget = QListWidget()
 		self.favListWidget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
 		#
-		self.setFixedWidth(250)
+		self.setMinimumWidth(200) 
+		self.setMaximumWidth(400)
 		self.updateUIText()
 		self.setupLayout()
 		self.emitSignal()

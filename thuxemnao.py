@@ -18,6 +18,7 @@ from PyQt6.QtWidgets import (
     QPlainTextEdit,
     QCheckBox,
     QComboBox,
+    QSplitter,
 )
 from PyQt6.QtCore import Qt, QPoint, QObject, pyqtSignal
 from PyQt6.QtGui import QCursor
@@ -55,31 +56,15 @@ window.resize(950,600)
 
 layout = QVBoxLayout(window)
 
-textEdit = TextBlock()
-textEdit.setText("Hello")
-textEdit.hide()
+left = QLabel("LEFT")
+right = QLabel("RIGHT")
 
-textShow = QLabel(textEdit.getText())
+splitter = QSplitter()
+splitter.addWidget(left)
+splitter.addWidget(right)
 
-submitBtn = QPushButton("Submit")
-submitBtn.clicked.connect(lambda: handleClicked(textEdit.getText()))
-
-editBtn = QPushButton("Edit")
-editBtn.clicked.connect(lambda: toggle(textEdit,textShow))
-
-checkBox = QCheckBox("Đã làm")
-checkBox.stateChanged.connect(checkStatus)
-
-comboBox = QComboBox()
-comboBox.addItems(["--Chọn môn học--", "Toán", "Lý", "Hóa", "--Thêm môn học mới--"])
-
-layout.addWidget(textEdit)
-layout.addWidget(textShow)
-layout.addWidget(submitBtn)
-layout.addWidget(editBtn)
-layout.addWidget(checkBox)
-layout.addWidget(comboBox)
-layout.addStretch()
+splitter.setSizes([240, 500])
+layout.addWidget(splitter)
 
 window.show()
 

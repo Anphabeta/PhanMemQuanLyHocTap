@@ -3,8 +3,10 @@ from PyQt6.QtWidgets import(
 	QWidget,
 	QVBoxLayout,
 	QHBoxLayout,
-	QStackedWidget
+	QStackedWidget,
+	QSplitter,
 )
+from PyQt6.QtCore import Qt
 from View.ViewSidebar import ViewSidebar
 from View.ViewTrashPage import ViewTrashPage
 from View.ViewHomePage import ViewHomePage
@@ -33,9 +35,13 @@ class ViewMainWindow(QMainWindow):
 		central = QWidget()
 		self.setCentralWidget(central)
 		#
+		splitter = QSplitter()
+		splitter.addWidget(self.sidebar)
+		splitter.addWidget(self.stackedWidget)
+		splitter.setSizes([250,700])
+
 		layout = QHBoxLayout(central)
-		layout.addWidget(self.sidebar)
-		layout.addWidget(self.stackedWidget)
+		layout.addWidget(splitter)
 
 	def showHomePage(self):
 		self.stackedWidget.setCurrentWidget(self.homePage)

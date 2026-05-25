@@ -5,6 +5,10 @@ import sys
 
 
 app = QApplication(sys.argv)
+
+with open("styles/main.qss", 'r', encoding="utf-8") as styleSheetFile:
+	app.setStyleSheet(styleSheetFile.read())
+
 window = ViewMainWindow()
 controllWindow = ControllerMainWindow(window)
 window.show()

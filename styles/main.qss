@@ -1,0 +1,42 @@
+
+QPushButton {
+	/*Trên dưới 8px, Trái phải 16px*/
+	padding: 8px 16px;
+
+	/*Cỡ chữ 10pt*/
+	font-size: 10pt;
+
+	/*Bo góc mềm mại*/
+	border-radius: 4px;
+
+	border: 1px solid #424242;
+}
+
+QPushButton:hover{
+	background-color: #545454;
+}
+
+QPushButton:pressed{
+	background-color: #474747;
+}
+
+
+
+QPushButton[type="iconButton"]{
+    min-width: 32px;
+    max-width: 32px;
+    min-height: 32px;
+    max-height: 32px;
+
+    padding: 0px;
+
+    font-size: 10pt;
+
+    border-radius: 4px;
+}
+
+QLabel[type="title"]{
+    font-family: "Segoe UI", "Roboto", sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+}

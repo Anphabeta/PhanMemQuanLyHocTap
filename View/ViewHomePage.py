@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import(
 	QScrollArea,
 	QDialog,
 )
-from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtCore import pyqtSignal, Qt
 from lang.strings import Text
 
 from debug.log_writer import log_view, plainLog
@@ -38,6 +38,7 @@ class ViewHomePage(QWidget):
 
 		self.settingBtn.setFixedWidth(30)
 		self.setupLayout()
+		self.setStyles()
 		self.updateUIText()
 		self.emitSignal()
 
@@ -53,6 +54,11 @@ class ViewHomePage(QWidget):
 		layout.addWidget(self.scrollArea)
 
 		self.reviewTagLayout.addStretch()
+
+	def setStyles(self):
+		self.settingBtn.setProperty("type", "iconButton")
+		self.title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+		self.title.setProperty("type", "title")
 
 	def updateUIText(self):
 		self.title.setText(Text.TITLE_HOMEPAGE)
