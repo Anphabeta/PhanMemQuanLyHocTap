@@ -15,6 +15,10 @@ class ControllerSubjectPage(QObject):
 		# ----------------------------------------------------------------------------------------------
 		self.subjectPage.chapter_add_request.connect(self.handleAddChapter)
 		# ----------------------------------------------------------------------------------------------
+		self.subjectPage.chapterList_refresh_request.connect(self.updateChapterBlockList)
+		# ----------------------------------------------------------------------------------------------
+
+		self.maMon = None
 
 		self.controllerChapterBlockList = []
 		self.viewChapterBlockList = []

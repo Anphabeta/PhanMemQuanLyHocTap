@@ -14,12 +14,13 @@ from lang.strings import Text
 
 class ViewSubjectPage(QWidget):
 	chapter_add_request = pyqtSignal(int,str)
+	chapterList_refresh_request = pyqtSignal()
 
 	def __init__(self):
 		super().__init__()
 
-		self.titleSubj = QLabel("Môn học")
-		self.addChapterBtn = QPushButton(Text.ADD_CHAPTER_BTN)
+		self.titleSubj = QLabel("")
+		self.addChapterBtn = QPushButton()
 		self.scrollArea = QScrollArea()
 		self.containerWidget = QWidget()
 		self.scrollArea.setWidget(self.containerWidget)
@@ -27,6 +28,7 @@ class ViewSubjectPage(QWidget):
 
 		self.chapterLayout = QVBoxLayout(self.containerWidget)
 		self.setupLayout()
+		self.updateUIText()
 		self.emitSignal()
 
 	# Phụ trách khởi tạo ----------------------------------------------------
@@ -40,6 +42,10 @@ class ViewSubjectPage(QWidget):
 		layout.addWidget(self.scrollArea)
 
 		self.chapterLayout.addStretch()
+
+	def updateUIText(self):
+		self.addChapterBtn.setText(Text.ADD_CHAPTER_BTN)
+		self.chapterList_refresh_request.emit()
 
 	def setSubjId(self,maMon):
 		self.subjId = maMon

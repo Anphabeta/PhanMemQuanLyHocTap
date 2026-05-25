@@ -13,7 +13,7 @@ from View.ViewCreateNoteDialog import ViewCreateNoteDialog
 from View.ViewHomePage import ViewHomePage
 from View.ViewReviewDialog import ViewReviewDialog
 from View.ViewReviewDialog import ViewReviewTag
-from View.QDefine import QuestionEdit
+from View.QDefine import QuestionEdit,  ViewSettingDialog
 
 from Controller.ControllerMainWindow import ControllerMainWindow
 from Controller.ControllerNoteBlock import ControllerNoteBlock
@@ -60,8 +60,10 @@ controllerReviewDialog = ControllerReviewDialog(viewReviewDialog)
 viewReviewTag = ViewReviewTag("detroit", "ý nghĩa", 1, "đây là đâu?", "đây là detroit")
 questionEdit = QuestionEdit("Đây là đâu", 1)
 
+viewSettingDialog = ViewSettingDialog()
+
 print("Test thành công")
-questionEdit.show()
+viewSettingDialog.show()
 app.exec()
 
 print("Kết thúc")

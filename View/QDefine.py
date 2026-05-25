@@ -37,12 +37,13 @@ class NoteEdit(QWidget):
 		self.textEdit = TextEdit(noiDungNote)
 
 		self.checkBoxAndOKWidget = QWidget()
-		self.checkBoxRecall = QCheckBox(Text.CHECK_BOX_RECALL)
+		self.checkBoxRecall = QCheckBox()
 		self.checkBoxRecall.setChecked(True)
 		self.okBtn = QPushButton("✔️")
 		self.cancelBtn = QPushButton("❌")
 
 		self.setupLayout()
+		self.updateUIText()
 		self.emitSignal()
 
 	def setupLayout(self):
@@ -54,6 +55,9 @@ class NoteEdit(QWidget):
 		checkBoxAndOKLayout.addWidget(self.checkBoxRecall)
 		checkBoxAndOKLayout.addWidget(self.okBtn)
 		checkBoxAndOKLayout.addWidget(self.cancelBtn)
+
+	def updateUIText(self):
+		self.checkBoxRecall.setText(Text.CHECK_BOX_RECALL)
 
 	def emitSignal(self):
 		self.okBtn.clicked.connect(self.editingFinished.emit)
@@ -191,7 +195,67 @@ class InputDialog(QDialog):
 		self.okBtn.setEnabled(self.inputText.text().strip() != "")
 
 
+class ViewSettingDialog(QDialog):
+	def __init__(self):
+		super().__init__()
 
+		self.mainArea = QWidget()
+		self.language = QWidget(self.mainArea)
+		self.languageTitle = QLabel(Text.CHOOSE_LANGUAGE, self.language)
+		self.comboBoxLang = QComboBox(self.language)
+		self.comboBoxLang.addItem(Text.VIETNAMESE, "vi")
+		self.comboBoxLang.addItem(Text.ENGLISH, "en")
+
+
+		self.theme = QWidget()
+		self.themeTitle = QLabel(Text.CHOOSE_THEME, self.theme)
+
+		self.applyBtn = QPushButton(Text.OK)
+		self.cancelBtn = QPushButton(Text.CANCEL)
+
+		self.settingObj = {}
+
+		self.setFixedSize(400, 200)
+		self.setupLayout()
+		self.emitSignal()
+
+	def setupLayout(self):
+		mainLayout = QVBoxLayout(self)
+
+		languageLayout = QVBoxLayout(self.language)
+		languageLayout.addWidget(self.languageTitle)
+		languageLayout.addWidget(self.comboBoxLang)
+
+		themeLayout = QVBoxLayout(self.theme)
+		themeLayout.addWidget(self.themeTitle)
+
+		btnsArea = QWidget()
+		btnsAreaLayout = QHBoxLayout(btnsArea)
+		btnsAreaLayout.addStretch()
+		btnsAreaLayout.addWidget(self.applyBtn)
+		btnsAreaLayout.addWidget(self.cancelBtn)
+
+		mainLayout.addWidget(self.language)
+		mainLayout.addWidget(self.theme)
+		mainLayout.addStretch()
+		mainLayout.addWidget(btnsArea)
+
+	def emitSignal(self):
+		self.applyBtn.clicked.connect(self.accept)
+		self.cancelBtn.clicked.connect(self.reject)
+
+	def setState(self, data):
+		self.settingObj = data
+		
+		index = self.comboBoxLang.findData(data['lang'])
+		if index != -1:
+		    self.comboBoxLang.setCurrentIndex(index)
+
+	def updateState(self):
+		self.settingObj['lang'] = self.comboBoxLang.currentData()
+
+	def getData(self):
+		return self.settingObj
 
 
 

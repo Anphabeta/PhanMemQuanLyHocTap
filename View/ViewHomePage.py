@@ -9,22 +9,25 @@ from PyQt6.QtWidgets import(
 )
 from PyQt6.QtCore import pyqtSignal
 from lang.strings import Text
-from lang.icons import Icon
+
 from debug.log_writer import log_view, plainLog
 
 from View.ViewCreateNoteDialog import ViewCreateNoteDialog
 from View.ViewReviewDialog import ViewReviewTag, ViewReviewDialog
+from View.QDefine import ViewSettingDialog
 
 class ViewHomePage(QWidget):
 	noteDialog_create_request = pyqtSignal()
 	familyNote_create_request = pyqtSignal(object)
+	settingDialog_open_request = pyqtSignal()
 
 	def __init__(self):
 		super().__init__()
 
-		self.title = QLabel("Trang chủ")
+		self.title = QLabel()
 
-		self.createNoteBtn = QPushButton(Text.CREATE_NOTE_BTN)
+		self.createNoteBtn = QPushButton()
+		self.settingBtn = QPushButton("⚙️")
 
 		self.scrollArea = QScrollArea()
 		self.containerWidget = QWidget()
@@ -33,22 +36,31 @@ class ViewHomePage(QWidget):
 
 		self.reviewTagLayout = QVBoxLayout(self.containerWidget)
 
+		self.settingBtn.setFixedWidth(30)
 		self.setupLayout()
+		self.updateUIText()
 		self.emitSignal()
 
 
 	def setupLayout(self):
 		layout = QVBoxLayout(self)
-		layout.addWidget(self.title)
+		firstLine = QWidget()
+		firstLineLayout = QHBoxLayout(firstLine)
+		firstLineLayout.addWidget(self.title)
+		firstLineLayout.addWidget(self.settingBtn)
+		layout.addWidget(firstLine)
 		layout.addWidget(self.createNoteBtn)
 		layout.addWidget(self.scrollArea)
 
 		self.reviewTagLayout.addStretch()
 
+	def updateUIText(self):
+		self.title.setText(Text.TITLE_HOMEPAGE)
+		self.createNoteBtn.setText(Text.CREATE_NOTE_BTN)
+
 	def emitSignal(self):
 		self.createNoteBtn.clicked.connect(self.noteDialog_create_request.emit)
-
-
+		self.settingBtn.clicked.connect(self.settingDialog_open_request.emit)
 
 	# -----------------------------------------------------
 	def createNoteDialog(self):
@@ -70,6 +82,9 @@ class ViewHomePage(QWidget):
 		viewReviewDialog = ViewReviewDialog(data["noiDung"], data["cauHoi"], data["maNote"])
 
 		return viewReviewDialog
+
+	def createViewSettingDialog(self):
+		return ViewSettingDialog()
 	# -----------------------------------------------------
 
 	# Phụ trách hiển thị review tag --------------------------------------- 

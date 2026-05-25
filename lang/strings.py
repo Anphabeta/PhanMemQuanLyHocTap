@@ -1,7 +1,9 @@
+from lang.vi import VI_STRINGS
+from lang.en import EN_STRINGS
+
 class Text:
 	# Main window
 	WINDOW_TITLE = "Quản lý kiến thức"
-
 
 	# Sidebar
 	HOME = "Trang chủ"
@@ -32,12 +34,20 @@ class Text:
 
 	# Subject Page
 	ADD_CHAPTER_BTN = "Thêm chương mới"
+	ADD_NOTE_BTN = "Thêm note"
+	DELETE_CHAPTER_BTN = "Xóa chương"
+	EDIT_CHAPTER_BTN = "Đổi tên chương"
 
 	# Note
 	CHECK_BOX_RECALL = "Nhắc lại"
 	NOT_ADD_QUESTION = "Bạn chưa thêm câu hỏi"
+	NOTE_EDIT_BTN = "🖊️ Sửa note"
+	NOTE_DELETE_BTN = "🗑️ Xóa note"
+	NOTE_MOVEUP_BTN = "⬆️ Di chuyển lên"
+	NOTE_MOVEDOWN_BTN = "⬇️ Di chuyển xuống"
 
 	# Home Page
+	TITLE_HOMEPAGE = "Trang chủ"
 	CREATE_NOTE_BTN = "Tạo note mới"
 
 	# Create note dialog
@@ -63,4 +73,19 @@ class Text:
 		"4 - Nhớ tốt, hơi ngập ngừng",
 		"5 - Nhớ hoàn hảo"
 	]
+
+	# Setting
+	CHOOSE_LANGUAGE = "Ngôn ngữ"
+	VIETNAMESE = "Tiếng Việt"
+	ENGLISH = "Tiếng Anh"
+	CHOOSE_THEME = "Chủ đề"
+
+def set_language(lang_code):
+	"""Hàm dùng để đổi ngôn ngữ toàn hệ thống"""
+	strings = EN_STRINGS if lang_code == 'en' else VI_STRINGS
+	
+	for key, value in strings.items():
+		if hasattr(Text, key):
+			setattr(Text, key, value)
+
 

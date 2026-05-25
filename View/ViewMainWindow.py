@@ -10,7 +10,7 @@ from View.ViewTrashPage import ViewTrashPage
 from View.ViewHomePage import ViewHomePage
 from View.ViewSubjectPage import ViewSubjectPage
 from Controller.ControllerSidebar import ControllerSidebar
-from lang.strings import Text
+from lang.strings import Text, set_language
 
 class ViewMainWindow(QMainWindow):
 	def __init__(self):
@@ -25,11 +25,11 @@ class ViewMainWindow(QMainWindow):
 		self.stackedWidget.addWidget(self.trashPage)
 		self.stackedWidget.addWidget(self.subjPage)
 		#
+		self.updateUIText()
 		self.setupUI()
 
 	def setupUI(self):
 		self.resize(950,900)
-		self.setWindowTitle(Text.WINDOW_TITLE)
 		central = QWidget()
 		self.setCentralWidget(central)
 		#
@@ -45,5 +45,17 @@ class ViewMainWindow(QMainWindow):
 
 	def showTrashPage(self):
 		self.stackedWidget.setCurrentWidget(self.trashPage)
+
+	def setLanguage(self, lang):
+		set_language(lang)
+
+	def updateUIText(self):
+		self.setWindowTitle(Text.WINDOW_TITLE)
+
+		self.sidebar.updateUIText()
+		self.trashPage.updateUIText()
+		self.subjPage.updateUIText()
+		self.homePage.updateUIText()
+
 
 	

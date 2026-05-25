@@ -4,6 +4,8 @@ from Controller.ControllerTrashPage import ControllerTrashPage
 from Controller.ControllerSubjectPage import ControllerSubjectPage
 from Controller.ControllerHomePage import ControllerHomePage
 
+import models.TacVuCaiDat as TacVuCaiDat
+
 
 class ControllerMainWindow(QObject):
 
@@ -24,6 +26,8 @@ class ControllerMainWindow(QObject):
 		self.connectSignalFromControllerSubjectPage()
 		self.connectSignalFromControllerHomePage()
 
+		self.handleSetLanguage()
+
 	def connectSignalFromControllerSidebar(self):
 		self.controllerSidebar.homePage_request.connect(self.mainWindow.showHomePage)
 		self.controllerSidebar.trashPage_request.connect(self.mainWindow.showTrashPage)
@@ -36,6 +40,7 @@ class ControllerMainWindow(QObject):
 
 	def connectSignalFromControllerHomePage(self):
 		self.controllerHomePage.subjList_update_request.connect(self.controllerSidebar.updateSubjList)
+		self.controllerHomePage.mainWindow_setLanguage_request.connect(self.handleSetLanguage)
 
 	def connectSignalFromControllerTrashPage(self):
 		self.controllerTrashPage.subjList_update_request.connect(self.controllerSidebar.updateSubjList)
@@ -43,4 +48,10 @@ class ControllerMainWindow(QObject):
 	def handleNavigateSubjPage(self, maMon):
 		self.mainWindow.showSubjPage()
 		self.controllerSubjectPage.getNavigateRequest(maMon)
+
+	def handleSetLanguage(self):
+		data = TacVuCaiDat.layThongTinCaiDat()
+
+		self.mainWindow.setLanguage(data['lang'])
+		self.mainWindow.updateUIText()
 

@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import(
 )
 from PyQt6.QtCore import pyqtSignal
 from lang.strings import Text
-from lang.icons import Icon
+
 
 from View.ViewNoteBlock import ViewNoteBlock
 from View.QDefine import NoteEdit
@@ -27,9 +27,9 @@ class ViewChapterBlock(QWidget):
 		self.titleChapterShow = QLabel(tenChuong)
 		self.titleChapterEdit = QLineEdit()
 		self.titleChapterEdit.hide()
-		self.addNoteBtn = QPushButton(Icon.ADD_NOTE_BTN)
-		self.editChapterBtn = QPushButton(Icon.EDIT_CHAPTER_BTN)
-		self.deleteChapterBtn = QPushButton(Icon.DELETE_CHAPTER_BTN)
+		self.addNoteBtn = QPushButton(Text.ADD_NOTE_BTN)
+		self.editChapterBtn = QPushButton(Text.EDIT_CHAPTER_BTN)
+		self.deleteChapterBtn = QPushButton(Text.DELETE_CHAPTER_BTN)
 
 		self.tempInput = NoteEdit("")
 		self.tempInput.hide()

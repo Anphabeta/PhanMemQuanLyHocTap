@@ -30,19 +30,20 @@ class ViewSidebar(QWidget):
 		# Trong hàm này cần: Khởi tạo, xử lý layout, connect các widget con
 		super().__init__()
 		#
-		self.homeBtn = QPushButton(Text.HOME)
-		self.newSubjBtn = QPushButton(Text.NEWSUBJ)
-		self.trashBtn = QPushButton(Text.TRASH)
+		self.homeBtn = QPushButton()
+		self.newSubjBtn = QPushButton()
+		self.trashBtn = QPushButton()
 
-		self.subjListTitle = QLabel(Text.SUBJECT_LIST_TITLE)
+		self.subjListTitle = QLabel()
 		self.subjListWidget = QListWidget()
 		self.subjListWidget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
 
-		self.favListTitle = QLabel(Text.FAVORITE_LIST_TITLE)
+		self.favListTitle = QLabel()
 		self.favListWidget = QListWidget()
 		self.favListWidget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
 		#
 		self.setFixedWidth(250)
+		self.updateUIText()
 		self.setupLayout()
 		self.emitSignal()
 
@@ -57,6 +58,13 @@ class ViewSidebar(QWidget):
 		layout.addWidget(self.subjListWidget)
 		layout.addWidget(self.favListTitle)
 		layout.addWidget(self.favListWidget)
+
+	def updateUIText(self):
+		self.homeBtn.setText(Text.HOME)
+		self.newSubjBtn.setText(Text.NEWSUBJ)
+		self.trashBtn.setText(Text.TRASH)
+		self.subjListTitle.setText(Text.SUBJECT_LIST_TITLE)
+		self.favListTitle.setText(Text.FAVORITE_LIST_TITLE)
 	# ---------------------------------------------------------------------
 
 

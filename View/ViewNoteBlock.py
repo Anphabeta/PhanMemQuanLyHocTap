@@ -38,10 +38,10 @@ class ViewNoteBlock(QWidget):
 		self.moreOptionBtn = QPushButton("...")
 
 		self.optionMenu = QMenu(self.hoverBtns)
-		self.editNoteAction = QAction("🖊️ Sửa note", self.hoverBtns)
-		self.deleteNoteAction = QAction("🗑️ Xóa note", self.hoverBtns)
-		self.moveUpAction = QAction("⬆️ Di chuyển lên", self.hoverBtns)
-		self.moveDownAction = QAction("⬇️ Di chuyển xuống", self.hoverBtns)
+		self.editNoteAction = QAction(Text.NOTE_EDIT_BTN, self.hoverBtns)
+		self.deleteNoteAction = QAction(Text.NOTE_DELETE_BTN, self.hoverBtns)
+		self.moveUpAction = QAction(Text.NOTE_MOVEUP_BTN, self.hoverBtns)
+		self.moveDownAction = QAction(Text.NOTE_MOVEDOWN_BTN, self.hoverBtns)
 		self.addAction()
 		self.moreOptionBtn.setMenu(self.optionMenu)
 

@@ -18,14 +18,15 @@ class ViewTrashPage(QWidget):
 	def __init__(self):
 		super().__init__()
 
-		self.title = QLabel(Text.TRASH_TITLE)
+		self.title = QLabel()
 		self.trashSubjList = QListWidget()
 		self.threeBtns = QWidget()
-		self.recoverBtn = QPushButton(Text.RECORVER_BTN)
-		self.deleteBtn = QPushButton(Text.DELETE_BTN)
-		self.deleteAllBtn = QPushButton(Text.DELETE_ALL_BTN)
+		self.recoverBtn = QPushButton()
+		self.deleteBtn = QPushButton()
+		self.deleteAllBtn = QPushButton()
 
 		self.setupLayout()
+		self.updateUIText()
 		self.emitSignal()
 
 	def setupLayout(self):
@@ -38,6 +39,12 @@ class ViewTrashPage(QWidget):
 		threeBtnsLayout.addWidget(self.recoverBtn)
 		threeBtnsLayout.addWidget(self.deleteBtn)
 		threeBtnsLayout.addWidget(self.deleteAllBtn)
+
+	def updateUIText(self):
+		self.title.setText(Text.TRASH_TITLE)
+		self.recoverBtn.setText(Text.RECORVER_BTN)
+		self.deleteBtn.setText(Text.DELETE_BTN)
+		self.deleteAllBtn.setText(Text.DELETE_ALL_BTN)
 
 	def emitSignal(self):
 		self.recoverBtn.clicked.connect(lambda: self.subj_recover_request.emit())

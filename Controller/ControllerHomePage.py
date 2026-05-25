@@ -7,9 +7,11 @@ from debug.log_writer import log_controller, plainLog
 import models.TacVuMonHoc as TacVuMonHoc
 import models.TacVuChuong as TacVuChuong
 import models.TacVuNote as TacVuNote
+import models.TacVuCaiDat as TacVuCaiDat
 
 class ControllerHomePage(QObject):
 	subjList_update_request = pyqtSignal()
+	mainWindow_setLanguage_request = pyqtSignal()
 
 	def __init__(self, view):
 		super().__init__()
@@ -19,6 +21,8 @@ class ControllerHomePage(QObject):
 		self.homePage.noteDialog_create_request.connect(self.handleConnectNoteDialog)
 
 		self.homePage.familyNote_create_request.connect(self.destructoring)
+
+		self.homePage.settingDialog_open_request.connect(self.handleCreateSettingDialog)
 
 		self.viewReviewTagList = []
 
@@ -58,6 +62,9 @@ class ControllerHomePage(QObject):
 		log_controller("Đã thêm thành công")
 		self.subjList_update_request.emit()
 
+		log_controller("Refresh lại ds review tag")
+		self.updateReviewTagList()
+
 	def handleCreateReviewDialog(self, maNote):
 		log_controller("Tạo review dialog")
 		data = TacVuNote.layNote(maNote) # maNote, noiDungNote, cauHoi
@@ -70,6 +77,19 @@ class ControllerHomePage(QObject):
 		if result == QDialog.DialogCode.Accepted:
 			controllerReviewDialog.handleSendScore(maNote, viewReviewDialog.getDiem())
 			self.updateReviewTagList()
+
+	def handleCreateSettingDialog(self):
+		viewSettingDialog = self.homePage.createViewSettingDialog()
+
+		viewSettingDialog.setState(TacVuCaiDat.layThongTinCaiDat())
+
+		result = viewSettingDialog.exec()
+
+		if result == QDialog.DialogCode.Accepted:
+			viewSettingDialog.updateState()
+			TacVuCaiDat.suaThongTinCaiDat(viewSettingDialog.getData())
+
+			self.mainWindow_setLanguage_request.emit()
 
 
 	# Phụ trách hiển thị Review Tag ----------------------------------------
