@@ -35,6 +35,7 @@ class NoteEdit(QWidget):
 		super().__init__()
 
 		self.textEdit = TextEdit(noiDungNote)
+		self.textEdit.setMaximumHeight(80)
 
 		self.checkBoxAndOKWidget = QWidget()
 		self.checkBoxRecall = QCheckBox()

@@ -5,8 +5,9 @@ from PyQt6.QtWidgets import (
 	QHBoxLayout, QVBoxLayout,
 	QMenu,
 	QSizePolicy,
+	QStyle, QStyleOption,
 )
-from PyQt6.QtGui import QAction
+from PyQt6.QtGui import QAction, QPainter
 from PyQt6.QtCore import pyqtSignal, Qt
 
 from debug.log_writer import log_view, plainLog
@@ -69,6 +70,8 @@ class ViewNoteBlock(QWidget):
 	# Phụ trách khởi tạo --------------------------------------------
 	def setupLayout(self):
 		mainLayout = QHBoxLayout(self)
+		mainLayout.setContentsMargins(0, 0, 0, 0)
+		mainLayout.setSpacing(0)
 		mainLayout.addWidget(self.textArea,1)
 		mainLayout.addWidget(self.hoverBtns)
 
@@ -78,9 +81,18 @@ class ViewNoteBlock(QWidget):
 		hoverBtnsLayout.addStretch()
 
 		textAreaLayout = QVBoxLayout(self.textArea)
+		textAreaLayout.setContentsMargins(0,0,0,0)
+		textAreaLayout.setSpacing(0)
 		textAreaLayout.addWidget(self.noteShow)
 		textAreaLayout.addWidget(self.noteEdit)
 		textAreaLayout.addWidget(self.questionArea)
+		textAreaLayout.addStretch()
+
+	def paintEvent(self, event):
+		opt = QStyleOption()
+		opt.initFrom(self)
+		p = QPainter(self)
+		self.style().drawPrimitive(QStyle.PrimitiveElement.PE_Widget, opt, p, self)
 
 	def setStyles(self):
 		self.questionBtn.setProperty("type", "iconButton")

@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import(
 	QHBoxLayout, QVBoxLayout,
 	QLineEdit
 )
-from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtCore import pyqtSignal, Qt
 from lang.strings import Text
 
 
@@ -39,6 +39,7 @@ class ViewChapterBlock(QWidget):
 		self.noteLayout = QVBoxLayout(self.noteArea)
 
 		self.setLayout()
+		self.setStyles()
 		self.setSize()
 		self.emitSignal()
 
@@ -46,6 +47,8 @@ class ViewChapterBlock(QWidget):
 	# Phụ trách khởi tạo --------------------------------------------------------
 	def setLayout(self):
 		mainLayout = QVBoxLayout(self)
+		mainLayout.setContentsMargins(0,0,0,0)
+		mainLayout.setSpacing(0)
 		mainLayout.addWidget(self.titleArea)
 		mainLayout.addWidget(self.noteArea)
 
@@ -62,6 +65,10 @@ class ViewChapterBlock(QWidget):
 		self.addNoteBtn.setFixedWidth(100)
 		self.editChapterBtn.setFixedWidth(100)
 		self.deleteChapterBtn.setFixedWidth(100)
+
+	def setStyles(self):
+		self.titleChapterShow.setProperty("type", "chapter-title")
+		self.titleChapterEdit.setProperty("type", "chapter-title")
 	# ----------------------------------------------------------------------------
 
 
@@ -71,6 +78,7 @@ class ViewChapterBlock(QWidget):
 		self.titleChapterEdit.editingFinished.connect(self.handleSendChapterName)
 		self.deleteChapterBtn.clicked.connect(self.handleDeleteChapter)
 		self.addNoteBtn.clicked.connect(self.handleAddNote)
+		self.tempInput.cancelEdit.connect(self.closeTemp)
 
 		self.tempInput.editingFinished.connect(self.checkCondition)
 
@@ -134,7 +142,7 @@ class ViewChapterBlock(QWidget):
 		noteBlock = ViewNoteBlock(note["noiDung"], note["cauHoi"], note["maNote"])
 
 		idx = self.noteLayout.count()
-		self.noteLayout.insertWidget(idx, noteBlock)
+		self.noteLayout.insertWidget(idx, noteBlock, 0, Qt.AlignmentFlag.AlignTop)
 
 		# log_view(f"Đã tạo note block {note["maNote"]}")
 		return noteBlock

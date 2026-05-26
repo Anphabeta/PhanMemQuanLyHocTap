@@ -54,9 +54,13 @@ class ViewCreateNoteDialog(QDialog):
 
 	def setupLayout(self):
 		mainLayout = QVBoxLayout(self)
-		mainLayout.addWidget(QLabel(Text.TITLE_CONTENT))
+		titleContent = QLabel(Text.TITLE_CONTENT)
+		titleContent.setProperty("type", "sidebar-title")
+		mainLayout.addWidget(titleContent)
 		mainLayout.addWidget(self.inputText)
-		mainLayout.addWidget(QLabel(Text.TITLE_QUESTION))
+		titleQuestion = QLabel(Text.TITLE_QUESTION)
+		titleQuestion.setProperty("type", "sidebar-title")
+		mainLayout.addWidget(titleQuestion)
 		mainLayout.addWidget(self.inputQuestion)
 		mainLayout.addWidget(self.checkBoxRecall)
 		mainLayout.addWidget(self.comboBoxSubj)

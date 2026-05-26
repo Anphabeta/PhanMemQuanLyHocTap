@@ -4,7 +4,8 @@ from PyQt6.QtWidgets import(
 	QLabel,
 	QPushButton,
 	QScrollArea,
-	QDialog
+	QDialog,
+	QSizePolicy
 )
 from PyQt6.QtCore import pyqtSignal, Qt
 from View.ViewChapterBlock import ViewChapterBlock
@@ -25,6 +26,7 @@ class ViewSubjectPage(QWidget):
 		self.containerWidget = QWidget()
 		self.scrollArea.setWidget(self.containerWidget)
 		self.scrollArea.setWidgetResizable(True)
+		self.setPolicyScrollArea()
 
 		self.chapterLayout = QVBoxLayout(self.containerWidget)
 		self.setupLayout()
@@ -54,6 +56,14 @@ class ViewSubjectPage(QWidget):
 
 	def setSubjId(self,maMon):
 		self.subjId = maMon
+
+	def setPolicyScrollArea(self):
+		self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+		self.scrollArea.setWidgetResizable(True)
+		self.containerWidget.setSizePolicy(
+			QSizePolicy.Policy.Preferred,
+			QSizePolicy.Policy.MinimumExpanding
+		)
 	# ------------------------------------------------------------------------
 
 

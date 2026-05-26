@@ -9,17 +9,16 @@ QPushButton {
 	/*Bo góc mềm mại*/
 	border-radius: 4px;
 
+	font-weight: bold;
+
 	border: 1px solid #424242;
 }
-
 QPushButton:hover{
 	background-color: #545454;
 }
-
 QPushButton:pressed{
 	background-color: #474747;
 }
-
 
 
 QPushButton[type="iconButton"]{
@@ -35,8 +34,58 @@ QPushButton[type="iconButton"]{
     border-radius: 4px;
 }
 
-QLabel[type="title"]{
+QLabel{
     font-family: "Segoe UI", "Roboto", sans-serif;
+    font-size: 16px;
+}
+QLabel[type="title"]{
     font-weight: bold;
     font-size: 30px;
+}
+QLabel[type="sidebar-title"]{
+	font-weight: bold;
+	font-size: 16px;
+	margin-top: 8px;
+}
+QLabel[type="chapter-title"]{
+	font-weight: bold;
+	font-size: 16px;
+}
+
+ViewReviewTag{
+	border: 1px solid #424242;
+	border-radius: 4px;
+}
+ViewReviewTag:hover{
+	background-color: #545454;
+}
+ViewReviewTag:pressed{
+	background-color: #474747;
+}
+
+ViewNoteBlock{
+	margin:0px;
+}
+
+QListWidget{
+	font-family: "Segoe UI", "Roboto", sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+QComboBox{
+	font-family: "Segoe UI", "Roboto", sans-serif;
+	font-size: 16px;
+}
+
+QLineEdit[type="chapter-title"]{
+    font-family: "Segoe UI", "Roboto", sans-serif;
+    font-size: 16px;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+QPlainTextEdit{
+    font-family: "Segoe UI", "Roboto", sans-serif;
+    font-size: 16px;
 }

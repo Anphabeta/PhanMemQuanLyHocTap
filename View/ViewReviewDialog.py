@@ -8,8 +8,10 @@ from PyQt6.QtWidgets import(
 	QPlainTextEdit,
 	QCheckBox,
 	QComboBox,
-	QLabel
+	QLabel,
+	QStyle, QStyleOption
 )
+from PyQt6.QtGui import QPainter
 from PyQt6.QtCore import Qt, pyqtSignal
 
 from lang.strings import Text
@@ -111,6 +113,9 @@ class ViewReviewTag(QWidget):
 
 		self.noteId = maNote
 
+		self.path.setWordWrap(True)
+		self.brief.setWordWrap(True)
+
 		self.setupLayout()
 
 	def setupLayout(self):
@@ -118,6 +123,12 @@ class ViewReviewTag(QWidget):
 		mainLayout.addWidget(self.path)
 		mainLayout.addWidget(self.brief)
 		self.makeChildrenTransparent()
+
+	def paintEvent(self, event):
+		opt = QStyleOption()
+		opt.initFrom(self)
+		p = QPainter(self)
+		self.style().drawPrimitive(QStyle.PrimitiveElement.PE_Widget, opt, p, self)
 
 	def enterEvent(self, event):
 		self.hovered = True

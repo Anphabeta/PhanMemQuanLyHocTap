@@ -26,6 +26,7 @@ class ViewTrashPage(QWidget):
 		self.deleteAllBtn = QPushButton()
 
 		self.setupLayout()
+		self.setStyles()
 		self.updateUIText()
 		self.emitSignal()
 
@@ -39,6 +40,10 @@ class ViewTrashPage(QWidget):
 		threeBtnsLayout.addWidget(self.recoverBtn)
 		threeBtnsLayout.addWidget(self.deleteBtn)
 		threeBtnsLayout.addWidget(self.deleteAllBtn)
+
+	def setStyles(self):
+		self.title.setProperty("type", "title")
+		self.title.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
 	def updateUIText(self):
 		self.title.setText(Text.TRASH_TITLE)

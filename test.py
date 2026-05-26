@@ -63,7 +63,7 @@ questionEdit = QuestionEdit("Đây là đâu", 1)
 viewSettingDialog = ViewSettingDialog()
 
 print("Test thành công")
-viewSettingDialog.show()
+viewNoteBlock.show()
 app.exec()
 
 print("Kết thúc")

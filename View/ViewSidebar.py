@@ -46,6 +46,7 @@ class ViewSidebar(QWidget):
 		self.setMaximumWidth(400)
 		self.updateUIText()
 		self.setupLayout()
+		self.setStyles()
 		self.emitSignal()
 
 
@@ -66,6 +67,10 @@ class ViewSidebar(QWidget):
 		self.trashBtn.setText(Text.TRASH)
 		self.subjListTitle.setText(Text.SUBJECT_LIST_TITLE)
 		self.favListTitle.setText(Text.FAVORITE_LIST_TITLE)
+
+	def setStyles(self):
+		self.subjListTitle.setProperty("type", "sidebar-title")
+		self.favListTitle.setProperty("type", "sidebar-title")
 	# ---------------------------------------------------------------------
 
 
