@@ -1,13 +1,13 @@
 from PyQt6.QtWidgets import QApplication
 from View import ViewMainWindow
 from Controller import ControllerMainWindow
+import styles.get_styles as get_styles
 import sys
 
 
 app = QApplication(sys.argv)
 
-with open("styles/main.qss", 'r', encoding="utf-8") as styleSheetFile:
-	app.setStyleSheet(styleSheetFile.read())
+get_styles.load(app)
 
 window = ViewMainWindow()
 controllWindow = ControllerMainWindow(window)

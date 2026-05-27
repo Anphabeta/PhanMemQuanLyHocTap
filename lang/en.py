@@ -38,10 +38,10 @@ EN_STRINGS = {
     # Note
     "CHECK_BOX_RECALL": "Recall",
     "NOT_ADD_QUESTION": "You haven't added a question yet",
-    "NOTE_EDIT_BTN": "🖊️ Edit note",
-    "NOTE_DELETE_BTN": "🗑️ Delete note",
-    "NOTE_MOVEUP_BTN": "⬆️ Move up",
-    "NOTE_MOVEDOWN_BTN": "⬇️ Move down",
+    "NOTE_EDIT_BTN": "Edit note",
+    "NOTE_DELETE_BTN": "Delete note",
+    "NOTE_MOVEUP_BTN": "Move up",
+    "NOTE_MOVEDOWN_BTN": "Move down",
 
     # Home Page
     "TITLE_HOMEPAGE": "Home",

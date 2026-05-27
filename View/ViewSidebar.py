@@ -6,8 +6,11 @@ from PyQt6.QtWidgets import (
 	QMenu,
 	QDialog,
 	QListWidgetItem,
-	QLabel
+	QLabel,
+	QStyleOption,
+	QStyle
 )
+from PyQt6.QtGui import QPainter
 from PyQt6.QtCore import Qt, pyqtSignal
 from lang.strings import Text
 from View.QDefine import InputDialog
@@ -33,6 +36,10 @@ class ViewSidebar(QWidget):
 		self.homeBtn = QPushButton()
 		self.newSubjBtn = QPushButton()
 		self.trashBtn = QPushButton()
+		self.sidebarBtn = []
+		self.sidebarBtn.append(self.homeBtn)
+		self.sidebarBtn.append(self.newSubjBtn)
+		self.sidebarBtn.append(self.trashBtn)
 
 		self.subjListTitle = QLabel()
 		self.subjListWidget = QListWidget()
@@ -55,11 +62,12 @@ class ViewSidebar(QWidget):
 		layout = QVBoxLayout(self)
 		layout.addWidget(self.homeBtn)
 		layout.addWidget(self.newSubjBtn)
-		layout.addWidget(self.trashBtn)
 		layout.addWidget(self.subjListTitle)
 		layout.addWidget(self.subjListWidget)
 		layout.addWidget(self.favListTitle)
 		layout.addWidget(self.favListWidget)
+		layout.addWidget(self.trashBtn)
+		layout.addStretch()
 
 	def updateUIText(self):
 		self.homeBtn.setText(Text.HOME)
@@ -71,6 +79,18 @@ class ViewSidebar(QWidget):
 	def setStyles(self):
 		self.subjListTitle.setProperty("type", "sidebar-title")
 		self.favListTitle.setProperty("type", "sidebar-title")
+
+		self.homeBtn.setObjectName("home")
+		self.newSubjBtn.setObjectName("new")
+		self.trashBtn.setObjectName("trash")
+		for btn in self.sidebarBtn:
+			btn.setProperty("type", "sidebarButton")
+
+	def paintEvent(self, event):
+		opt = QStyleOption()
+		opt.initFrom(self)
+		p = QPainter(self)
+		self.style().drawPrimitive(QStyle.PrimitiveElement.PE_Widget, opt, p, self)
 	# ---------------------------------------------------------------------
 
 

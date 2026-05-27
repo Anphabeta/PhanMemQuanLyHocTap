@@ -27,9 +27,12 @@ class ViewChapterBlock(QWidget):
 		self.titleChapterShow = QLabel(tenChuong)
 		self.titleChapterEdit = QLineEdit()
 		self.titleChapterEdit.hide()
-		self.addNoteBtn = QPushButton(Text.ADD_NOTE_BTN)
-		self.editChapterBtn = QPushButton(Text.EDIT_CHAPTER_BTN)
-		self.deleteChapterBtn = QPushButton(Text.DELETE_CHAPTER_BTN)
+		self.addNoteBtn = QPushButton()
+		self.editChapterBtn = QPushButton()
+		self.deleteChapterBtn = QPushButton()
+		self.addNoteBtn.hide()
+		self.editChapterBtn.hide()
+		self.deleteChapterBtn.hide()
 
 		self.tempInput = NoteEdit("")
 		self.tempInput.hide()
@@ -69,6 +72,24 @@ class ViewChapterBlock(QWidget):
 	def setStyles(self):
 		self.titleChapterShow.setProperty("type", "chapter-title")
 		self.titleChapterEdit.setProperty("type", "chapter-title")
+		self.addNoteBtn.setProperty("type", "iconButton")
+		self.editChapterBtn.setProperty("type", "iconButton")
+		self.deleteChapterBtn.setProperty("type", "iconButton")
+		self.addNoteBtn.setObjectName("new")
+		self.editChapterBtn.setObjectName("edit")
+		self.deleteChapterBtn.setObjectName("trash")
+
+	def enterEvent(self, event):
+		self.addNoteBtn.show()
+		self.editChapterBtn.show()
+		self.deleteChapterBtn.show()
+		super().enterEvent(event)
+
+	def leaveEvent(self, event):
+		self.addNoteBtn.hide()
+		self.editChapterBtn.hide()
+		self.deleteChapterBtn.hide()
+		super().leaveEvent(event)
 	# ----------------------------------------------------------------------------
 
 

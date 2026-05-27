@@ -166,23 +166,6 @@ def capNhatThongSo(maNote, soLanOn, heSoDeNho, khoangCach, ngayOnTiep):
 	conn.commit()
 	conn.close()
 
-def layDanhSachNoteCanOn():
-	conn = get_connection()
-	cur = conn.cursor()
-
-	cur.execute("""
-		SELECT * FROM GhiChu
-		WHERE maChuong = (?)
-		ORDER BY thuTuNote;
-	""", (maChuong,))
-	rows = cur.fetchall()
-
-	ds = [dict(row) for row in rows]
-
-	conn.close()
-
-	return ds
-
 def layDanhSachReviewTag():
 	conn = get_connection()
 	cur = conn.cursor()

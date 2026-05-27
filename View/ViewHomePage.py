@@ -27,7 +27,7 @@ class ViewHomePage(QWidget):
 		self.title = QLabel()
 
 		self.createNoteBtn = QPushButton()
-		self.settingBtn = QPushButton("⚙️")
+		self.settingBtn = QPushButton()
 
 		self.scrollArea = QScrollArea()
 		self.containerWidget = QWidget()
@@ -57,6 +57,8 @@ class ViewHomePage(QWidget):
 
 	def setStyles(self):
 		self.settingBtn.setProperty("type", "iconButton")
+		self.settingBtn.setObjectName("setting")
+		self.createNoteBtn.setObjectName("add-new-note")
 		self.title.setAlignment(Qt.AlignmentFlag.AlignCenter)
 		self.title.setProperty("type", "title")
 

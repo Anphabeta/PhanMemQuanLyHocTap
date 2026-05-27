@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import (
 	QSizePolicy,
 	QStyle, QStyleOption,
 )
-from PyQt6.QtGui import QAction, QPainter
+from PyQt6.QtGui import QAction, QPainter, QIcon
 from PyQt6.QtCore import pyqtSignal, Qt
 
 from debug.log_writer import log_view, plainLog
@@ -36,14 +36,14 @@ class ViewNoteBlock(QWidget):
 		self.questionArea.hide()
 
 		self.hoverBtns = QWidget()
-		self.questionBtn = QPushButton("❔")
-		self.moreOptionBtn = QPushButton("...")
+		self.questionBtn = QPushButton()
+		self.moreOptionBtn = QPushButton()
 
 		self.optionMenu = QMenu(self.hoverBtns)
-		self.editNoteAction = QAction(Text.NOTE_EDIT_BTN, self.hoverBtns)
-		self.deleteNoteAction = QAction(Text.NOTE_DELETE_BTN, self.hoverBtns)
-		self.moveUpAction = QAction(Text.NOTE_MOVEUP_BTN, self.hoverBtns)
-		self.moveDownAction = QAction(Text.NOTE_MOVEDOWN_BTN, self.hoverBtns)
+		self.editNoteAction = QAction(QIcon("assets/edit.svg"), Text.NOTE_EDIT_BTN, self.hoverBtns)
+		self.deleteNoteAction = QAction(QIcon("assets/trash.svg"), Text.NOTE_DELETE_BTN, self.hoverBtns)
+		self.moveUpAction = QAction(QIcon("assets/up.svg"), Text.NOTE_MOVEUP_BTN, self.hoverBtns)
+		self.moveDownAction = QAction(QIcon("assets/down.svg"), Text.NOTE_MOVEDOWN_BTN, self.hoverBtns)
 		self.addAction()
 		self.moreOptionBtn.setMenu(self.optionMenu)
 
@@ -76,13 +76,21 @@ class ViewNoteBlock(QWidget):
 		mainLayout.addWidget(self.hoverBtns)
 
 		hoverBtnsLayout = QVBoxLayout(self.hoverBtns)
-		hoverBtnsLayout.addWidget(self.questionBtn)
-		hoverBtnsLayout.addWidget(self.moreOptionBtn)
-		hoverBtnsLayout.addStretch()
+		hoverBtnsLayout.setContentsMargins(0,0,0,0)
+		hoverBtnsLayout.setSpacing(0)
+		hoverArea = QWidget()
+		hoverAreaLayout = QHBoxLayout(hoverArea)
+		hoverAreaLayout.setContentsMargins(0,0,0,0)
+		hoverAreaLayout.setSpacing(0)
+		hoverAreaLayout.addWidget(self.questionBtn)
+		hoverAreaLayout.addWidget(self.moreOptionBtn)
 
+		hoverBtnsLayout.addWidget(hoverArea)
+		hoverBtnsLayout.addStretch()
+		
 		textAreaLayout = QVBoxLayout(self.textArea)
 		textAreaLayout.setContentsMargins(0,0,0,0)
-		textAreaLayout.setSpacing(0)
+		textAreaLayout.setSpacing(8)
 		textAreaLayout.addWidget(self.noteShow)
 		textAreaLayout.addWidget(self.noteEdit)
 		textAreaLayout.addWidget(self.questionArea)
@@ -97,6 +105,9 @@ class ViewNoteBlock(QWidget):
 	def setStyles(self):
 		self.questionBtn.setProperty("type", "iconButton")
 		self.moreOptionBtn.setProperty("type", "iconButton")
+
+		self.questionBtn.setObjectName("question")
+		self.moreOptionBtn.setObjectName("h-dots")
 
 	def addAction(self):
 		self.optionMenu.addAction(self.editNoteAction)

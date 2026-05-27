@@ -52,12 +52,10 @@ class ControllerHomePage(QObject):
 		if subjectId is None:
 			TacVuMonHoc.themMon(data["subject"]["text"])
 			subjectId = TacVuMonHoc.layMaMonMoiNhat()["maMon"]
-			print(subjectId)
 		chapterId = data["chapter"]["id"]
 		if chapterId is None:
 			TacVuChuong.themChuong(data["chapter"]["text"], subjectId)
 			chapterId = TacVuChuong.layMaChuongMoiNhat()["maChuong"]
-			print(chapterId)
 		TacVuNote.themNote(chapterId, data["note"]["content"], data["note"]["question"], data["note"]["isRecall"])
 		log_controller("Đã thêm thành công")
 		self.subjList_update_request.emit()

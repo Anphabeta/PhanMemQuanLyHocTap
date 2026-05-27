@@ -1,0 +1,68 @@
+QPushButton#home{
+	qproperty-icon: url("assets/home.svg");
+	qproperty-iconSize: 20px 20px;
+	font-size: 20px;
+	border-radius: 16px;
+	border: 1px solid #545454;
+}
+QPushButton#new{
+	qproperty-icon: url("assets/new.svg");
+	qproperty-iconSize: 16px 16px;
+}
+QPushButton#trash{
+	qproperty-icon: url("assets/trash.svg");
+	qproperty-iconSize: 16px 16px;
+}
+QPushButton#setting{
+	qproperty-icon: url("assets/setting.svg");
+	qproperty-iconSize: 16px 16px;	
+}
+QPushButton#edit{
+	qproperty-icon: url("assets/edit.svg");
+	qproperty-iconSize: 16px 16px;	
+}
+QPushButton#ok{
+	qproperty-icon: url("assets/ok.svg");
+	qproperty-iconSize: 16px 16px;		
+}
+QPushButton#cancel{
+	qproperty-icon: url("assets/cancel.svg");
+	qproperty-iconSize: 16px 16px;	
+}
+QPushButton#h-dots{
+	qproperty-icon: url("assets/h-dots.svg");
+	qproperty-iconSize: 16px 16px;	
+}
+QPushButton#v-dots{
+	qproperty-icon: url("assets/v-dots.svg");
+	qproperty-iconSize: 16px 16px;	
+}
+QPushButton#question{
+	qproperty-icon: url("assets/question.svg");
+	qproperty-iconSize: 16px 16px;	
+}
+QPushButton#hide{
+	qproperty-icon: url("assets/hide.svg");
+	qproperty-iconSize: 16px 16px;	
+}
+QPushButton#add-new-note{
+    height: 64px;
+    min-height: 64px;
+    max-height: 64px;
+    width: 100%;
+	background-image: url("assets/add-note-bg.jpg");
+	background-repeat: no-repeat;
+	background-position: center;
+
+	border: none;
+	background-color: #333333;
+	color: #ffffff;
+
+	qproperty-icon: url("assets/add-note.svg");
+	qproperty-iconSize: 16px 16px;
+
+	font-size:16px;
+}
+QPushButton#add-new-note:hover {
+    background-image: url("assets/add-note-bg-dark.jpg");
+}

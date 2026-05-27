@@ -9,7 +9,9 @@ from PyQt6.QtWidgets import(
 	QCheckBox,
 	QComboBox,
 	QLabel,
+	QStyle, QStyleOption,
 )
+from PyQt6.QtGui import QPainter
 from PyQt6.QtCore import pyqtSignal
 
 from lang.strings import Text
@@ -40,11 +42,11 @@ class NoteEdit(QWidget):
 		self.checkBoxAndOKWidget = QWidget()
 		self.checkBoxRecall = QCheckBox()
 		self.checkBoxRecall.setChecked(True)
-		self.okBtn = QPushButton("✔️")
-		self.cancelBtn = QPushButton("❌")
+		self.okBtn = QPushButton()
+		self.cancelBtn = QPushButton()
 
 		self.setupLayout()
-		self.setIdQSS()
+		self.setStyles()
 		self.updateUIText()
 		self.emitSignal()
 
@@ -58,9 +60,12 @@ class NoteEdit(QWidget):
 		checkBoxAndOKLayout.addWidget(self.okBtn)
 		checkBoxAndOKLayout.addWidget(self.cancelBtn)
 
-	def setIdQSS(self):
+	def setStyles(self):
 		self.okBtn.setProperty("type", "iconButton")
 		self.cancelBtn.setProperty("type", "iconButton")
+
+		self.okBtn.setObjectName("ok")
+		self.cancelBtn.setObjectName("cancel")
 
 	def updateUIText(self):
 		self.checkBoxRecall.setText(Text.CHECK_BOX_RECALL)
@@ -91,49 +96,70 @@ class QuestionEdit(QWidget):
 		self.questionShowArea = QWidget()
 		cauHoi = cauHoi if cauHoi != "" else Text.NOT_ADD_QUESTION
 		self.questionShow = QLabel(cauHoi, self.questionShowArea)
-		self.hideQuestionBtn = QPushButton("🔼", self.questionShowArea)
-		self.editQuestionBtn = QPushButton("🖊️", self.questionShowArea)
+		self.hideQuestionBtn = QPushButton(self.questionShowArea)
+		self.editQuestionBtn = QPushButton(self.questionShowArea)
 
 		self.questionEditArea = QWidget()
 		self.questionEdit = TextEdit(cauHoi, self.questionEditArea)
-		self.okQuestionBtn = QPushButton("✔️", self.questionEditArea)
-		self.cancelQuestionBtn = QPushButton("❌", self.questionEditArea)
+		self.okQuestionBtn = QPushButton(self.questionEditArea)
+		self.cancelQuestionBtn = QPushButton(self.questionEditArea)
 		self.questionEditArea.hide()
-
 		self.noteId = noteId
 
 		self.setupLayout()
-		self.setIdQSS()
+		self.setStyles()
 		self.emitSignal()
+
+	def clearGap(self, layout):
+		layout.setContentsMargins(0,0,0,0)
+		layout.setSpacing(0)
 
 	def setupLayout(self):
 		mainLayout = QVBoxLayout(self)
+		mainLayout.setContentsMargins(12,12,12,12)
+		mainLayout.setSpacing(0)
 		mainLayout.addWidget(self.questionShowArea)
 		mainLayout.addWidget(self.questionEditArea)
 
 		questionShowLayout = QVBoxLayout(self.questionShowArea)
+		self.clearGap(questionShowLayout)
 		questionShowLayout.addWidget(self.questionShow)
 		btnsShow = QWidget()
 		btnsShowLayout = QHBoxLayout(btnsShow)
+		self.clearGap(btnsShowLayout)
 		btnsShowLayout.addStretch()
 		btnsShowLayout.addWidget(self.hideQuestionBtn)
 		btnsShowLayout.addWidget(self.editQuestionBtn)
 		questionShowLayout.addWidget(btnsShow)
 
 		questionEditLayout = QVBoxLayout(self.questionEditArea)
+		self.clearGap(questionEditLayout)
 		questionEditLayout.addWidget(self.questionEdit)
 		btnsEdit = QWidget()
 		btnsEditLayout = QHBoxLayout(btnsEdit)
+		self.clearGap(btnsEditLayout)
 		btnsEditLayout.addStretch()
 		btnsEditLayout.addWidget(self.okQuestionBtn)
 		btnsEditLayout.addWidget(self.cancelQuestionBtn)
 		questionEditLayout.addWidget(btnsEdit)
 
-	def setIdQSS(self):
+
+	def setStyles(self):
 		self.hideQuestionBtn.setProperty("type", "iconButton")
 		self.editQuestionBtn.setProperty("type", "iconButton")
 		self.okQuestionBtn.setProperty("type", "iconButton")
 		self.cancelQuestionBtn.setProperty("type", "iconButton")
+
+		self.hideQuestionBtn.setObjectName("hide")
+		self.editQuestionBtn.setObjectName("edit")
+		self.okQuestionBtn.setObjectName("ok")
+		self.cancelQuestionBtn.setObjectName("cancel")
+
+	def paintEvent(self, event):
+		opt = QStyleOption()
+		opt.initFrom(self)
+		p = QPainter(self)
+		self.style().drawPrimitive(QStyle.PrimitiveElement.PE_Widget, opt, p, self)
 
 	def emitSignal(self):
 		self.hideQuestionBtn.clicked.connect(self.hideQuestion)
@@ -269,6 +295,5 @@ class ViewSettingDialog(QDialog):
 
 	def getData(self):
 		return self.settingObj
-
 
 

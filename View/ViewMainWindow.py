@@ -39,8 +39,11 @@ class ViewMainWindow(QMainWindow):
 		splitter.addWidget(self.sidebar)
 		splitter.addWidget(self.stackedWidget)
 		splitter.setSizes([250,700])
+		splitter.setHandleWidth(8)
 
 		layout = QHBoxLayout(central)
+		layout.setContentsMargins(0,0,0,0)
+		layout.setSpacing(0)
 		layout.addWidget(splitter)
 
 	def showHomePage(self):

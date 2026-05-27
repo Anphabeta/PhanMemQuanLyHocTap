@@ -82,7 +82,7 @@ class ControllerSubjectPage(QObject):
 		TacVuChuong.themChuong(tenChuong, maMon)
 		self.updateChapterBlockList()
 
-		self.updateRecentAccess(maMon)
+		self.updateRecentAccess()
 
 	def updateRecentAccess(self):
 		self.recentAccess_update_request.emit(self.maMon)

@@ -41,10 +41,10 @@ class Text:
 	# Note
 	CHECK_BOX_RECALL = "Nhắc lại"
 	NOT_ADD_QUESTION = "Bạn chưa thêm câu hỏi"
-	NOTE_EDIT_BTN = "🖊️ Sửa note"
-	NOTE_DELETE_BTN = "🗑️ Xóa note"
-	NOTE_MOVEUP_BTN = "⬆️ Di chuyển lên"
-	NOTE_MOVEDOWN_BTN = "⬇️ Di chuyển xuống"
+	NOTE_EDIT_BTN = "Sửa note"
+	NOTE_DELETE_BTN = "Xóa note"
+	NOTE_MOVEUP_BTN = "Di chuyển lên"
+	NOTE_MOVEDOWN_BTN = "Di chuyển xuống"
 
 	# Home Page
 	TITLE_HOMEPAGE = "Trang chủ"

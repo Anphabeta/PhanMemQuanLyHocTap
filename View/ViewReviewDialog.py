@@ -117,12 +117,17 @@ class ViewReviewTag(QWidget):
 		self.brief.setWordWrap(True)
 
 		self.setupLayout()
+		self.setStyles()
 
 	def setupLayout(self):
 		mainLayout = QVBoxLayout(self)
 		mainLayout.addWidget(self.path)
 		mainLayout.addWidget(self.brief)
 		self.makeChildrenTransparent()
+
+	def setStyles(self):
+		self.path.setProperty("type", "path")
+		self.brief.setProperty("type", "brief")
 
 	def paintEvent(self, event):
 		opt = QStyleOption()
