@@ -45,6 +45,8 @@ class ViewHomePage(QWidget):
 
 	def setupLayout(self):
 		layout = QVBoxLayout(self)
+		layout.setContentsMargins(32, 0, 32, 0)
+		layout.setSpacing(0)
 		firstLine = QWidget()
 		firstLineLayout = QHBoxLayout(firstLine)
 		firstLineLayout.addWidget(self.title)
@@ -92,6 +94,7 @@ class ViewHomePage(QWidget):
 		return viewReviewDialog
 
 	def createViewSettingDialog(self):
+		settingDialog = ViewSettingDialog()
 		return ViewSettingDialog()
 	# -----------------------------------------------------
 

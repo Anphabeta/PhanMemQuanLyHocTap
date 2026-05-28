@@ -10,6 +10,7 @@ EN_STRINGS = {
     "FAVORITE_LIST_TITLE": "Favorite Subjects",
 
     # Dialog
+    "DIALOG_TITLE_CAIDAT": "Settings",
     "DIALOG_TITLE_THEMMON": "Add New Subject",
     "DIALOG_TITLE_SUAMON": "Edit Subject",
     "DIALOG_TITLE_THEMCHUONG": "Add New Chapter",

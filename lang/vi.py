@@ -10,6 +10,7 @@ VI_STRINGS = {
     "FAVORITE_LIST_TITLE": "Môn học ưa thích",
 
     # Dialog
+    "DIALOG_TITLE_CAIDAT": "Cài đặt",
     "DIALOG_TITLE_THEMMON": "Thêm môn học mới",
     "DIALOG_TITLE_SUAMON": "Sửa môn học",
     "DIALOG_TITLE_THEMCHUONG": "Thêm chương mới",

@@ -10,15 +10,52 @@ from PyQt6.QtWidgets import(
 	QComboBox,
 	QLabel,
 	QStyle, QStyleOption,
+	QSizePolicy,
 )
 from PyQt6.QtGui import QPainter
-from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtCore import pyqtSignal, Qt
 
 from lang.strings import Text
 
 
 class TextEdit(QPlainTextEdit):
 	editingFinished = pyqtSignal()
+
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.setStyleSheet("""
+			QPlainTextEdit {
+				border: none;
+				background: transparent;
+				padding: 0px;
+			}
+		""")
+
+		self.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+		self.textChanged.connect(self.updateHeight)
+		self.document().documentLayout().documentSizeChanged.connect(
+			self.updateHeight
+		)
+
+		self.updateHeight()
+
+	def updateHeight(self):
+		doc = self.document()
+
+		margins = self.contentsMargins()
+
+		line_height = self.fontMetrics().height()
+
+		line_count = doc.blockCount()
+
+		height = (
+			line_count * line_height
+			+ margins.top()
+			+ margins.bottom()
+			+ 10
+		)
+
+		self.setFixedHeight(height)
 
 	def focusOutEvent(self, event):
 		super().focusOutEvent(event)
@@ -28,12 +65,17 @@ class TextEdit(QPlainTextEdit):
 		text = self.toPlainText().strip()
 		return text != ""
 
+	def showEvent(self, event):
+		super().showEvent(event)
+		self.updateHeight()
+
+
 class NoteEdit(QWidget):
 	editingFinished = pyqtSignal()
 	stateChanged = pyqtSignal(int)
 	cancelEdit = pyqtSignal()
 
-	def __init__(self, noiDungNote):
+	def __init__(self, noiDungNote, isNhacLai):
 		super().__init__()
 
 		self.textEdit = TextEdit(noiDungNote)
@@ -41,7 +83,7 @@ class NoteEdit(QWidget):
 
 		self.checkBoxAndOKWidget = QWidget()
 		self.checkBoxRecall = QCheckBox()
-		self.checkBoxRecall.setChecked(True)
+		self.checkBoxRecall.setChecked(isNhacLai=="enable")
 		self.okBtn = QPushButton()
 		self.cancelBtn = QPushButton()
 
@@ -52,6 +94,8 @@ class NoteEdit(QWidget):
 
 	def setupLayout(self):
 		layout = QVBoxLayout(self)
+		layout.setContentsMargins(0,0,0,0)
+		layout.setSpacing(0)
 		layout.addWidget(self.textEdit)
 		layout.addWidget(self.checkBoxAndOKWidget)
 
@@ -66,6 +110,7 @@ class NoteEdit(QWidget):
 
 		self.okBtn.setObjectName("ok")
 		self.cancelBtn.setObjectName("cancel")
+
 
 	def updateUIText(self):
 		self.checkBoxRecall.setText(Text.CHECK_BOX_RECALL)
@@ -128,8 +173,8 @@ class QuestionEdit(QWidget):
 		btnsShowLayout = QHBoxLayout(btnsShow)
 		self.clearGap(btnsShowLayout)
 		btnsShowLayout.addStretch()
-		btnsShowLayout.addWidget(self.hideQuestionBtn)
 		btnsShowLayout.addWidget(self.editQuestionBtn)
+		btnsShowLayout.addWidget(self.hideQuestionBtn)
 		questionShowLayout.addWidget(btnsShow)
 
 		questionEditLayout = QVBoxLayout(self.questionEditArea)
@@ -210,6 +255,7 @@ class InputDialog(QDialog):
 		#
 		self.setFixedSize(400,200)
 		self.setupLayout()
+		self.setStyles()
 		self.setupConnectBtn()
 
 	def setupLayout(self):
@@ -221,6 +267,9 @@ class InputDialog(QDialog):
 		btnLayout = QHBoxLayout(self.btnWidgets)
 		btnLayout.addWidget(self.okBtn)
 		btnLayout.addWidget(self.cancelBtn)
+
+	def setStyles(self):
+		self.inputText.setProperty("type", "input-dialog")
 
 	def setupConnectBtn(self):
 		self.inputText.textChanged.connect(self.checkOKBtn)
@@ -237,6 +286,8 @@ class InputDialog(QDialog):
 class ViewSettingDialog(QDialog):
 	def __init__(self):
 		super().__init__()
+
+		self.setWindowTitle(Text.DIALOG_TITLE_CAIDAT)
 
 		self.mainArea = QWidget()
 		self.language = QWidget(self.mainArea)
@@ -297,3 +348,16 @@ class ViewSettingDialog(QDialog):
 		return self.settingObj
 
 
+class ResponsiveContainer(QWidget):
+	def __init__(self, childWidget, maxWidth=850):
+		super().__init__()
+
+		self.childWidget = childWidget
+		self.maxWidth = maxWidth
+		self.childWidget.setMaximumWidth(maxWidth)
+
+		self.layout = QHBoxLayout(self)
+		self.layout.setContentsMargins(0, 0, 0, 0)
+		self.layout.setSpacing(0)
+
+		self.layout.addWidget(self.childWidget)

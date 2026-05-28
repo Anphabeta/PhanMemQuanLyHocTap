@@ -3,7 +3,8 @@ from PyQt6.QtWidgets import(
 	QPushButton,
 	QLabel,
 	QHBoxLayout, QVBoxLayout,
-	QLineEdit
+	QLineEdit,
+	QSizePolicy,
 )
 from PyQt6.QtCore import pyqtSignal, Qt
 from lang.strings import Text
@@ -34,7 +35,7 @@ class ViewChapterBlock(QWidget):
 		self.editChapterBtn.hide()
 		self.deleteChapterBtn.hide()
 
-		self.tempInput = NoteEdit("")
+		self.tempInput = NoteEdit("", "disable")
 		self.tempInput.hide()
 
 		self.noteArea = QWidget()
@@ -50,7 +51,7 @@ class ViewChapterBlock(QWidget):
 	# Phụ trách khởi tạo --------------------------------------------------------
 	def setLayout(self):
 		mainLayout = QVBoxLayout(self)
-		mainLayout.setContentsMargins(0,0,0,0)
+		mainLayout.setContentsMargins(56,0,0,0)
 		mainLayout.setSpacing(0)
 		mainLayout.addWidget(self.titleArea)
 		mainLayout.addWidget(self.noteArea)
@@ -61,8 +62,6 @@ class ViewChapterBlock(QWidget):
 		titleLayout.addWidget(self.addNoteBtn)
 		titleLayout.addWidget(self.editChapterBtn)
 		titleLayout.addWidget(self.deleteChapterBtn)
-
-		self.noteLayout.addWidget(self.tempInput)
 
 	def setSize(self):
 		self.addNoteBtn.setFixedWidth(100)
@@ -160,13 +159,16 @@ class ViewChapterBlock(QWidget):
 
 	# Phụ trách hiển thị note block ----------------------------------------------
 	def createNoteBlock(self, note):
-		noteBlock = ViewNoteBlock(note["noiDung"], note["cauHoi"], note["maNote"])
+		noteBlock = ViewNoteBlock(note["noiDung"], note["cauHoi"], note["maNote"], note["trangThaiThongBao"])
 
 		idx = self.noteLayout.count()
 		self.noteLayout.insertWidget(idx, noteBlock, 0, Qt.AlignmentFlag.AlignTop)
 
 		# log_view(f"Đã tạo note block {note["maNote"]}")
 		return noteBlock
+
+	def setTempInput(self):
+		self.noteLayout.addWidget(self.tempInput, 0, Qt.AlignmentFlag.AlignTop)
 
 	def clearNoteLayout(self):
 		for i in reversed(range(self.noteLayout.count())):

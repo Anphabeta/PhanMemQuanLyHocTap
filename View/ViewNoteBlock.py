@@ -23,13 +23,13 @@ class ViewNoteBlock(QWidget):
 	note_change_recallState = pyqtSignal(int, int)
 	question_edit_request = pyqtSignal(int, str)
 
-	def __init__(self, noiDungNote, cauHoi, maNote):
+	def __init__(self, noiDungNote, cauHoi, maNote, isNhacLai):
 		super().__init__()
 		self.noteId = maNote
 
 		self.textArea = QWidget()
 		self.noteShow = QLabel(noiDungNote)
-		self.noteEdit = NoteEdit(noiDungNote)
+		self.noteEdit = NoteEdit(noiDungNote, isNhacLai)
 		self.noteEdit.hide()
 
 		self.questionArea = QuestionEdit(cauHoi, maNote)
@@ -62,7 +62,6 @@ class ViewNoteBlock(QWidget):
 
 		self.setupLayout()
 		self.setStyles()
-		self.setSize(30)
 		self.setAlign()
 		self.emitSignal()
 
@@ -70,7 +69,7 @@ class ViewNoteBlock(QWidget):
 	# Phụ trách khởi tạo --------------------------------------------
 	def setupLayout(self):
 		mainLayout = QHBoxLayout(self)
-		mainLayout.setContentsMargins(0, 0, 0, 0)
+		mainLayout.setContentsMargins(16, 0, 0, 0)
 		mainLayout.setSpacing(0)
 		mainLayout.addWidget(self.textArea,1)
 		mainLayout.addWidget(self.hoverBtns)
@@ -108,18 +107,13 @@ class ViewNoteBlock(QWidget):
 
 		self.questionBtn.setObjectName("question")
 		self.moreOptionBtn.setObjectName("h-dots")
+		self.noteShow.setWordWrap(True)
 
 	def addAction(self):
 		self.optionMenu.addAction(self.editNoteAction)
 		self.optionMenu.addAction(self.deleteNoteAction)
 		self.optionMenu.addAction(self.moveUpAction)
 		self.optionMenu.addAction(self.moveDownAction)
-
-	def setSize(self, width):
-		self.moreOptionBtn.setFixedWidth(width)
-		self.questionBtn.setFixedWidth(width)
-
-		self.noteShow.setWordWrap(True)
 
 	def setAlign(self):
 		self.noteShow.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)	

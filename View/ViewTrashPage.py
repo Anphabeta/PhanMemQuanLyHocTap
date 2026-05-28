@@ -32,6 +32,8 @@ class ViewTrashPage(QWidget):
 
 	def setupLayout(self):
 		mainLayout = QVBoxLayout(self)
+		mainLayout.setContentsMargins(64,0,64,0)
+		mainLayout.setSpacing(16)
 		mainLayout.addWidget(self.title)
 		mainLayout.addWidget(self.trashSubjList)
 		mainLayout.addWidget(self.threeBtns)
@@ -44,6 +46,8 @@ class ViewTrashPage(QWidget):
 	def setStyles(self):
 		self.title.setProperty("type", "title")
 		self.title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+		self.trashSubjList.setProperty("type", "trash-page")
 
 	def updateUIText(self):
 		self.title.setText(Text.TRASH_TITLE)

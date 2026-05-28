@@ -48,8 +48,9 @@ class ViewCreateNoteDialog(QDialog):
 		self.newSubjectText = None
 		self.newChapterText = None
 		#
-		self.setFixedSize(700,400)
+		self.setFixedWidth(500)
 		self.setupLayout()
+		self.setStyles()
 		self.emitSignal()
 
 	def setupLayout(self):
@@ -66,11 +67,26 @@ class ViewCreateNoteDialog(QDialog):
 		mainLayout.addWidget(self.comboBoxSubj)
 		mainLayout.addWidget(self.comboBoxChapter)
 		mainLayout.addWidget(self.btnWidgets)
-		# mainLayout.addStretch()
+		mainLayout.addStretch()
 		#
 		btnLayout = QHBoxLayout(self.btnWidgets)
 		btnLayout.addWidget(self.okBtn)
 		btnLayout.addWidget(self.cancelBtn)
+
+	def setStyles(self):
+		styleSheet = """
+			QPlainTextEdit {
+				border: none;
+				background: transparent;
+				padding: 0px;
+				border-bottom: 1px solid #9B9A97;
+			}
+			QPlainTextEdit:focus{
+				border-bottom: 1px solid #FFFFFF;
+			}
+		"""
+		self.inputText.setStyleSheet(styleSheet)
+		self.inputQuestion.setStyleSheet(styleSheet)
 
 	def emitSignal(self):
 		self.comboBoxSubj.activated.connect(self.handleChooseSubject)

@@ -5,12 +5,13 @@ from PyQt6.QtWidgets import(
 	QHBoxLayout,
 	QStackedWidget,
 	QSplitter,
+	QSizePolicy,
 )
-from PyQt6.QtCore import Qt
 from View.ViewSidebar import ViewSidebar
 from View.ViewTrashPage import ViewTrashPage
 from View.ViewHomePage import ViewHomePage
 from View.ViewSubjectPage import ViewSubjectPage
+from View.QDefine import ResponsiveContainer
 from Controller.ControllerSidebar import ControllerSidebar
 from lang.strings import Text, set_language
 
@@ -28,6 +29,7 @@ class ViewMainWindow(QMainWindow):
 		self.stackedWidget.addWidget(self.subjPage)
 		#
 		self.updateUIText()
+
 		self.setupUI()
 
 	def setupUI(self):
@@ -35,12 +37,24 @@ class ViewMainWindow(QMainWindow):
 		central = QWidget()
 		self.setCentralWidget(central)
 		#
+		responsiveContainer = ResponsiveContainer(self.stackedWidget, 700)
+		self.sidebar.setSizePolicy(
+			QSizePolicy.Policy.Fixed,
+			QSizePolicy.Policy.Expanding
+		)
+		responsiveContainer.setSizePolicy(
+			QSizePolicy.Policy.Expanding,
+			QSizePolicy.Policy.Expanding
+		)
+		#
 		splitter = QSplitter()
 		splitter.addWidget(self.sidebar)
-		splitter.addWidget(self.stackedWidget)
+		splitter.addWidget(responsiveContainer)
 		splitter.setSizes([250,700])
 		splitter.setHandleWidth(8)
-
+		splitter.setStretchFactor(0,0)
+		splitter.setStretchFactor(1,1)
+		#
 		layout = QHBoxLayout(central)
 		layout.setContentsMargins(0,0,0,0)
 		layout.setSpacing(0)

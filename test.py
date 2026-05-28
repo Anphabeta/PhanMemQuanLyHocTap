@@ -33,7 +33,7 @@ from View.QDefine import InputDialog
 app = QApplication(sys.argv)
 window = ViewMainWindow()
 
-viewNoteBlock = ViewNoteBlock("Đây là CSDL nhưng nó phân tán :)", "CSDLPT là gì?", 20)
+viewNoteBlock = ViewNoteBlock("Đây là CSDL nhưng nó phân tán :)", "CSDLPT là gì?", 20, True)
 controllerNoteBlock = ControllerNoteBlock(viewNoteBlock)
 
 viewChapterBlock = ViewChapterBlock("abc",2)

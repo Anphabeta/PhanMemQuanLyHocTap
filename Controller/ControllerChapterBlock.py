@@ -95,6 +95,7 @@ class ControllerChapterBlock(QObject):
 			viewNoteBlock = self.chapterBlock.createNoteBlock(note)
 			self.viewNoteBlockList.append(viewNoteBlock)
 			self.connectViewAndControllerNoteBlock(viewNoteBlock)
+		self.chapterBlock.setTempInput()
 
 	def deleteViewAndControllerNoteBlock(self):
 		log_controller("Xóa ds note cũ")
