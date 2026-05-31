@@ -76,4 +76,6 @@ EN_STRINGS = {
     "VIETNAMESE": "Vietnamese",
     "ENGLISH": "English",
     "CHOOSE_THEME": "Theme",
+    "DARK_THEME": "Dark",
+    "LIGHT_THEME": "Light",
 }

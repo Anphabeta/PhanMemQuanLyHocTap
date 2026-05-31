@@ -1,9 +1,7 @@
 QPushButton#home{
-	qproperty-icon: url("assets/home.svg");
 	qproperty-iconSize: 20px 20px;
 	font-size: 20px;
 	border-radius: 16px;
-	border: 1px solid #545454;
 }
 QPushButton#new{
 	qproperty-icon: url("assets/new.svg");

@@ -1,163 +1,126 @@
-@import "icon.qss";
-@import "dark.qss";
-@import "light.qss";
+/* ===== MAIN.QSS — Chỉ chứa layout, font, kích thước. Màu sắc nằm ở dark.qss / light.qss ===== */
 
 QPushButton {
-	/*Trên dưới 8px, Trái phải 16px*/
+	/* Trên dưới 8px, Trái phải 16px */
 	padding: 8px 16px;
 
-	/*Cỡ chữ 10pt*/
+	/* Cỡ chữ 10pt */
 	font-size: 10pt;
 
-	/*Bo góc mềm mại*/
+	/* Bo góc mềm mại */
 	border-radius: 8px;
 
 	font-weight: bold;
 }
-QPushButton:hover{
-	background-color: #545454;
-}
-QPushButton:pressed{
-	background-color: #474747;
-}
-QPushButton[type="sidebarButton"]{
+QPushButton[type="sidebarButton"] {
 	text-align: left;
-	color: #9B9A97;
 }
-QPushButton[type="iconButton"]{
+QPushButton[type="iconButton"] {
     min-width: 32px;
     max-width: 32px;
     min-height: 32px;
     max-height: 32px;
-
     padding: 0px;
-
     font-size: 10pt;
-
     border-radius: 8px;
 }
-QPushButton::menu-indicator{
+QPushButton::menu-indicator {
 	image: none;
 	width: 0px;
 }
 
-QLabel{
+QLabel {
     font-family: "Segoe UI", "Roboto", sans-serif;
     font-size: 16px;
 }
-QLabel[type="title"]{
+QLabel[type="title"] {
     font-weight: bold;
     font-size: 30px;
+    margin: 8px;
 }
-QLabel[type="sidebar-title"]{
+QLabel[type="sidebar-title"] {
 	font-weight: bold;
 	margin-top: 8px;
-	color: #9B9A97
 }
-QLabel[type="chapter-title"]{
+QLabel[type="chapter-title"] {
 	font-weight: bold;
 	font-size: 20px;
 	padding-top: 4px;
 	padding-bottom: 4px;
 }
-QLabel[type="path"]{
-	color: #787878;
+QLabel[type="path"] {
 	font-size: 11px;
 	background-color: transparent;
 }
-QLabel[type="brief"]{
+QLabel[type="brief"] {
 	margin: 4px;
 }
 
-QMenu{
+QMenu {
     font-family: "Segoe UI", "Roboto", sans-serif;
     font-size: 16px;
     icon-size: 16px;
 }
 
-ViewReviewTag{
-	border: 1px solid #424242;
+ViewReviewTag {
 	border-radius: 8px;
 }
-ViewReviewTag:hover{
-	background-color: #545454;
-}
-ViewReviewTag:pressed{
-	background-color: #474747;
-}
 
-ViewNoteBlock{
-	margin:0px;
-}
-
-QListWidget{
-	font-family: "Segoe UI", "Roboto", sans-serif;
-	font-size: 14px;
-	font-weight: bold;
-	color: #9B9A97;
-}
-QListWidget[type="trash-page"]{
-	font-size: 24px;
-	padding-bottom: 4px;
-	color: #ffffff
-}
-
-QComboBox{
-	font-family: "Segoe UI", "Roboto", sans-serif;
-	font-size: 16px;
-}
-
-QLineEdit[type="chapter-title"]{
-    font-family: "Segoe UI", "Roboto", sans-serif;
-    font-size: 16px;
-	font-weight: bold;
-	font-size: 16px;
-	border: none;
-	background: transparent;
-	padding-top:8px;
-	padding-bottom:8px;
-}
-QLineEdit[type="input-dialog"]{
-	border: none;
-	background: transparent;
-	border-bottom: 1px solid #9B9A97;
-}
-QLineEdit[type="input-dialog"]:focus{
-	border-bottom: 1px solid #FFFFFF;
-}
-
-QPlainTextEdit{
-    font-family: "Segoe UI", "Roboto", sans-serif;
-    font-size: 16px;
-}
-
-QSplitter::handle{
-	background-color: #424242;
-	width: 4px;
-}
-QSplitter::handle:hover{
-	background-color: #545454;
-}
-QSplitter::handle:pressed{
-	background-color: #474747;
-}
-
-ViewSidebar{
-	background-color: #202020;
+ViewNoteBlock {
 	margin: 0px;
 }
 
-QuestionEdit{
-	border: 1px solid #9B9A97;
-	border-radius: 8px;
+QListWidget {
+	font-family: "Segoe UI", "Roboto", sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+}
+QListWidget[type="trash-page"] {
+	font-size: 24px;
+	padding-bottom: 4px;
 }
 
-QScrollArea{
+QComboBox {
+	font-family: "Segoe UI", "Roboto", sans-serif;
+	font-size: 16px;
+}
+
+QLineEdit[type="chapter-title"] {
+    font-family: "Segoe UI", "Roboto", sans-serif;
+	font-weight: bold;
+	font-size: 20px;
 	border: none;
+	background: transparent;
+	padding-top: 4px;
+	padding-bottom: 4px;
 }
-
-QPlainTextEdit[type="text-edit"]{
+QLineEdit[type="input-dialog"] {
 	border: none;
 	background: transparent;
 }
 
+QPlainTextEdit {
+    font-family: "Segoe UI", "Roboto", sans-serif;
+    font-size: 16px;
+}
+
+QSplitter::handle {
+	width: 4px;
+}
+
+ViewSidebar {
+	margin: 0px;
+}
+
+QuestionEdit {
+	border-radius: 8px;
+}
+
+QScrollArea {
+	border: none;
+}
+
+QPlainTextEdit[type="text-edit"] {
+	border: none;
+	background: transparent;
+}

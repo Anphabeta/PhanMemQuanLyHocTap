@@ -80,6 +80,8 @@ class Text:
 	VIETNAMESE = "Tiếng Việt"
 	ENGLISH = "Tiếng Anh"
 	CHOOSE_THEME = "Chủ đề"
+	DARK_THEME = "Tối"
+	LIGHT_THEME = "Sáng"
 
 def set_language(lang_code):
 	"""Hàm dùng để đổi ngôn ngữ toàn hệ thống"""

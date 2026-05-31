@@ -5,6 +5,7 @@ from Controller.ControllerSubjectPage import ControllerSubjectPage
 from Controller.ControllerHomePage import ControllerHomePage
 
 import models.TacVuCaiDat as TacVuCaiDat
+import styles.get_styles as get_styles
 
 
 class ControllerMainWindow(QObject):
@@ -54,4 +55,8 @@ class ControllerMainWindow(QObject):
 
 		self.mainWindow.setLanguage(data['lang'])
 		self.mainWindow.updateUIText()
+
+		# Áp dụng theme ngay lập tức
+		theme = data.get('theme', 'dark')
+		get_styles.reload(theme)
 

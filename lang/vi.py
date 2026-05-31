@@ -76,4 +76,6 @@ VI_STRINGS = {
     "VIETNAMESE": "Tiếng Việt",
     "ENGLISH": "Tiếng Anh",
     "CHOOSE_THEME": "Chủ đề",
+    "DARK_THEME": "Tối",
+    "LIGHT_THEME": "Sáng",
 }

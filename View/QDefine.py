@@ -12,8 +12,8 @@ from PyQt6.QtWidgets import(
 	QStyle, QStyleOption,
 	QSizePolicy,
 )
-from PyQt6.QtGui import QPainter
-from PyQt6.QtCore import pyqtSignal, Qt
+from PyQt6.QtGui import QPainter, QPixmap, QIcon
+from PyQt6.QtCore import pyqtSignal, Qt, QSize
 
 from lang.strings import Text
 
@@ -288,39 +288,70 @@ class ViewSettingDialog(QDialog):
 		super().__init__()
 
 		self.setWindowTitle(Text.DIALOG_TITLE_CAIDAT)
+		self._selectedTheme = 'dark'
 
-		self.mainArea = QWidget()
-		self.language = QWidget(self.mainArea)
+		# --- Khu vực ngôn ngữ ---
+		self.language = QWidget()
 		self.languageTitle = QLabel(Text.CHOOSE_LANGUAGE, self.language)
 		self.comboBoxLang = QComboBox(self.language)
 		self.comboBoxLang.addItem(Text.VIETNAMESE, "vi")
 		self.comboBoxLang.addItem(Text.ENGLISH, "en")
 
-
+		# --- Khu vực theme (2 nút hình ảnh) ---
 		self.theme = QWidget()
 		self.themeTitle = QLabel(Text.CHOOSE_THEME, self.theme)
+		self.themeBtnsArea = QWidget(self.theme)
 
+		BTN_SIZE = QSize(222, 151)
+		self.darkModeBtn = QPushButton(self.themeBtnsArea)
+		self.darkModeBtn.setIcon(QIcon(QPixmap("assets/dark-mode.png")))
+		self.darkModeBtn.setIconSize(BTN_SIZE)
+		self.darkModeBtn.setFixedSize(BTN_SIZE)
+		self.darkModeBtn.setProperty("themeBtn", "dark")
+
+		self.lightModeBtn = QPushButton(self.themeBtnsArea)
+		self.lightModeBtn.setIcon(QIcon(QPixmap("assets/light-mode.png")))
+		self.lightModeBtn.setIconSize(BTN_SIZE)
+		self.lightModeBtn.setFixedSize(BTN_SIZE)
+		self.lightModeBtn.setProperty("themeBtn", "light")
+
+		# --- Nút OK / Hủy ---
 		self.applyBtn = QPushButton(Text.OK)
 		self.cancelBtn = QPushButton(Text.CANCEL)
 
 		self.settingObj = {}
 
-		self.setFixedSize(400, 200)
+		self.setFixedSize(520, 320)
 		self.setupLayout()
 		self.emitSignal()
 
 	def setupLayout(self):
 		mainLayout = QVBoxLayout(self)
+		mainLayout.setSpacing(12)
 
+		# Ngôn ngữ
 		languageLayout = QVBoxLayout(self.language)
+		languageLayout.setContentsMargins(0, 0, 0, 0)
 		languageLayout.addWidget(self.languageTitle)
 		languageLayout.addWidget(self.comboBoxLang)
 
+		# Theme
 		themeLayout = QVBoxLayout(self.theme)
+		themeLayout.setContentsMargins(0, 0, 0, 0)
 		themeLayout.addWidget(self.themeTitle)
+		themeLayout.addWidget(self.themeBtnsArea)
 
+		themeBtnsLayout = QHBoxLayout(self.themeBtnsArea)
+		themeBtnsLayout.setContentsMargins(0, 0, 0, 0)
+		themeBtnsLayout.setSpacing(12)
+		themeBtnsLayout.addWidget(self.darkModeBtn)
+		themeBtnsLayout.addWidget(self.lightModeBtn)
+		themeBtnsLayout.addStretch()
+
+		# Nút OK/Hủy
 		btnsArea = QWidget()
 		btnsAreaLayout = QHBoxLayout(btnsArea)
+		btnsAreaLayout.setContentsMargins(0, 0, 0, 0)
 		btnsAreaLayout.addStretch()
 		btnsAreaLayout.addWidget(self.applyBtn)
 		btnsAreaLayout.addWidget(self.cancelBtn)
@@ -333,16 +364,30 @@ class ViewSettingDialog(QDialog):
 	def emitSignal(self):
 		self.applyBtn.clicked.connect(self.accept)
 		self.cancelBtn.clicked.connect(self.reject)
+		self.darkModeBtn.clicked.connect(lambda: self.setSelectedTheme('dark'))
+		self.lightModeBtn.clicked.connect(lambda: self.setSelectedTheme('light'))
+
+	def setSelectedTheme(self, theme: str):
+		"""Cập nhật theme đang được chọn và highlight nút tương ứng."""
+		self._selectedTheme = theme
+		selectedStyle = "border: 10px solid #9b9a97; border-radius: 10px;"
+		normalStyle = "border: 2px solid transparent; border-radius: 10px;"
+		self.darkModeBtn.setStyleSheet(selectedStyle if theme == 'dark' else normalStyle)
+		self.lightModeBtn.setStyleSheet(selectedStyle if theme == 'light' else normalStyle)
 
 	def setState(self, data):
 		self.settingObj = data
-		
-		index = self.comboBoxLang.findData(data['lang'])
+
+		index = self.comboBoxLang.findData(data.get('lang', 'en'))
 		if index != -1:
 		    self.comboBoxLang.setCurrentIndex(index)
 
+		# Highlight nút theme đang active
+		self.setSelectedTheme(data.get('theme', 'dark'))
+
 	def updateState(self):
 		self.settingObj['lang'] = self.comboBoxLang.currentData()
+		self.settingObj['theme'] = self._selectedTheme
 
 	def getData(self):
 		return self.settingObj

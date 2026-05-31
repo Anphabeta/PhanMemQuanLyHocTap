@@ -111,7 +111,7 @@ class ViewCreateNoteDialog(QDialog):
 			"note":{
 				"content": self.inputText.toPlainText().strip(),
 				"question": self.inputQuestion.toPlainText().strip(),
-				"isRecall": self.checkBoxRecall.isChecked(),
+				"isRecall": "enable" if self.checkBoxRecall.isChecked() else "disable",
 			},
 		}
 

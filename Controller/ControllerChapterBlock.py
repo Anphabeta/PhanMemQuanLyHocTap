@@ -43,7 +43,7 @@ class ControllerChapterBlock(QObject):
 
 		self.recentAccess_update_request.emit()
 
-	def handleAddNote(self, maChuong, newText, isChecked):
+	def handleAddNote(self, maChuong, newText, cauHoi, isChecked):
 		log_controller("Lấy thứ tự lớn nhất")
 
 		mapping = {
@@ -52,7 +52,7 @@ class ControllerChapterBlock(QObject):
 		}
 
 		log_controller("Tạo note trong db")
-		TacVuNote.themNote(maChuong,newText,mapping[isChecked])
+		TacVuNote.themNote(maChuong, newText, cauHoi, mapping[isChecked])
 
 		self.updateNoteBlockList()
 
