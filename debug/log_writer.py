@@ -2,7 +2,7 @@ import time
 from datetime import datetime
 import inspect
 
-DEBUG = True
+DEBUG = False
 
 def curTime():
 	now = datetime.now()

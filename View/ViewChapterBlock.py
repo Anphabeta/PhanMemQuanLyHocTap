@@ -41,6 +41,8 @@ class ViewChapterBlock(QWidget):
 		self.noteArea = QWidget()
 		self.noteBlockList = []
 		self.noteLayout = QVBoxLayout(self.noteArea)
+		self.noteLayout.setContentsMargins(0, 0, 0, 0)
+		self.noteLayout.setSpacing(16)
 
 		self.setLayout()
 		self.setStyles()

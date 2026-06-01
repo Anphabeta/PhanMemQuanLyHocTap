@@ -4,6 +4,7 @@ import models.TacVuMonHoc as TacVuMonHoc
 
 class ControllerTrashPage(QObject):
 	subjList_update_request = pyqtSignal()
+	reviewTag_update_request = pyqtSignal()
 
 	def __init__(self, view):
 		super().__init__()
@@ -27,6 +28,7 @@ class ControllerTrashPage(QObject):
 			print("Đã khôi phục môn")
 			self.updateTrashSubjList()
 			self.subjList_update_request.emit()
+			self.reviewTag_update_request.emit()
 
 	def handleDelete(self):
 		maMon = self.trashPage.getCurrentMaMon()
@@ -34,11 +36,13 @@ class ControllerTrashPage(QObject):
 			TacVuMonHoc.xoaMon(maMon)
 			print("Đã xóa môn vĩnh viễn")
 			self.updateTrashSubjList()
+			self.reviewTag_update_request.emit()
 
 	def handleDeleteAll(self):
 		TacVuMonHoc.xoaTatCaMon()
 		print("Đã xóa tất cả môn")
 		self.updateTrashSubjList()
+		self.reviewTag_update_request.emit()
 
 	def updateTrashSubjList(self):
 		trashSubjList = TacVuMonHoc.layDanhSachMonTrash()

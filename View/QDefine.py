@@ -16,6 +16,7 @@ from PyQt6.QtGui import QPainter, QPixmap, QIcon
 from PyQt6.QtCore import pyqtSignal, Qt, QSize
 
 from lang.strings import Text
+from styles.get_styles import get_resource_path
 
 
 class TextEdit(QPlainTextEdit):
@@ -304,13 +305,13 @@ class ViewSettingDialog(QDialog):
 
 		BTN_SIZE = QSize(222, 151)
 		self.darkModeBtn = QPushButton(self.themeBtnsArea)
-		self.darkModeBtn.setIcon(QIcon(QPixmap("assets/dark-mode.png")))
+		self.darkModeBtn.setIcon(QIcon(QPixmap(get_resource_path("assets/dark-mode.png"))))
 		self.darkModeBtn.setIconSize(BTN_SIZE)
 		self.darkModeBtn.setFixedSize(BTN_SIZE)
 		self.darkModeBtn.setProperty("themeBtn", "dark")
 
 		self.lightModeBtn = QPushButton(self.themeBtnsArea)
-		self.lightModeBtn.setIcon(QIcon(QPixmap("assets/light-mode.png")))
+		self.lightModeBtn.setIcon(QIcon(QPixmap(get_resource_path("assets/light-mode.png"))))
 		self.lightModeBtn.setIconSize(BTN_SIZE)
 		self.lightModeBtn.setFixedSize(BTN_SIZE)
 		self.lightModeBtn.setProperty("themeBtn", "light")

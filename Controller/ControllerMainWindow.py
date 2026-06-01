@@ -45,6 +45,7 @@ class ControllerMainWindow(QObject):
 
 	def connectSignalFromControllerTrashPage(self):
 		self.controllerTrashPage.subjList_update_request.connect(self.controllerSidebar.updateSubjList)
+		self.controllerTrashPage.reviewTag_update_request.connect(self.controllerHomePage.updateReviewTagList)
 
 	def handleNavigateSubjPage(self, maMon):
 		self.mainWindow.showSubjPage()

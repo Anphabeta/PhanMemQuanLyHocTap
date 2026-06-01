@@ -3,6 +3,7 @@ from PyQt6.QtGui import QIcon
 from View import ViewMainWindow
 from Controller import ControllerMainWindow
 import styles.get_styles as get_styles
+from styles.get_styles import get_resource_path
 import repositories.RepoCaiDat as RepoCaiDat
 import sys
 import ctypes
@@ -13,7 +14,7 @@ except Exception as e:
     print("Không thể thiết lập AppUserModelID:", e)
 
 app = QApplication(sys.argv)
-app.setWindowIcon(QIcon("assets/icon.svg"))
+app.setWindowIcon(QIcon(get_resource_path("assets/icon.ico")))
 
 # Đọc theme từ cài đặt, mặc định là dark nếu chưa có
 settings = RepoCaiDat.layThongTinCaiDat()
@@ -29,3 +30,6 @@ app.exec()
 # git add .
 # git commit -m "Comment"
 # git push
+
+# Lệnh biên dịch
+# pyinstaller --noconfirm main.spec

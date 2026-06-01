@@ -13,6 +13,7 @@ from PyQt6.QtCore import pyqtSignal, Qt
 from debug.log_writer import log_view, plainLog
 from View.QDefine import NoteEdit, TextEdit, QuestionEdit
 from lang.strings import Text
+from styles.get_styles import get_resource_path
 		
 class ViewNoteBlock(QWidget):
 	note_edit_request = pyqtSignal(int,str)
@@ -40,10 +41,10 @@ class ViewNoteBlock(QWidget):
 		self.moreOptionBtn = QPushButton()
 
 		self.optionMenu = QMenu(self.hoverBtns)
-		self.editNoteAction = QAction(QIcon("assets/edit.svg"), Text.NOTE_EDIT_BTN, self.hoverBtns)
-		self.deleteNoteAction = QAction(QIcon("assets/trash.svg"), Text.NOTE_DELETE_BTN, self.hoverBtns)
-		self.moveUpAction = QAction(QIcon("assets/up.svg"), Text.NOTE_MOVEUP_BTN, self.hoverBtns)
-		self.moveDownAction = QAction(QIcon("assets/down.svg"), Text.NOTE_MOVEDOWN_BTN, self.hoverBtns)
+		self.editNoteAction = QAction(QIcon(get_resource_path("assets/edit.ico")), Text.NOTE_EDIT_BTN, self.hoverBtns)
+		self.deleteNoteAction = QAction(QIcon(get_resource_path("assets/trash.ico")), Text.NOTE_DELETE_BTN, self.hoverBtns)
+		self.moveUpAction = QAction(QIcon(get_resource_path("assets/up.ico")), Text.NOTE_MOVEUP_BTN, self.hoverBtns)
+		self.moveDownAction = QAction(QIcon(get_resource_path("assets/down.ico")), Text.NOTE_MOVEDOWN_BTN, self.hoverBtns)
 		self.addAction()
 		self.moreOptionBtn.setMenu(self.optionMenu)
 
