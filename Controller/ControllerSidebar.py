@@ -10,6 +10,7 @@ class ControllerSidebar(QObject):
 	trashPage_request = pyqtSignal()
 
 	trashSubjList_update_request = pyqtSignal()
+	reviewTag_update_request = pyqtSignal()
 
 	subjItem_navigate_request = pyqtSignal(int)
 
@@ -63,6 +64,9 @@ class ControllerSidebar(QObject):
 
 		# Phát tín hiệu cho trashPage cập nhật lại danh sách (trashSubjlist update request)
 		self.trashSubjList_update_request.emit()
+
+		# Phát tín hiệu cho homePage cập nhật lại danh sách ôn tập
+		self.reviewTag_update_request.emit()
 
 	def handleEditSubj(self,maMon,newName):
 		log_controller("Sửa tên môn học trong db")

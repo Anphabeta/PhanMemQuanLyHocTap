@@ -5,6 +5,7 @@
 from tabulate import tabulate
 from db_connect import get_connection
 import textwrap
+import json
 
 conn = get_connection()
 cur = conn.cursor()
@@ -32,6 +33,20 @@ rows = cur.fetchall()
 
 headers = [d[0] for d in cur.description]
 
+# Hiển thị dạng JSON ============================================
+# # Lấy tên cột
+# headers = [d[0] for d in cur.description]
+
+# # Chuyển từng row thành dict
+# result = [
+#     dict(zip(headers, row))
+#     for row in rows
+# ]
+
+# # In đẹp kiểu JSON / object JS
+# print(json.dumps(result, indent=4, ensure_ascii=False))
+
+# Hiển thị dạng Bảng ============================================
 # Wrap toàn bộ dữ liệu
 wrapped_rows = [
     [wrap_cell(cell) for cell in row]

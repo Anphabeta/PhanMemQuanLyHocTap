@@ -175,7 +175,7 @@ def layDanhSachReviewTag():
 		FROM GhiChu as g
 		JOIN Chuong as c ON g.maChuong = c.maChuong
 		JOIN MonHoc as m ON m.maMon = c.maMon
-		WHERE g.trangThaiThongBao = 'enable' AND g.ngayOnTiep <= datetime('now', 'localtime');
+		WHERE m.trangThaiMon = 'enable' AND g.trangThaiThongBao = 'enable' AND g.ngayOnTiep <= datetime('now', 'localtime');
 	""")
 	rows = cur.fetchall()
 

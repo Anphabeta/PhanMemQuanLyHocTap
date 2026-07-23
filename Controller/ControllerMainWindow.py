@@ -34,6 +34,7 @@ class ControllerMainWindow(QObject):
 		self.controllerSidebar.trashPage_request.connect(self.mainWindow.showTrashPage)
 		self.controllerSidebar.trashSubjList_update_request.connect(self.controllerTrashPage.updateTrashSubjList)
 		self.controllerSidebar.subjItem_navigate_request.connect(self.handleNavigateSubjPage)
+		self.controllerSidebar.reviewTag_update_request.connect(self.controllerHomePage.updateReviewTagList)
 
 	def connectSignalFromControllerSubjectPage(self):
 		self.controllerSubjectPage.recentAccess_update_request.connect(self.controllerSidebar.updateRecentAccess)
